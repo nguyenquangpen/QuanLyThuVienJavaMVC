@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Set;
 import java.util.TreeSet;
+import java.text.SimpleDateFormat;
 
 public class QLSVView extends JFrame {
     public QLSVModel model;
@@ -208,13 +209,14 @@ public class QLSVView extends JFrame {
         btn_gioiTinh.clearSelection();
     }
 
+
     public void themThiSinhVaoTable(ThiSinh ts){
         DefaultTableModel model_table = (DefaultTableModel) table.getModel();
         model_table.addRow(new Object[]{
                 ts.getMaThiSinh() + "",
                 ts.getTenThiSinh(),
                 ts.getQueQuan().getTenTinh(),
-                ts.getNgaySinh().getDate() + "/" + (ts.getNgaySinh().getMonth() + 1) + "/" + (ts.getNgaySinh().getYear() + 1900),
+                (ts.getNgaySinh().getMonth() + 1) + "/" + ts.getNgaySinh().getDate() + "/" + (ts.getNgaySinh().getYear() + 1900),
                 (ts.isGioiTinh() ? "Nam" : "Nữ"),
         });
     }
@@ -232,6 +234,7 @@ public class QLSVView extends JFrame {
                     model_table.setValueAt(ts.getMaThiSinh()+"",i,0);
                     model_table.setValueAt(ts.getTenThiSinh(),i,1);
                     model_table.setValueAt(ts.getQueQuan().getTenTinh(),i,2);
+
                     model_table.setValueAt(ts.getNgaySinh().getDate() + "/" + (ts.getNgaySinh().getMonth() + 1) + "/" + (ts.getNgaySinh().getYear() + 1900),i,3);
                     model_table.setValueAt((ts.isGioiTinh() ? "Nam" : "Nữ"),i,4);
                 }
