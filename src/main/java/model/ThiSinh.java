@@ -7,17 +7,17 @@ public class ThiSinh implements Serializable {
     private int maThiSinh;
     private String tenThiSinh;
     private Tinh queQuan;
-    private Date ngaySinh;
+    private String SĐT;
     private boolean gioiTinh;
     public ThiSinh() {
 
     }
 
-    public ThiSinh(int maThiSinh, String tenThiSinh, Tinh queQuan, Date ngaySinh, boolean gioiTinh) {
+    public ThiSinh(int maThiSinh, String tenThiSinh, Tinh queQuan, String SĐT, boolean gioiTinh) {
         this.maThiSinh = maThiSinh;
         this.tenThiSinh = tenThiSinh;
         this.queQuan = queQuan;
-        this.ngaySinh = ngaySinh;
+        this.SĐT = SĐT;
         this.gioiTinh = gioiTinh;
 
     }
@@ -45,12 +45,12 @@ public class ThiSinh implements Serializable {
         this.queQuan = queQuan;
     }
 
-    public Date getNgaySinh() {
-        return ngaySinh;
+    public String getSĐT() {
+        return SĐT;
     }
 
-    public void setNgaySinh(Date ngaySinh) {
-        this.ngaySinh = ngaySinh;
+    public void setSĐT(String ngaySinh) {
+        this.SĐT = ngaySinh;
     }
 
     public boolean isGioiTinh() {
@@ -63,8 +63,8 @@ public class ThiSinh implements Serializable {
 
     @Override
     public String toString() {
-        return "ThiSinh [maThiSinh=" + maThiSinh + ", tenThiSinh=" + tenThiSinh + ", queQuan=" + queQuan + ", ngaySinh="
-                + ngaySinh + ", gioiTinh=" + gioiTinh + "]";
+        return "ThiSinh [maThiSinh=" + maThiSinh + ", tenThiSinh=" + tenThiSinh + ", queQuan=" + queQuan + ", SoDienThoai="
+                + SĐT + ", gioiTinh=" + gioiTinh + "]";
     }
     @Override
     public boolean equals(Object obj) {
@@ -76,7 +76,7 @@ public class ThiSinh implements Serializable {
             return false;
         ThiSinh other = (ThiSinh) obj;
         return  gioiTinh == other.gioiTinh
-                && maThiSinh == other.maThiSinh && Objects.equals(ngaySinh, other.ngaySinh)
+                && maThiSinh == other.maThiSinh && Objects.equals(SĐT, other.SĐT)
                 && Objects.equals(queQuan, other.queQuan) && Objects.equals(tenThiSinh, other.tenThiSinh);
     }
 }

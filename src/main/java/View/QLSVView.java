@@ -35,7 +35,7 @@ public class QLSVView extends JFrame {
 
     private void inti() {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setTitle("QLSV");
+        this.setTitle("Quản lý người mượn");
         this.setSize(800, 600);
         this.setLocationRelativeTo(null);
 
@@ -105,8 +105,8 @@ public class QLSVView extends JFrame {
         table.setFont(new Font("Tahoma", Font.PLAIN, 16));
         table.setModel(new DefaultTableModel(
                 new Object[][] {},
-                new String[] { "Mã Sinh Viên", "Họ Tên", "Quê Quán", "Ngày sinh",
-                        "Giới Tính", "Điểm môn 1", "Điểm môn 2", "Điểm môn 3" }));
+                new String[] { "Mã Sinh Viên", "Họ Tên", "Quê Quán", "Số Điện Thoại",
+                        "Giới Tính"}));
 
         table.setRowHeight(20);
 
@@ -122,7 +122,7 @@ public class QLSVView extends JFrame {
         jLabelHoTen.setFont(font);
         JLabel jLabelQuan = new JLabel("Quê Quán");
         jLabelQuan.setFont(font);
-        JLabel jLabeData =  new JLabel("Ngày Sinh");
+        JLabel jLabeData =  new JLabel("Số Điện Thoại");
         jLabeData.setFont(font);
         JLabel jLabelGioiTinh = new JLabel("Giới Tính");
         jLabelGioiTinh.setFont(font);
@@ -216,7 +216,7 @@ public class QLSVView extends JFrame {
                 ts.getMaThiSinh() + "",
                 ts.getTenThiSinh(),
                 ts.getQueQuan().getTenTinh(),
-                (ts.getNgaySinh().getMonth() + 1) + "/" + ts.getNgaySinh().getDate() + "/" + (ts.getNgaySinh().getYear() + 1900),
+                ts.getSĐT(),
                 (ts.isGioiTinh() ? "Nam" : "Nữ"),
         });
     }
@@ -235,7 +235,7 @@ public class QLSVView extends JFrame {
                     model_table.setValueAt(ts.getTenThiSinh(),i,1);
                     model_table.setValueAt(ts.getQueQuan().getTenTinh(),i,2);
 
-                    model_table.setValueAt(ts.getNgaySinh().getDate() + "/" + (ts.getNgaySinh().getMonth() + 1) + "/" + (ts.getNgaySinh().getYear() + 1900),i,3);
+                    model_table.setValueAt(ts.getSĐT(),i,3);
                     model_table.setValueAt((ts.isGioiTinh() ? "Nam" : "Nữ"),i,4);
                 }
             }
@@ -250,10 +250,10 @@ public class QLSVView extends JFrame {
         String tenThiSinh = model_table.getValueAt(i_row, 1)+"";
         Tinh tinh = Tinh.getTinhByTen(model_table.getValueAt(i_row, 2)+"");
         String s_ngaySinh = model_table.getValueAt(i_row, 3)+"";
-        Date ngaySinh = new Date(s_ngaySinh);
+        String SDT = model_table.getValueAt(i_row, 3)+"";
         String textGioiTinh = model_table.getValueAt(i_row, 4)+"";
         boolean gioitinh = textGioiTinh.equals("Nam");
-        ThiSinh ts = new ThiSinh(maThiSinh, tenThiSinh, tinh, ngaySinh, gioitinh);
+        ThiSinh ts = new ThiSinh(maThiSinh, tenThiSinh, tinh, SDT, gioitinh);
         return ts;
     }
 
@@ -266,7 +266,7 @@ public class QLSVView extends JFrame {
         }
         this.textField_ID.setText(ts.getMaThiSinh()+"");
         this.textField_HoVaTen.setText(ts.getTenThiSinh());
-        this.textField_NgaySinh.setText(ts.getNgaySinh()+"");
+        this.textField_NgaySinh.setText(ts.getSĐT());
         this.comboBox_queQuan.setSelectedItem(ts.getQueQuan().getTenTinh());
 
     }
@@ -288,14 +288,14 @@ public class QLSVView extends JFrame {
         String tenThiSinh = this.textField_HoVaTen.getText();
         int queQuan = this.comboBox_queQuan.getSelectedIndex()-1;
         Tinh tinh = Tinh.getTinhById(queQuan);
-        Date ngaySinh = new Date(this.textField_NgaySinh.getText());
+        String SDT = this.textField_NgaySinh.getText();
         boolean GioiTinh = true;
         if(this.radioButton_nam.isSelected()){
             GioiTinh = true;
         } else if (this.radioButton_nu.isSelected()) {
             GioiTinh = false;
         }
-        ThiSinh ts = new ThiSinh(maThiSinh, tenThiSinh, tinh, ngaySinh, GioiTinh);
+        ThiSinh ts = new ThiSinh(maThiSinh, tenThiSinh, tinh, SDT, GioiTinh);
         this.themHoaCapNhatSinhVien(ts);
     }
 
@@ -311,7 +311,6 @@ public class QLSVView extends JFrame {
                 if(!tenThiSinhTrongTable.equals(tenTs)){
                     idCuaThiSinhCanXoa.add(Integer.parseInt(id));
                 }
-
             }
         }
         String MaTinhSinhTimKiem = this.textField_MaThiSinh_TimKiem.getText();
@@ -364,7 +363,7 @@ public class QLSVView extends JFrame {
     public void ThoatKhoiChuongTrinh() {
         int luaChon = JOptionPane.showConfirmDialog(this, "thoải khỏi chương trình? ");
         if(luaChon == JOptionPane.YES_OPTION){
-            System.exit(0);
+            this.setVisible(false);
         }
     }
     public void saveFile(String path){

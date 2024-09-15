@@ -4,12 +4,10 @@ import java.util.ArrayList;
 
 public class QLSVModel {
     private ArrayList<ThiSinh> dsThiSinh;
-    private String luachon;
     private String TenFile;
 
     public QLSVModel() {
         this.dsThiSinh = new ArrayList<>();
-        this.luachon = "";
         this.TenFile = "";
     }
 
@@ -38,12 +36,6 @@ public class QLSVModel {
         this.dsThiSinh.add(thiSinh);
     }
 
-    public String getLuachon(){
-        return this.luachon;
-    }
-    public void setLuachon(String luachon) {
-        this.luachon = luachon;
-    }
     public String getTenFile(){
         return this.TenFile;
     }
