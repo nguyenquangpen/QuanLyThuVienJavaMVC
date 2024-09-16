@@ -55,7 +55,37 @@ public class QLSachView extends JFrame {
         jMenuFile.add(jMenuItemSave);
         jMenuFile.addSeparator();
         jMenuFile.add(jMenuItemExit);
+
+
+        // Tạo các JMenu như bình thường
+        JMenu jMenuItemSach = new JMenu("Sách");
+        jMenuItemSach.setFont(font);
+
+        JMenu jMenuItemDocGia = new JMenu("Độc Giả");
+        jMenuItemDocGia.setFont(font);
+
+        JMenu jMenuItemMuonTra = new JMenu("Mượn Trả");
+        jMenuItemMuonTra.setFont(font);
+
+        JMenu jMenuItemTrangThai = new JMenu("Trạng Thái");
+        jMenuItemTrangThai.setFont(font);
+
+        // Điều chỉnh khoảng cách giữa các menu item
+        jMenuItemSach.setMargin(new Insets(0, 5, 0, 5));
+        jMenuItemDocGia.setMargin(new Insets(0, 5, 0, 5));
+        jMenuItemMuonTra.setMargin(new Insets(0, 5, 0, 5));
+        jMenuItemTrangThai.setMargin(new Insets(0, 5, 0, 5));
+
         menuBar.add(jMenuFile);
+        menuBar.add(new JSeparator(SwingConstants.VERTICAL));
+        menuBar.add(jMenuItemSach);
+        menuBar.add(new JSeparator(SwingConstants.VERTICAL));
+        menuBar.add(jMenuItemDocGia);
+        menuBar.add(new JSeparator(SwingConstants.VERTICAL));
+        menuBar.add(jMenuItemMuonTra);
+        menuBar.add(new JSeparator(SwingConstants.VERTICAL));
+        menuBar.add(jMenuItemTrangThai);
+        menuBar.add(new JSeparator(SwingConstants.VERTICAL));
 
         //North
         JLabel label_TenDauSach = new JLabel("Tên Đầu Sách");
@@ -130,7 +160,7 @@ public class QLSachView extends JFrame {
         panelCenter.add(panelCenterBottom, BorderLayout.SOUTH);
 
         //bottom
-        JButton btnThem = new JButton("Thêm");
+        JButton btnThem = new JButton("Xoá Text");
         btnThem.addActionListener(action);
 
         JButton btnXoa = new JButton("Xoá");
