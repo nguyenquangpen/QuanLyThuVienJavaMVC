@@ -6,7 +6,7 @@ import java.awt.event.MouseAdapter;
 
 class Test{
     public static void main(String [] args){
-        new QLSachView();
+        new QLSVView();
     }
 }
 

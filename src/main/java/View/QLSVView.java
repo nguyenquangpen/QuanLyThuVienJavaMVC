@@ -395,12 +395,12 @@ public class QLSVView extends JFrame {
             this.setVisible(false);
         }
     }
-    public void saveFile(String path){
+    public void saveFile(String path) {
         try {
             this.model.setTenFile(path);
             FileOutputStream fos = new FileOutputStream(path);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
-            for(ThiSinh ts: this.model.getDsThiSinh()){
+            for (ThiSinh ts : this.model.getDsThiSinh()) {
                 oos.writeObject(ts);
             }
             oos.close();
@@ -408,28 +408,26 @@ public class QLSVView extends JFrame {
             e.printStackTrace();
         }
     }
-
     public void ThucHienSaveFile() {
-        if(!this.model.getTenFile().isEmpty()){
+        if(this.model.getTenFile().length()>0) {
             saveFile(this.model.getTenFile());
-        }else{
+        }else {
             JFileChooser fc = new JFileChooser();
             int returnVal = fc.showSaveDialog(this);
-            if(returnVal == JFileChooser.APPROVE_OPTION){
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
                 File file = fc.getSelectedFile();
                 saveFile(file.getAbsolutePath());
             }
         }
     }
-
-    public void openFile(File file){
-        ArrayList<ThiSinh> ds = new ArrayList<ThiSinh>();
+    public void openFile(File file) {
+        ArrayList ds = new ArrayList();
         try {
             this.model.setTenFile(file.getAbsolutePath());
             FileInputStream fis = new FileInputStream(file);
             ObjectInputStream ois = new ObjectInputStream(fis);
             ThiSinh ts = null;
-            while ((ts = (ThiSinh) ois.readObject()) != null){
+            while((ts = (ThiSinh) ois.readObject())!=null) {
                 ds.add(ts);
             }
             ois.close();
@@ -438,11 +436,10 @@ public class QLSVView extends JFrame {
         }
         this.model.setDsThiSinh(ds);
     }
-
     public void ThucHienOpenFile() {
         JFileChooser fc = new JFileChooser();
         int returnVal = fc.showOpenDialog(this);
-        if(returnVal == JFileChooser.APPROVE_OPTION){
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fc.getSelectedFile();
             openFile(file);
             ThucHienHuyTim();
