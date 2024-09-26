@@ -9,10 +9,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 import java.text.SimpleDateFormat;
 
 public class QLSVView extends JFrame {
@@ -25,6 +22,7 @@ public class QLSVView extends JFrame {
     public ButtonGroup btn_gioiTinh;
     public JRadioButton radioButton_nu, radioButton_nam;
     public JButton btnHuyTim, btnTim;
+    public JComboBox<String> dateComboBox;
     JTextField textField_TenSinhVien;
 
     public QLSVView() {
@@ -135,7 +133,7 @@ public class QLSVView extends JFrame {
         table.setModel(new DefaultTableModel(
                 new Object[][] {},
                 new String[] { "Mã Sinh Viên", "Họ Tên", "Quê Quán", "Số Điện Thoại",
-                        "Giới Tính"}));
+                        "Giới Tính", "Ngày Làm Thẻ"}));
 
         table.setRowHeight(20);
 
@@ -197,8 +195,17 @@ public class QLSVView extends JFrame {
         panelCenter.add(panelCenterBottom, BorderLayout.SOUTH);
 
         //bottom
-        JButton btnThem = new JButton("Xoá Text");
-        btnThem.addActionListener(action);
+//        JButton btnThem = new JButton("Xoá Text");
+//        btnThem.addActionListener(action);
+        JLabel jLabelDate = new JLabel("Ngày Làm Thẻ");
+        jLabelDate.setFont(font);
+
+        dateComboBox = new JComboBox <>();
+        ArrayList <Date> date = ThiSinh.getDSDate();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        for(Date date_combo : date){
+            dateComboBox.addItem(sdf.format(date_combo));
+        }
 
         JButton btnXoa = new JButton("Xoá");
         btnXoa.addActionListener(action);
@@ -210,17 +217,20 @@ public class QLSVView extends JFrame {
         btnLuu.addActionListener(action);
 
         Panel panelSouth = new Panel();
-        panelSouth.setLayout(new FlowLayout(FlowLayout.LEFT, 20, 20));
-        panelSouth.add(jLabelGioiTinh);
+        panelSouth.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 20));
+
         Panel paneltmp = new Panel();
         paneltmp.setLayout(new GridLayout(2, 1));
         paneltmp.add(radioButton_nam );
         paneltmp.add(radioButton_nu);
-        panelSouth.add(paneltmp);
-        panelSouth.add(btnThem);
+
+        panelSouth.add(jLabelDate);
+        panelSouth.add(dateComboBox);
         panelSouth.add(btnXoa);
         panelSouth.add(btnCapNhat);
         panelSouth.add(btnLuu);
+        panelSouth.add(jLabelGioiTinh);
+        panelSouth.add(paneltmp);
 
 
         this.setJMenuBar(menuBar);
@@ -247,6 +257,7 @@ public class QLSVView extends JFrame {
                 ts.getQueQuan().getTenTinh(),
                 ts.getSĐT(),
                 (ts.isGioiTinh() ? "Nam" : "Nữ"),
+                ts.getNgayMuon()+""
         });
     }
 
@@ -266,6 +277,9 @@ public class QLSVView extends JFrame {
 
                     model_table.setValueAt(ts.getSĐT(),i,3);
                     model_table.setValueAt((ts.isGioiTinh() ? "Nam" : "Nữ"),i,4);
+
+                    String date = ts.getNgayMuon()+"";
+                    model_table.setValueAt(date, i,5);
                 }
             }
         }
@@ -282,7 +296,8 @@ public class QLSVView extends JFrame {
         String SDT = model_table.getValueAt(i_row, 3)+"";
         String textGioiTinh = model_table.getValueAt(i_row, 4)+"";
         boolean gioitinh = textGioiTinh.equals("Nam");
-        ThiSinh ts = new ThiSinh(maThiSinh, tenThiSinh, tinh, SDT, gioitinh);
+        Date NgayMuon = ThiSinh.getDatebyStr(model_table.getValueAt(i_row, 5)+"");
+        ThiSinh ts = new ThiSinh(maThiSinh, tenThiSinh, tinh, SDT, gioitinh, NgayMuon);
         return ts;
     }
 
@@ -297,7 +312,7 @@ public class QLSVView extends JFrame {
         this.textField_HoVaTen.setText(ts.getTenThiSinh());
         this.textField_NgaySinh.setText(ts.getSĐT());
         this.comboBox_queQuan.setSelectedItem(ts.getQueQuan().getTenTinh());
-
+        this.dateComboBox.setSelectedItem(ts.getNgayMuon());
     }
 
     public void ThucHienXoa() {
@@ -324,7 +339,9 @@ public class QLSVView extends JFrame {
         } else if (this.radioButton_nu.isSelected()) {
             GioiTinh = false;
         }
-        ThiSinh ts = new ThiSinh(maThiSinh, tenThiSinh, tinh, SDT, GioiTinh);
+        Date NgayMuon = new Date(this.dateComboBox.getSelectedItem()+ " ");
+
+        ThiSinh ts = new ThiSinh(maThiSinh, tenThiSinh, tinh, SDT, GioiTinh, NgayMuon);
         this.themHoaCapNhatSinhVien(ts);
     }
 
