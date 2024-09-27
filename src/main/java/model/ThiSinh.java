@@ -11,13 +11,13 @@ public class ThiSinh implements Serializable {
     private Tinh queQuan;
     private String SĐT;
     private boolean gioiTinh;
-    private Date NgayMuon;
+    private String NgayMuon;
 
     public ThiSinh() {
 
     }
 
-    public ThiSinh(int maThiSinh, String tenThiSinh, Tinh queQuan, String SĐT, boolean gioiTinh, Date NgayMuon) {
+    public ThiSinh(int maThiSinh, String tenThiSinh, Tinh queQuan, String SĐT, boolean gioiTinh, String NgayMuon) {
         this.maThiSinh = maThiSinh;
         this.tenThiSinh = tenThiSinh;
         this.queQuan = queQuan;
@@ -66,17 +66,17 @@ public class ThiSinh implements Serializable {
         this.gioiTinh = gioiTinh;
     }
 
-    public void setNgayMuon(Date ngayMuon) {
+    public void setNgayMuon(String ngayMuon) {
         this.NgayMuon = ngayMuon;
     }
-    public Date getNgayMuon() {
+    public String getNgayMuon() {
         return NgayMuon;
     }
 
     @Override
     public String toString() {
         return "ThiSinh [maThiSinh=" + maThiSinh + ", tenThiSinh=" + tenThiSinh + ", queQuan=" + queQuan + ", SoDienThoai="
-                + SĐT + ", gioiTinh=" + gioiTinh + "]";
+                + SĐT + ", gioiTinh=" + gioiTinh + "NgayLamThe" + NgayMuon + "]";
     }
     @Override
     public boolean equals(Object obj) {

@@ -96,15 +96,7 @@ public class QLSVView extends JFrame {
         //North
         JLabel label_TenSinhVien = new JLabel("Tên Sinh Viên");
         label_TenSinhVien.setFont(font);
-//        comboBox_queQuan_timKiem = new JComboBox();
-//        ArrayList listTinh = Tinh.getDSTinh();
-//        comboBox_queQuan_timKiem.addItem(" ");
-//        for(int i = 0; i < listTinh.size(); i++){
-//            Tinh tinh = (Tinh) listTinh.get(i);
-//            comboBox_queQuan_timKiem.addItem(tinh.getTenTinh());
-//        }
-//        comboBox_queQuan_timKiem.setPreferredSize(new Dimension(150, 25));
-//        comboBox_queQuan_timKiem.setFont(font);
+
         textField_TenSinhVien = new JTextField(15);
         textField_TenSinhVien.setFont(font);
 
@@ -217,7 +209,7 @@ public class QLSVView extends JFrame {
         btnLuu.addActionListener(action);
 
         Panel panelSouth = new Panel();
-        panelSouth.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 20));
+        panelSouth.setLayout(new FlowLayout(FlowLayout.LEFT, 20, 20));
 
         Panel paneltmp = new Panel();
         paneltmp.setLayout(new GridLayout(2, 1));
@@ -239,15 +231,6 @@ public class QLSVView extends JFrame {
         this.add(panelCenter, BorderLayout.CENTER);
         this.add(panelSouth, BorderLayout.SOUTH);
     }
-
-    public void xoaForm() {
-        textField_ID.setText("");
-        textField_NgaySinh.setText("");
-        textField_HoVaTen.setText("");
-        comboBox_queQuan.setSelectedIndex(0);
-        btn_gioiTinh.clearSelection();
-    }
-
 
     public void themThiSinhVaoTable(ThiSinh ts){
         DefaultTableModel model_table = (DefaultTableModel) table.getModel();
@@ -296,7 +279,7 @@ public class QLSVView extends JFrame {
         String SDT = model_table.getValueAt(i_row, 3)+"";
         String textGioiTinh = model_table.getValueAt(i_row, 4)+"";
         boolean gioitinh = textGioiTinh.equals("Nam");
-        Date NgayMuon = ThiSinh.getDatebyStr(model_table.getValueAt(i_row, 5)+"");
+        String NgayMuon = String.valueOf(ThiSinh.getDatebyStr(model_table.getValueAt(i_row, 5)+""));
         ThiSinh ts = new ThiSinh(maThiSinh, tenThiSinh, tinh, SDT, gioitinh, NgayMuon);
         return ts;
     }
@@ -339,7 +322,7 @@ public class QLSVView extends JFrame {
         } else if (this.radioButton_nu.isSelected()) {
             GioiTinh = false;
         }
-        Date NgayMuon = new Date(this.dateComboBox.getSelectedItem()+ " ");
+        String NgayMuon = this.dateComboBox.getSelectedItem()+ " ";
 
         ThiSinh ts = new ThiSinh(maThiSinh, tenThiSinh, tinh, SDT, GioiTinh, NgayMuon);
         this.themHoaCapNhatSinhVien(ts);

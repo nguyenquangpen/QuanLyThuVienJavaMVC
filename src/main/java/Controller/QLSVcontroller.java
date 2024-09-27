@@ -20,10 +20,7 @@ public class QLSVcontroller implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         String cm = e.getActionCommand();
         JOptionPane.showMessageDialog(view, "ban vua nhan vao " + cm);
-        if(cm.equals("Xoá Text")){
-            view.xoaForm();
-        }
-        else if(cm.equals("Lưu")){
+        if(cm.equals("Lưu")){
             try{
                 this.view.ThucHienThemSinhVien();
             }catch(Exception ex){
