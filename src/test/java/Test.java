@@ -2,7 +2,7 @@
 //import View.QLSVView;
 //import View.QLSachView;
 import View.QLSVView;
-import org.database.JDBC;
+import View.QLSachView;
 
 import javax.swing.*;
 import java.sql.Connection;
@@ -31,7 +31,7 @@ class Test{
 //        } catch (Exception e) {
 //            throw new RuntimeException(e);
 //        }
-        new QLSVView();
+        new QLSachView();
     }
 }
 

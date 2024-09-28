@@ -16,10 +16,7 @@ public class QLSachController implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         String cm = e.getActionCommand();
         JOptionPane.showMessageDialog(view, "ban vua nhan vao " + cm);
-        if(cm.equals("Xoá Text")){
-            this.view.xoaForm();
-        }
-        else if (cm.equals("Lưu")) {
+        if (cm.equals("Lưu")) {
             try {
                 this.view.ThucHienThemSach();
             }catch(Exception ex){
@@ -35,10 +32,6 @@ public class QLSachController implements ActionListener {
             this.view.ThucHienHuyTim();
         } else if (cm.equals("Exit")) {
             this.view.ThoatKhoiChuongTrinh();
-        } else if (cm.equals("Save")) {
-            this.view.ThucHienSaveFile();
-        } else if (cm.equals("Open")) {
-            this.view.ThucHienOpenFile();
         }
     }
 }
