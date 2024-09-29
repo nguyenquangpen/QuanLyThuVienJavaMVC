@@ -1,18 +1,15 @@
 package Controller;
 
-import View.QLSVView;
-import model.ThiSinh;
-import model.Tinh;
+import View.StudentView;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Date;
 
-public class QLSVcontroller implements ActionListener {
-    private QLSVView view;
+public class Studentcontroller implements ActionListener {
+    private StudentView view;
 
-    public QLSVcontroller(QLSVView view) {
+    public Studentcontroller(StudentView view) {
         this.view = view;
     }
 
@@ -20,13 +17,13 @@ public class QLSVcontroller implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         String cm = e.getActionCommand();
         JOptionPane.showMessageDialog(view, "ban vua nhan vao " + cm);
-        if(cm.equals("Lưu")){
-            try{
-                this.view.ThucHienThemSinhVien();
-            }catch(Exception ex){
+        if (cm.equals("Lưu")) {
+            try {
+                this.view.ThucHienThemSV();
+            } catch (Exception ex) {
                 ex.printStackTrace();
             }
-        } else if (cm.equals("Cập Nhật")) {
+        }else if (cm.equals("Cập Nhật")) {
             this.view.HienThiSinhVienDaChon();
         } else if (cm.equals("Xoá")) {
             this.view.ThucHienXoa();
@@ -36,10 +33,6 @@ public class QLSVcontroller implements ActionListener {
             this.view.ThucHienHuyTim();
         } else if (cm.equals("Exit")) {
             this.view.ThoatKhoiChuongTrinh();
-        } else if (cm.equals("Save")) {
-            this.view.ThucHienSaveFile();
-        }else if (cm.equals("Open")){
-            this.view.ThucHienOpenFile();
         }
     }
 }

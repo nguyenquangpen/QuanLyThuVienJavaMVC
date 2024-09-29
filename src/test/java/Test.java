@@ -1,8 +1,9 @@
 //import View.LoginView;
 //import View.QLSVView;
 //import View.QLSachView;
-import View.QLSVView;
+
 import View.QLSachView;
+import View.StudentView;
 
 import javax.swing.*;
 import java.sql.Connection;
@@ -31,7 +32,7 @@ class Test{
 //        } catch (Exception e) {
 //            throw new RuntimeException(e);
 //        }
-        new QLSachView();
+        new StudentView();
     }
 }
 

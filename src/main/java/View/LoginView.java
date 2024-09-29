@@ -1,18 +1,16 @@
 package View;
 
 import Controller.QLLoginController;
-import model.QLSVModel;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
 public class LoginView extends JFrame {
-    public QLSVModel model;
     public JTextField jtfUsername;
     public JPasswordField jtfPassword;
     public LoginView() {
-        model = new QLSVModel();
+
         this.init();
         this.setVisible(true);
     }
