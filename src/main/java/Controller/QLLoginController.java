@@ -16,11 +16,10 @@ public class QLLoginController implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         String cm = e.getActionCommand();
-        JOptionPane.showMessageDialog(loginView, "ban vua nhan vao " + cm);
         if(cm.equals("Login")){
             this.loginView.ThucHienDangNhap();
-        } else if (cm.equals("Register")) {
-            this.loginView.ChuyenSangRegister();
+        } else if (cm.equals("Sign Up")) {
+            this.loginView.ThuchienDangKy();
         }
     }
 }

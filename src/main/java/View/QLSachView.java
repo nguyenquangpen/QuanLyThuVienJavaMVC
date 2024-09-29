@@ -10,18 +10,14 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Set;
-import java.util.TreeSet;
 
 public class QLSachView extends JFrame {
     public JTable table;
     public JTextField textField_MaSach, textField_TenDauSach, textField_NamXuatBan, textField_MaDauSach_TimKiem, textField_TheLoai, textField_TacGia;
     public JButton btnHuyTim, btnTim;
     public JTextField textField_TenDauSachTimKiem;
-//    public QLSachModel model;
 
     public QLSachView() {
-//        model = new QLSachModel();
         this.inti();
         this.setVisible(true);
     }
@@ -49,17 +45,37 @@ public class QLSachView extends JFrame {
 
 
         // Tạo các JMenu như bình thường
-        JMenu jMenuItemSach = new JMenu("Sách");
+        JMenuItem jMenuItemSach = new JMenu("Sách");
         jMenuItemSach.setFont(font);
 
-        JMenu jMenuItemDocGia = new JMenu("Độc Giả");
+        JMenuItem sachItem = new JMenuItem("Quản Lý Sách");
+        sachItem.setFont(font);
+        sachItem.addActionListener(action);
+        jMenuItemSach.add(sachItem);
+
+        JMenuItem jMenuItemDocGia = new JMenu("Độc Giả");
         jMenuItemDocGia.setFont(font);
 
-        JMenu jMenuItemMuonTra = new JMenu("Mượn Trả");
+        JMenuItem docGiaItem = new JMenuItem("Quản Lý Độc Giả");
+        docGiaItem.setFont(font);
+        docGiaItem.addActionListener(action);
+        jMenuItemDocGia.add(docGiaItem);
+
+        JMenuItem jMenuItemMuonTra = new JMenu("Mượn Trả");
         jMenuItemMuonTra.setFont(font);
 
-        JMenu jMenuItemTrangThai = new JMenu("Trạng Thái");
+        JMenuItem muonTraItem = new JMenuItem("Quản Lý Mượn Trả");
+        muonTraItem.setFont(font);
+        muonTraItem.addActionListener(action);
+        jMenuItemMuonTra.add(muonTraItem);
+
+        JMenuItem jMenuItemTrangThai = new JMenu("Trạng Thái");
         jMenuItemTrangThai.setFont(font);
+
+        JMenuItem trangThaiItem = new JMenuItem("Quản Lý Trạng Thái");
+        trangThaiItem.setFont(font);
+        trangThaiItem.addActionListener(action);
+        jMenuItemTrangThai.add(trangThaiItem);
 
         // Điều chỉnh khoảng cách giữa các menu item
         jMenuItemSach.setMargin(new Insets(0, 5, 0, 5));
@@ -282,5 +298,10 @@ public class QLSachView extends JFrame {
         if(luaChon == JOptionPane.YES_OPTION){
             System.exit(0);
         }
+    }
+
+    public void HienThiDocGia() {
+        this.dispose();
+        new StudentView();
     }
 }

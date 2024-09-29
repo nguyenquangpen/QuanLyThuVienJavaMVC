@@ -2,6 +2,7 @@
 //import View.QLSVView;
 //import View.QLSachView;
 
+import View.LoginView;
 import View.QLSachView;
 import View.StudentView;
 
@@ -32,7 +33,7 @@ class Test{
 //        } catch (Exception e) {
 //            throw new RuntimeException(e);
 //        }
-        new StudentView();
+        new QLSachView();
     }
 }
 

@@ -47,17 +47,37 @@ public class StudentView extends JFrame {
         jMenuFile.add(jMenuItemExit);
 
         // Tạo các JMenu như bình thường
-        JMenu jMenuItemSach = new JMenu("Sách");
+        JMenuItem jMenuItemSach = new JMenu("Sách");
         jMenuItemSach.setFont(font);
 
-        JMenu jMenuItemDocGia = new JMenu("Độc Giả");
+        JMenuItem sachItem = new JMenuItem("Quản Lý Sách");
+        sachItem.setFont(font);
+        sachItem.addActionListener(action);
+        jMenuItemSach.add(sachItem);
+
+        JMenuItem jMenuItemDocGia = new JMenu("Độc Giả");
         jMenuItemDocGia.setFont(font);
 
-        JMenu jMenuItemMuonTra = new JMenu("Mượn Trả");
+        JMenuItem docGiaItem = new JMenuItem("Quản Lý Độc Giả");
+        docGiaItem.setFont(font);
+        docGiaItem.addActionListener(action);
+        jMenuItemDocGia.add(docGiaItem);
+
+        JMenuItem jMenuItemMuonTra = new JMenu("Mượn Trả");
         jMenuItemMuonTra.setFont(font);
 
-        JMenu jMenuItemTrangThai = new JMenu("Trạng Thái");
+        JMenuItem muonTraItem = new JMenuItem("Quản Lý Mượn Trả");
+        muonTraItem.setFont(font);
+        muonTraItem.addActionListener(action);
+        jMenuItemMuonTra.add(muonTraItem);
+
+        JMenuItem jMenuItemTrangThai = new JMenu("Trạng Thái");
         jMenuItemTrangThai.setFont(font);
+
+        JMenuItem trangThaiItem = new JMenuItem("Quản Lý Trạng Thái");
+        trangThaiItem.setFont(font);
+        trangThaiItem.addActionListener(action);
+        jMenuItemTrangThai.add(trangThaiItem);
 
         // Điều chỉnh khoảng cách giữa các menu item
         jMenuItemSach.setMargin(new Insets(0, 5, 0, 5));
@@ -279,5 +299,10 @@ public class StudentView extends JFrame {
         if(luaChon == JOptionPane.YES_OPTION){
             System.exit(0);
         }
+    }
+
+    public void HienThiSlideSach() {
+        this.dispose();
+        new QLSachView();
     }
 }
