@@ -33,7 +33,7 @@ public class Studentcontroller implements ActionListener {
             this.view.ThucHienHuyTim();
         } else if (cm.equals("Exit")) {
             this.view.ThoatKhoiChuongTrinh();
-        } else if (cm.equals("Sách")) {
+        } else if (cm.equals("Quản Lý Sách")) {
             this.view.HienThiSlideSach();
         }
     }

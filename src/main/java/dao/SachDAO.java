@@ -26,7 +26,7 @@ public class SachDAO implements DAOInterface<Sach> {
 
             PreparedStatement st = connection.prepareStatement(sql);
 
-            st.setInt(1, t.getId());
+            st.setString(1, t.getId());
             st.setString(2, t.getTenSach());
             st.setInt(3, t.getNamXuatBan());
             st.setString(4, t.getTheLoai());
@@ -59,7 +59,7 @@ public class SachDAO implements DAOInterface<Sach> {
             st.setInt(2, t.getNamXuatBan());
             st.setString(3, t.getTheLoai());
             st.setString(4, t.getTenTacGia());
-            st.setInt(5, t.getId());
+            st.setString(5, t.getId());
 
             ketQua = st.executeUpdate();
             JDBCUtil.close(connection);
@@ -77,7 +77,7 @@ public class SachDAO implements DAOInterface<Sach> {
 
             String sql = "DELETE FROM QLSach WHERE MaSachId = ?";
             PreparedStatement st = connection.prepareStatement(sql);
-            st.setInt(1, t.getId());
+            st.setString(1, t.getId());
 
             ketQua = st.executeUpdate();
 
@@ -87,7 +87,6 @@ public class SachDAO implements DAOInterface<Sach> {
         }
         return ketQua;
     }
-
 
     @Override
     public ArrayList<Sach> selectAll() {
@@ -99,12 +98,13 @@ public class SachDAO implements DAOInterface<Sach> {
             String sql = "SELECT * FROM QLSach";
             ResultSet rs = st.executeQuery(sql);
             while (rs.next()){
-                int MaSachId = rs.getInt("MaSachId");
+                String MaSachId = rs.getString("MaSachId");
                 String TenSach = rs.getString("TenSach");
                 int NamXB = rs.getInt("NamXB");
                 String TheLoai = rs.getString("TheLoai");
                 String TacGia = rs.getString("TacGia");
-                Sach sach = new Sach(MaSachId, TenSach, NamXB, TheLoai, TacGia);
+                int SoLuong = rs.getInt("SoLuong");
+                Sach sach = new Sach(MaSachId, TenSach, NamXB, TheLoai, TacGia, SoLuong);
                 ketQua.add(sach);
             }
             JDBCUtil.close(connection);
@@ -125,17 +125,18 @@ public class SachDAO implements DAOInterface<Sach> {
             connection = JDBCUtil.getConnection();
             String sql = "SELECT * FROM QLSach WHERE MaSachId = ?";
             st = connection.prepareStatement(sql);
-            st.setInt(1, t.getId());
+            st.setString(1, t.getId());
 
             rs = st.executeQuery();
 
-            if (rs.next()) { // Sử dụng if để kiểm tra kết quả
-                int MaSachId = rs.getInt("MaSachId");
+            if (rs.next()) {
+                String MaSachId = rs.getString("MaSachId");
                 String TenSach = rs.getString("TenSach");
                 int NamXB = rs.getInt("NamXB");
                 String TheLoai = rs.getString("TheLoai");
                 String TacGia = rs.getString("TacGia");
-                ketQua = new Sach(MaSachId, TenSach, NamXB, TheLoai, TacGia);
+                int SoLuong = rs.getInt("SoLuong");
+                ketQua = new Sach(MaSachId, TenSach, NamXB, TheLoai, TacGia, SoLuong);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -156,12 +157,13 @@ public class SachDAO implements DAOInterface<Sach> {
 
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
-                int MaSachId = rs.getInt("MaSachId");
+                String MaSachId = rs.getString("MaSachId");
                 String TenSach = rs.getString("TenSach");
                 int NamXB = rs.getInt("NamXB");
                 String TheLoai = rs.getString("TheLoai");
                 String TacGia = rs.getString("TacGia");
-                ketQua = new Sach(MaSachId, TenSach, NamXB, TheLoai, TacGia);
+                int SoLuong = rs.getInt("SoLuong");
+                ketQua = new Sach(MaSachId, TenSach, NamXB, TheLoai, TacGia, SoLuong);
             }
 
             JDBCUtil.close(connection);

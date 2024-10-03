@@ -4,6 +4,7 @@
 
 import View.LoginView;
 import View.QLSachView;
+import View.StatisticalBookView;
 import View.StudentView;
 
 import javax.swing.*;
@@ -33,7 +34,7 @@ class Test{
 //        } catch (Exception e) {
 //            throw new RuntimeException(e);
 //        }
-        new QLSachView();
+        new StatisticalBookView();
     }
 }
 

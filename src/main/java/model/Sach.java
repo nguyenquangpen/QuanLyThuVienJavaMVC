@@ -1,34 +1,32 @@
 package model;
 
 public class Sach {
-    private int id;
+    private String id;
     private String tenSach;
     private String TheLoai;
     private int namXuatBan;
     private String TenTacGia;
+    private int SoLuong;
     public Sach() {
-
     }
-    public Sach(int id, String tenSach, int namXuatBan, String TheLoai, String TenTacGia) {
+    public Sach(String id, String tenSach, int namXuatBan, String TheLoai, String TenTacGia, int SoLuong) {
         this.tenSach = tenSach;
         this.TheLoai = TheLoai;
         this.namXuatBan = namXuatBan;
         this.id = id;
         this.TenTacGia = TenTacGia;
+        this.SoLuong = SoLuong;
     }
 
-    public int getId() {
-
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
-
+    public void setId(String id) {
         this.id = id;
     }
 
     public String getTenSach() {
-
         return tenSach;
     }
 
@@ -60,6 +58,14 @@ public class Sach {
         TenTacGia = tenTacGia;
     }
 
+    public int getSoLuong() {
+        return SoLuong;
+    }
+
+    public void setSoLuong(int soLuong) {
+        SoLuong = soLuong;
+    }
+
     @Override
     public String toString() {
         return "Sach{" +
@@ -68,6 +74,7 @@ public class Sach {
                 ", TheLoai='" + TheLoai + '\'' +
                 ", namXuatBan=" + namXuatBan +
                 ", TenTacGia='" + TenTacGia + '\'' +
+                ", SoLuong=" + SoLuong +
                 '}';
     }
 }

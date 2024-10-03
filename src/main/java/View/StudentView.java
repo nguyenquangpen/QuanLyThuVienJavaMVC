@@ -71,13 +71,27 @@ public class StudentView extends JFrame {
         muonTraItem.addActionListener(action);
         jMenuItemMuonTra.add(muonTraItem);
 
-        JMenuItem jMenuItemTrangThai = new JMenu("Trạng Thái");
+        JMenuItem jMenuItemTrangThai = new JMenu("Thống kê");
         jMenuItemTrangThai.setFont(font);
 
-        JMenuItem trangThaiItem = new JMenuItem("Quản Lý Trạng Thái");
-        trangThaiItem.setFont(font);
-        trangThaiItem.addActionListener(action);
-        jMenuItemTrangThai.add(trangThaiItem);
+        JMenuItem trangThaiSach = new JMenuItem("Sách");
+        trangThaiSach.setFont(font);
+        trangThaiSach.addActionListener(action);
+        jMenuItemTrangThai.add(trangThaiSach);
+
+        JSeparator separator = new JSeparator();
+
+        JMenuItem trangThaiUser = new JMenuItem("Độc Giả");
+        trangThaiUser.setFont(font);
+        trangThaiUser.addActionListener(action);
+        jMenuItemTrangThai.add(trangThaiUser);
+
+        jMenuItemTrangThai.add(separator);
+
+        JMenuItem trangThaiMuonTra = new JMenuItem("Mượn Trả");
+        trangThaiMuonTra.setFont(font);
+        trangThaiMuonTra.addActionListener(action);
+        jMenuItemTrangThai.add(trangThaiMuonTra);
 
         // Điều chỉnh khoảng cách giữa các menu item
         jMenuItemSach.setMargin(new Insets(0, 5, 0, 5));
@@ -240,7 +254,7 @@ public class StudentView extends JFrame {
     }
 
     public void ThucHienThemSV() {
-        int StudentID = Integer.parseInt(textField_ID.getText());
+        String StudentID = textField_ID.getText();
         String StudentName = textField_HoVaTen.getText();
         String StudentLocation = textField_DiaChi.getText();
         int StudentSDT = Integer.parseInt(textField_SDT.getText());
@@ -252,7 +266,7 @@ public class StudentView extends JFrame {
     public Student getSVDaChon(){
         DefaultTableModel model_table = (DefaultTableModel) table.getModel();
         int i_row = table.getSelectedRow();
-        int StudentID = Integer.valueOf(model_table.getValueAt(i_row, 0)+"");
+        String StudentID = model_table.getValueAt(i_row, 0)+"";
         String StudentName = (String) model_table.getValueAt(i_row, 1);
         String StudentLocation = (String) model_table.getValueAt(i_row, 2);
         int StudentSDT = Integer.valueOf(model_table.getValueAt(i_row, 3)+"");
@@ -264,7 +278,7 @@ public class StudentView extends JFrame {
 
     public void HienThiSinhVienDaChon() {
         Student student = getSVDaChon();
-        this.textField_ID.setText(student.getId()+"");
+        this.textField_ID.setText(student.getId());
         this.textField_HoVaTen.setText(student.getName());
         this.textField_DiaChi.setText(student.getLocation());
         this.textField_SDT.setText(student.getSdt()+"");
@@ -274,10 +288,14 @@ public class StudentView extends JFrame {
     public void ThucHienXoa() {
         DefaultTableModel model_table = (DefaultTableModel) table.getModel();
         int i_row = table.getSelectedRow();
-
         if (i_row != -1) {
-            model_table.removeRow(i_row);
-            StudentDAO.getInstance().delete(getSVDaChon());
+            Student student = getSVDaChon();
+            if (student != null) {
+                int result = StudentDAO.getInstance().delete(student);
+                if (result > 0) {
+                    model_table.removeRow(i_row);
+                }
+            }
         }
     }
 

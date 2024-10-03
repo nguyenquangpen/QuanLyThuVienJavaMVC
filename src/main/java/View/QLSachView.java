@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class QLSachView extends JFrame {
     public JTable table;
-    public JTextField textField_MaSach, textField_TenDauSach, textField_NamXuatBan, textField_MaDauSach_TimKiem, textField_TheLoai, textField_TacGia;
+    public JTextField textField_MaSach, textField_TenDauSach, textField_NamXuatBan, textFieldSoLuong, textField_TheLoai, textField_TacGia;
     public JButton btnHuyTim, btnTim;
     public JTextField textField_TenDauSachTimKiem;
 
@@ -69,13 +69,27 @@ public class QLSachView extends JFrame {
         muonTraItem.addActionListener(action);
         jMenuItemMuonTra.add(muonTraItem);
 
-        JMenuItem jMenuItemTrangThai = new JMenu("Trạng Thái");
+        JMenuItem jMenuItemTrangThai = new JMenu("Thống kê");
         jMenuItemTrangThai.setFont(font);
 
-        JMenuItem trangThaiItem = new JMenuItem("Quản Lý Trạng Thái");
-        trangThaiItem.setFont(font);
-        trangThaiItem.addActionListener(action);
-        jMenuItemTrangThai.add(trangThaiItem);
+        JSeparator separator = new JSeparator();
+
+        JMenuItem trangThaiSach = new JMenuItem("Sách");
+        trangThaiSach.setFont(font);
+        trangThaiSach.addActionListener(action);
+        jMenuItemTrangThai.add(trangThaiSach);
+
+        JMenuItem trangThaiUser = new JMenuItem("Độc Giả");
+        trangThaiUser.setFont(font);
+        trangThaiUser.addActionListener(action);
+        jMenuItemTrangThai.add(trangThaiUser);
+
+        jMenuItemTrangThai.add(separator);
+
+        JMenuItem trangThaiMuonTra = new JMenuItem("Mượn Trả");
+        trangThaiMuonTra.setFont(font);
+        trangThaiMuonTra.addActionListener(action);
+        jMenuItemTrangThai.add(trangThaiMuonTra);
 
         // Điều chỉnh khoảng cách giữa các menu item
         jMenuItemSach.setMargin(new Insets(0, 5, 0, 5));
@@ -120,7 +134,7 @@ public class QLSachView extends JFrame {
         table.setModel(new DefaultTableModel(
                 new Object[][]{},
                 new String[]{"Mã Đầu sách", "Tên Đầu Sách", "Năm xuất bản", "Thể Loại",
-                        "Tác Giả"}));
+                        "Tác Giả", "Số Lượng", "Đã Mượn", "Tồn kho"}));
 
         HienThiSinhVienBangMacDinh();
         table.setRowHeight(20);
@@ -139,6 +153,8 @@ public class QLSachView extends JFrame {
         jLabelNamXuatBan.setFont(font);
         JLabel jLabelTacGia = new JLabel("Tác Giả");
         jLabelTacGia.setFont(font);
+        JLabel jLabelSoLuong = new JLabel("Số Lượng");
+        jLabelSoLuong.setFont(font);
 
         textField_MaSach = new JTextField(10);
         textField_MaSach.setFont(font);
@@ -148,6 +164,8 @@ public class QLSachView extends JFrame {
         textField_NamXuatBan.setFont(font);
         textField_TacGia = new JTextField(10);
         textField_TacGia.setFont(font);
+        textFieldSoLuong = new JTextField(10);
+        textFieldSoLuong.setFont(font);
 
 
         JPanel panelCenterBottom = new JPanel();
@@ -185,6 +203,8 @@ public class QLSachView extends JFrame {
         panelSouth.add(btnXoa);
         panelSouth.add(btnCapNhat);
         panelSouth.add(btnLuu);
+        panelSouth.add(jLabelSoLuong);
+        panelSouth.add(textFieldSoLuong);
 
 
         this.setJMenuBar(menuBar);
@@ -201,7 +221,8 @@ public class QLSachView extends JFrame {
             sach.getTenSach(),
             sach.getNamXuatBan(),
             sach.getTheLoai(),
-            sach.getTenTacGia()
+            sach.getTenTacGia(),
+            sach.getSoLuong()
         });
     }
 
@@ -233,32 +254,40 @@ public class QLSachView extends JFrame {
                     model_table.setValueAt(sach.getNamXuatBan()+"", i, 2);
                     model_table.setValueAt(sach.getTheLoai(), i, 3);
                     model_table.setValueAt(sach.getTenTacGia(), i, 4);
+                    model_table.setValueAt(sach.getSoLuong(), i, 5);
                 }
             }
         }
     }
 
     public void ThucHienThemSach() {
-        int maSachId = Integer.parseInt(textField_MaSach.getText());
+        String maSachId = textField_MaSach.getText();
         String tenDauSach = textField_TenDauSach.getText();
         int namXuatBan = Integer.parseInt(textField_NamXuatBan.getText());
         String tacGia = textField_TacGia.getText();
         String theLoai = textField_TheLoai.getText();
-        Sach sach = new Sach(maSachId, tenDauSach, namXuatBan, theLoai, tacGia);
+        int SoLuong = Integer.valueOf(textFieldSoLuong.getText());
+        Sach sach = new Sach(maSachId, tenDauSach, namXuatBan, theLoai, tacGia, SoLuong);
         this.ThemHoacCapNhatSach(sach);
     }
-    
-    public  Sach getSachDaChon(){
+
+    public Sach getSachDaChon() {
         DefaultTableModel model_table = (DefaultTableModel) table.getModel();
         int i_row = table.getSelectedRow();
-        int MaSachID = Integer.valueOf(model_table.getValueAt(i_row, 0)+"");
+
+        if (i_row == -1) {
+            return null;
+        }
+        String MaSachID = model_table.getValueAt(i_row, 0).toString();
         String TenDauSach = (String) model_table.getValueAt(i_row, 1);
-        int NamXB = Integer.valueOf(model_table.getValueAt(i_row, 2)+"");
+        int NamXB = Integer.valueOf(model_table.getValueAt(i_row, 2).toString());
         String TheLoai = (String) model_table.getValueAt(i_row, 3);
         String TacGia = (String) model_table.getValueAt(i_row, 4);
-        Sach sach = new Sach(MaSachID, TenDauSach, NamXB, TheLoai, TacGia);
+        int SoLuong = Integer.valueOf(model_table.getValueAt(i_row, 5).toString());
+        Sach sach = new Sach(MaSachID, TenDauSach, NamXB, TheLoai, TacGia, SoLuong);
         return sach;
     }
+
 
     public void HienThiSinhVienDaChon() {
         Sach sach = getSachDaChon();
@@ -267,16 +296,21 @@ public class QLSachView extends JFrame {
         this.textField_NamXuatBan.setText(sach.getNamXuatBan()+"");
         this.textField_TheLoai.setText(sach.getTheLoai());
         this.textField_TenDauSach.setText(sach.getTenSach());
+        this.textFieldSoLuong.setText(sach.getSoLuong()+"");
     }
 
 
     public void ThucHienXoa() {
         DefaultTableModel model_table = (DefaultTableModel) table.getModel();
         int i_row = table.getSelectedRow();
-
         if (i_row != -1) {
-            model_table.removeRow(i_row);
-            SachDAO.getInstance().delete(getSachDaChon());
+            Sach sach = getSachDaChon();
+            if (sach != null) {
+                int result = SachDAO.getInstance().delete(sach);
+                if (result > 0) {
+                    model_table.removeRow(i_row);
+                }
+            }
         }
     }
 

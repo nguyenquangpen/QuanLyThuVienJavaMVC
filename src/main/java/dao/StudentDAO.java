@@ -27,7 +27,7 @@ public class StudentDAO implements DAOInterface<Student> {
 
             PreparedStatement st = connection.prepareStatement(sql);
 
-            st.setInt(1, sd.getId());
+            st.setString(1, sd.getId());
             st.setString(2, sd.getName());
             st.setString(3, sd.getLocation());
             st.setInt(4, sd.getSdt());
@@ -61,7 +61,7 @@ public class StudentDAO implements DAOInterface<Student> {
             st.setString(2, sd.getLocation());
             st.setInt(3, sd.getSdt());
             st.setString(4, sd.getGmail());
-            st.setInt(5, sd.getId());
+            st.setString(5, sd.getId());
             ketQua = st.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
@@ -81,7 +81,7 @@ public class StudentDAO implements DAOInterface<Student> {
 
             PreparedStatement st = connection.prepareStatement(sql);
 
-            st.setInt(1, sd.getId());
+            st.setString(1, sd.getId());
 
             ketQua = st.executeUpdate();
         } catch (Exception e) {
@@ -101,7 +101,7 @@ public class StudentDAO implements DAOInterface<Student> {
             ResultSet rs = st.executeQuery(sql);
 
             while (rs.next()){
-                int StudentID = rs.getInt("StudentID");
+                String StudentID = rs.getString("StudentID");
                 String StudentName = rs.getString("StudentName");
                 String StudentLocation = rs.getString("StudentLocation");
                 int StudentSDT = rs.getInt("StudentSDT");
@@ -127,12 +127,12 @@ public class StudentDAO implements DAOInterface<Student> {
             connection = JDBCUtil.getConnection();
             String sql = "SELECT * FROM student WHERE StudentID = ?";
             st = connection.prepareStatement(sql);
-            st.setInt(1, sd.getId());
+            st.setString(1, sd.getId());
 
             rs = st.executeQuery();
 
             if (rs.next()) {
-                int StudentID = rs.getInt("StudentID");
+                String StudentID = rs.getString("StudentID");
                 String StudentName = rs.getString("StudentName");
                 String StudentLocation = rs.getString("StudentLocation");
                 int StudentSDT = rs.getInt("StudentSDT");
@@ -157,7 +157,7 @@ public class StudentDAO implements DAOInterface<Student> {
 
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
-                int StudentID = rs.getInt("StudentID");
+                String StudentID = rs.getString("StudentID");
                 String StudentName = rs.getString("StudentName");
                 String StudentLocation = rs.getString("StudentLocation");
                 int StudentSDT = rs.getInt("StudentSDT");
