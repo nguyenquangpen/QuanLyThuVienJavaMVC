@@ -1,6 +1,7 @@
 package LoginRegister;
 
-import LibrarianController.LibrarianLoginController;
+import Controller.LibrarianLoginController;
+import LibrarianView.QLSachView;
 import dao.LibrarianDao;
 import model.Librarian;
 
@@ -128,6 +129,8 @@ public class LoginLibrarianView extends JFrame {
 
             JOptionPane.showMessageDialog(null, "Đăng nhập thành công!");
             this.dispose();
+            new QLSachView();
+
         } else {
             if (!username.equals(librarian.getUsername())) {
                 JOptionPane.showMessageDialog(null, "Tên đăng nhập không đúng!");

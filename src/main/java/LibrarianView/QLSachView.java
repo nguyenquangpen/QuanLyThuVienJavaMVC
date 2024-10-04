@@ -1,6 +1,7 @@
 package LibrarianView;
 
-import LibrarianController.QLSachController;
+import Controller.QLSachController;
+import LoginRegister.FuntionLogin;
 import dao.SachDAO;
 import model.*;
 
@@ -9,6 +10,8 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import javax.swing.border.LineBorder;
+
 
 public class QLSachView extends JFrame {
     public JTable table;
@@ -27,7 +30,7 @@ public class QLSachView extends JFrame {
         this.setSize(800, 600);
         this.setLocationRelativeTo(null);
 
-        ActionListener action = new QLSachController(this);
+        ActionListener ac = new QLSachController(this);
 
         Font font = new Font("Arial", Font.PLAIN, 15);
         // jMenu
@@ -35,38 +38,35 @@ public class QLSachView extends JFrame {
         JMenu jMenuFile = new JMenu("File");
         jMenuFile.setFont(font);
 
-
         JMenuItem jMenuItemExit = new JMenuItem("Exit");
-        jMenuItemExit.addActionListener(action);
         jMenuItemExit.setFont(font);
         jMenuFile.addSeparator();
         jMenuFile.add(jMenuItemExit);
+        jMenuItemExit.addActionListener(ac);
 
-
-        // Tạo các JMenu như bình thường
         JMenuItem jMenuItemSach = new JMenu("Sách");
         jMenuItemSach.setFont(font);
 
         JMenuItem sachItem = new JMenuItem("Quản Lý Sách");
         sachItem.setFont(font);
-        sachItem.addActionListener(action);
         jMenuItemSach.add(sachItem);
+        sachItem.addActionListener(ac);
 
         JMenuItem jMenuItemDocGia = new JMenu("Độc Giả");
         jMenuItemDocGia.setFont(font);
 
         JMenuItem docGiaItem = new JMenuItem("Quản Lý Độc Giả");
         docGiaItem.setFont(font);
-        docGiaItem.addActionListener(action);
         jMenuItemDocGia.add(docGiaItem);
+        docGiaItem.addActionListener(ac);
 
         JMenuItem jMenuItemMuonTra = new JMenu("Mượn Trả");
         jMenuItemMuonTra.setFont(font);
 
         JMenuItem muonTraItem = new JMenuItem("Quản Lý Mượn Trả");
         muonTraItem.setFont(font);
-        muonTraItem.addActionListener(action);
         jMenuItemMuonTra.add(muonTraItem);
+        muonTraItem.addActionListener(ac);
 
         JMenuItem jMenuItemTrangThai = new JMenu("Thống kê");
         jMenuItemTrangThai.setFont(font);
@@ -75,19 +75,16 @@ public class QLSachView extends JFrame {
 
         JMenuItem trangThaiSach = new JMenuItem("Sách");
         trangThaiSach.setFont(font);
-        trangThaiSach.addActionListener(action);
         jMenuItemTrangThai.add(trangThaiSach);
 
         JMenuItem trangThaiUser = new JMenuItem("Độc Giả");
         trangThaiUser.setFont(font);
-        trangThaiUser.addActionListener(action);
         jMenuItemTrangThai.add(trangThaiUser);
 
         jMenuItemTrangThai.add(separator);
 
         JMenuItem trangThaiMuonTra = new JMenuItem("Mượn Trả");
         trangThaiMuonTra.setFont(font);
-        trangThaiMuonTra.addActionListener(action);
         jMenuItemTrangThai.add(trangThaiMuonTra);
 
         // Điều chỉnh khoảng cách giữa các menu item
@@ -106,6 +103,28 @@ public class QLSachView extends JFrame {
         menuBar.add(new JSeparator(SwingConstants.VERTICAL));
         menuBar.add(jMenuItemTrangThai);
         menuBar.add(new JSeparator(SwingConstants.VERTICAL));
+        // center
+        table = new JTable();
+        table.setFont(new Font("Tahoma", Font.PLAIN, 16));
+        table.setModel(new DefaultTableModel(
+                new Object[][]{},
+                new String[]{"Mã Đầu sách", "Tên Đầu Sách", "Năm xuất bản", "Thể Loại",
+                        "Tác Giả", "Số Lượng", "Đã Mượn", "Tồn kho"}));
+        HienThiSachBangMacDinh();
+        table.setRowHeight(20);
+
+        JScrollPane tableScrollPane = new JScrollPane(table);
+        tableScrollPane.setBounds(10, 67, 766, 313);
+
+        JPanel panelCenter = new JPanel();
+        panelCenter.setBounds(0, 236, 786, 379);
+        panelCenter.setLayout(null);
+        panelCenter.add(tableScrollPane);
+
+
+        this.setJMenuBar(menuBar);
+        getContentPane().setLayout(null);
+        getContentPane().add(panelCenter);
 
         //North
         JLabel label_TenDauSach = new JLabel("Tên Đầu Sách");
@@ -114,88 +133,59 @@ public class QLSachView extends JFrame {
         textField_TenDauSachTimKiem.setFont(font);
 
         btnTim = new JButton("Tìm");
-        btnTim.addActionListener(action);
+        btnTim.setFont(new Font("Tahoma", Font.PLAIN, 13));
+        btnTim.addActionListener(ac);
 
         btnHuyTim = new JButton("Huỷ Tìm");
-        btnHuyTim.addActionListener(action);
+        btnHuyTim.setFont(new Font("Tahoma", Font.PLAIN, 13));
+        btnHuyTim.addActionListener(ac);
 
         JPanel panelNorth = new JPanel();
+        panelNorth.setBounds(10, -2, 766, 58);
+        panelCenter.add(panelNorth);
         panelNorth.setLayout(new FlowLayout(FlowLayout.LEFT, 20, 20));
         panelNorth.add(label_TenDauSach);
         panelNorth.add(textField_TenDauSachTimKiem);
+        panelNorth.setBorder(new LineBorder(Color.GRAY, 1));
 
         panelNorth.add(btnTim);
         panelNorth.add(btnHuyTim);
-        // center
-        table = new JTable();
-        table.setFont(new Font("Tahoma", Font.PLAIN, 16));
-        table.setModel(new DefaultTableModel(
-                new Object[][]{},
-                new String[]{"Mã Đầu sách", "Tên Đầu Sách", "Năm xuất bản", "Thể Loại",
-                        "Tác Giả", "Số Lượng", "Đã Mượn", "Tồn kho"}));
-
-        HienThiSinhVienBangMacDinh();
-        table.setRowHeight(20);
-
-        JScrollPane tableScrollPane = new JScrollPane(table);
-        JPanel panelCenter = new JPanel();
-        panelCenter.setLayout(new BoxLayout(panelCenter, BoxLayout.Y_AXIS));
-        panelCenter.add(tableScrollPane);
-
-        //South
-        JLabel jLabelMaDauSach = new JLabel("Mã Đầu sách");
-        jLabelMaDauSach.setFont(font);
-        JLabel jLabelTenDauSach = new JLabel("Tên Đầu Sách");
-        jLabelTenDauSach.setFont(font);
-        JLabel jLabelNamXuatBan = new JLabel("Năm xuất bản");
-        jLabelNamXuatBan.setFont(font);
-        JLabel jLabelTacGia = new JLabel("Tác Giả");
-        jLabelTacGia.setFont(font);
         JLabel jLabelSoLuong = new JLabel("Số Lượng");
+        jLabelSoLuong.setBounds(383, 23, 67, 18);
         jLabelSoLuong.setFont(font);
-
-        textField_MaSach = new JTextField(10);
-        textField_MaSach.setFont(font);
-        textField_TenDauSach = new JTextField(10);
-        textField_TenDauSach.setFont(font);
-        textField_NamXuatBan = new JTextField(10);
-        textField_NamXuatBan.setFont(font);
-        textField_TacGia = new JTextField(10);
-        textField_TacGia.setFont(font);
         textFieldSoLuong = new JTextField(10);
+        textFieldSoLuong.setBounds(509, 20, 197, 24);
         textFieldSoLuong.setFont(font);
-
-
-        JPanel panelCenterBottom = new JPanel();
-        panelCenterBottom.setLayout(new GridLayout(2, 4));
-        panelCenterBottom.add(jLabelMaDauSach);
-        panelCenterBottom.add(textField_MaSach);
-        panelCenterBottom.add(jLabelTenDauSach);
-        panelCenterBottom.add(textField_TenDauSach);
-        panelCenterBottom.add(jLabelNamXuatBan);
-        panelCenterBottom.add(textField_NamXuatBan);
-        panelCenterBottom.add(jLabelTacGia);
-        panelCenterBottom.add(textField_TacGia);
-        panelCenter.add(panelCenterBottom, BorderLayout.SOUTH);
 
         //bottom
 
         JButton btnXoa = new JButton("Xoá");
-        btnXoa.addActionListener(action);
+        btnXoa.setFont(new Font("Tahoma", Font.PLAIN, 13));
+        btnXoa.setBounds(124, 164, 76, 23);
+        btnXoa.addActionListener(ac);
 
         JButton btnCapNhat = new JButton("Cập Nhật");
-        btnCapNhat.addActionListener(action);
+        btnCapNhat.setFont(new Font("Tahoma", Font.PLAIN, 13));
+        btnCapNhat.addActionListener(ac);
+
+        btnCapNhat.setBounds(319, 164, 106, 23);
 
         JButton btnLuu = new JButton("Lưu");
-        btnLuu.addActionListener(action);
+        btnLuu.setFont(new Font("Tahoma", Font.PLAIN, 13));
+        btnLuu.setBounds(535, 163, 83, 23);
+        btnLuu.addActionListener(ac);
 
         JLabel jLabeTheLoai = new JLabel("Thể Loại");
+        jLabeTheLoai.setBounds(20, 23, 59, 18);
         jLabeTheLoai.setFont(font);
         textField_TheLoai = new JTextField(10);
+        textField_TheLoai.setBounds(124, 20, 197, 24);
         textField_TheLoai.setFont(font);
 
-        Panel panelSouth = new Panel();
-        panelSouth.setLayout(new FlowLayout(FlowLayout.LEFT, 20, 20));
+        JPanel panelSouth = new JPanel();
+        panelSouth.setBounds(10, 10, 766, 208);
+        getContentPane().add(panelSouth);
+        panelSouth.setLayout(null);
         panelSouth.add(jLabeTheLoai);
         panelSouth.add(textField_TheLoai);
         panelSouth.add(btnXoa);
@@ -203,14 +193,51 @@ public class QLSachView extends JFrame {
         panelSouth.add(btnLuu);
         panelSouth.add(jLabelSoLuong);
         panelSouth.add(textFieldSoLuong);
+        panelSouth.setBorder(new LineBorder(Color.GRAY, 1));
 
+        //South
+        JLabel jLabelMaDauSach = new JLabel("Mã Đầu sách");
+        jLabelMaDauSach.setBounds(20, 67, 106, 24);
+        panelSouth.add(jLabelMaDauSach);
+        jLabelMaDauSach.setFont(font);
 
-        this.setJMenuBar(menuBar);
-        this.setLayout(new BorderLayout());
-        this.add(panelNorth, BorderLayout.NORTH);
-        this.add(panelCenter, BorderLayout.CENTER);
-        this.add(panelSouth, BorderLayout.SOUTH);
+        textField_MaSach = new JTextField(10);
+        textField_MaSach.setBounds(124, 67, 197, 24);
+        panelSouth.add(textField_MaSach);
+        textField_MaSach.setFont(font);
+
+        JLabel jLabelTenDauSach = new JLabel("Tên Đầu Sách");
+        jLabelTenDauSach.setBounds(20, 117, 106, 24);
+        panelSouth.add(jLabelTenDauSach);
+        jLabelTenDauSach.setFont(font);
+
+        textField_TenDauSach = new JTextField(10);
+        textField_TenDauSach.setBounds(124, 117, 197, 24);
+        panelSouth.add(textField_TenDauSach);
+        textField_TenDauSach.setFont(font);
+
+        JLabel jLabelNamXuatBan = new JLabel("Năm xuất bản");
+        jLabelNamXuatBan.setBounds(383, 67, 111, 24);
+        panelSouth.add(jLabelNamXuatBan);
+        jLabelNamXuatBan.setFont(font);
+
+        JLabel jLabelTacGia = new JLabel("Tác Giả");
+        jLabelTacGia.setBounds(383, 117, 111, 24);
+        panelSouth.add(jLabelTacGia);
+        jLabelTacGia.setFont(font);
+
+        textField_NamXuatBan = new JTextField(10);
+        textField_NamXuatBan.setBounds(509, 67, 197, 24);
+
+        panelSouth.add(textField_NamXuatBan);
+        textField_NamXuatBan.setFont(font);
+        textField_TacGia = new JTextField(10);
+        textField_TacGia.setBounds(509, 117, 197, 24);
+
+        panelSouth.add(textField_TacGia);
+        textField_TacGia.setFont(font);
     }
+
 
     public void ThemSachVaoBang(Sach sach){
         DefaultTableModel model_table = (DefaultTableModel) table.getModel();
@@ -229,7 +256,7 @@ public class QLSachView extends JFrame {
         model_table.setRowCount(0); 
     }
 
-    public void HienThiSinhVienBangMacDinh() {
+    public void HienThiSachBangMacDinh() {
         XoaBang();
         ArrayList<Sach> arrayList = SachDAO.getInstance().selectAll();
         for (Sach sach : arrayList) {
@@ -326,13 +353,14 @@ public class QLSachView extends JFrame {
     }
 
     public void ThucHienHuyTim() {
-        HienThiSinhVienBangMacDinh();
+        HienThiSachBangMacDinh();
     }
 
     public void ThoatKhoiChuongTrinh() {
         int luaChon = JOptionPane.showConfirmDialog(this, "thoải khỏi chương trình? ");
         if(luaChon == JOptionPane.YES_OPTION){
-            System.exit(0);
+            this.dispose();
+            new FuntionLogin();
         }
     }
 

@@ -1,4 +1,4 @@
-package ReadsController;
+package Controller;
 
 import ReadersView.PhieuDkyView;
 

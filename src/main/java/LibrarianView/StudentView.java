@@ -1,10 +1,12 @@
 package LibrarianView;
 
-import LibrarianController.Studentcontroller;
+import Controller.Studentcontroller;
+import LoginRegister.FuntionLogin;
 import dao.StudentDAO;
 import model.Student;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -16,7 +18,6 @@ public class StudentView extends JFrame {
     public JTextField textField_ID, textField_HoVaTen, textField_Gmail, textField_DiaChi, textField_SDT;
     public JComboBox comboBox_queQuan;
     public JButton btnHuyTim, btnTim;
-    public JComboBox<String> dateComboBox;
 
     public StudentView() {
         this.inti();
@@ -29,17 +30,17 @@ public class StudentView extends JFrame {
         this.setSize(800, 600);
         this.setLocationRelativeTo(null);
 
-        ActionListener action = new Studentcontroller(this);
+        ActionListener ac = new Studentcontroller(this);
 
         Font font = new Font("Arial", Font.PLAIN, 15);
         // jMenu
         JMenuBar menuBar = new JMenuBar();
         JMenu jMenuFile = new JMenu("File");
-        jMenuFile.addActionListener(action);
+
         jMenuFile.setFont(font);
 
         JMenuItem jMenuItemExit = new JMenuItem("Exit");
-        jMenuItemExit.addActionListener(action);
+
         jMenuItemExit.setFont(font);
         jMenuFile.addSeparator();
         jMenuFile.add(jMenuItemExit);
@@ -50,7 +51,8 @@ public class StudentView extends JFrame {
 
         JMenuItem sachItem = new JMenuItem("Quản Lý Sách");
         sachItem.setFont(font);
-        sachItem.addActionListener(action);
+        sachItem.addActionListener(ac);
+
         jMenuItemSach.add(sachItem);
 
         JMenuItem jMenuItemDocGia = new JMenu("Độc Giả");
@@ -58,7 +60,8 @@ public class StudentView extends JFrame {
 
         JMenuItem docGiaItem = new JMenuItem("Quản Lý Độc Giả");
         docGiaItem.setFont(font);
-        docGiaItem.addActionListener(action);
+        docGiaItem.addActionListener(ac);
+
         jMenuItemDocGia.add(docGiaItem);
 
         JMenuItem jMenuItemMuonTra = new JMenu("Mượn Trả");
@@ -66,7 +69,8 @@ public class StudentView extends JFrame {
 
         JMenuItem muonTraItem = new JMenuItem("Quản Lý Mượn Trả");
         muonTraItem.setFont(font);
-        muonTraItem.addActionListener(action);
+        muonTraItem.addActionListener(ac);
+
         jMenuItemMuonTra.add(muonTraItem);
 
         JMenuItem jMenuItemTrangThai = new JMenu("Thống kê");
@@ -74,21 +78,23 @@ public class StudentView extends JFrame {
 
         JMenuItem trangThaiSach = new JMenuItem("Sách");
         trangThaiSach.setFont(font);
-        trangThaiSach.addActionListener(action);
-        jMenuItemTrangThai.add(trangThaiSach);
+        trangThaiSach.addActionListener(ac);
 
+        jMenuItemTrangThai.add(trangThaiSach);
         JSeparator separator = new JSeparator();
 
         JMenuItem trangThaiUser = new JMenuItem("Độc Giả");
         trangThaiUser.setFont(font);
-        trangThaiUser.addActionListener(action);
+        trangThaiUser.addActionListener(ac);
+
         jMenuItemTrangThai.add(trangThaiUser);
 
         jMenuItemTrangThai.add(separator);
 
         JMenuItem trangThaiMuonTra = new JMenuItem("Mượn Trả");
         trangThaiMuonTra.setFont(font);
-        trangThaiMuonTra.addActionListener(action);
+        trangThaiMuonTra.addActionListener(ac);
+
         jMenuItemTrangThai.add(trangThaiMuonTra);
 
         // Điều chỉnh khoảng cách giữa các menu item
@@ -110,23 +116,34 @@ public class StudentView extends JFrame {
 
         //North
         JLabel label_TenSinhVien = new JLabel("Tên Sinh Viên");
+        label_TenSinhVien.setBounds(20, 23, 93, 18);
         label_TenSinhVien.setFont(font);
 
         textField_TenSinhVien_timKiem = new JTextField(15);
+        textField_TenSinhVien_timKiem.setBounds(133, 20, 186, 24);
         textField_TenSinhVien_timKiem.setFont(font);
 
         btnTim = new JButton("Tìm");
-        btnTim.addActionListener(action);
+        btnTim.setFont(new Font("Tahoma", Font.PLAIN, 13));
+        btnTim.setBounds(339, 20, 67, 23);
+        btnTim.addActionListener(ac);
+
 
         btnHuyTim = new JButton("Huỷ Tìm");
-        btnHuyTim.addActionListener(action);
+        btnHuyTim.setFont(new Font("Tahoma", Font.PLAIN, 13));
+        btnHuyTim.addActionListener(ac);
+
+        btnHuyTim.setBounds(457, 22, 93, 23);
+
 
         JPanel panelNorth = new JPanel();
-        panelNorth.setLayout(new FlowLayout(FlowLayout.LEFT, 20, 20));
+        panelNorth.setBounds(10, 178, 766, 52);
+        panelNorth.setLayout(null);
         panelNorth.add(label_TenSinhVien);
         panelNorth.add(textField_TenSinhVien_timKiem);
         panelNorth.add(btnTim);
         panelNorth.add(btnHuyTim);
+        panelNorth.setBorder(new LineBorder(Color.GRAY, 1));
         // center
         table = new JTable();
         table.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -139,60 +156,47 @@ public class StudentView extends JFrame {
         table.setRowHeight(20);
 
         JScrollPane tableScrollPane = new JScrollPane(table);
+        tableScrollPane.setBounds(0, 0, 765, 286);
         JPanel panelCenter = new JPanel();
-        panelCenter.setLayout(new BoxLayout(panelCenter, BoxLayout.Y_AXIS));
+        panelCenter.setBounds(10, 241, 776, 287);
+        panelCenter.setLayout(null);
         panelCenter.add(tableScrollPane);
 
-        //South
-        JLabel jLabelMaSinhVien = new JLabel("Mã Mượn");
-        jLabelMaSinhVien.setFont(font);
-        JLabel jLabelHoTen = new JLabel("Họ Tên");
-        jLabelHoTen.setFont(font);
-        JLabel jLabelDiaChi = new JLabel("Địa Chỉ");
-        jLabelDiaChi.setFont(font);
-        JLabel jLabeSDT = new JLabel("Số Điện Thoại");
-        jLabeSDT.setFont(font);
+        this.setJMenuBar(menuBar);
+        getContentPane().setLayout(null);
+        getContentPane().add(panelNorth);
+        getContentPane().add(panelCenter);
         JLabel jLabelGmail = new JLabel("Gmail");
+        jLabelGmail.setBounds(36, 52, 39, 18);
         jLabelGmail.setFont(font);
 
-        textField_ID = new JTextField(10);
-        textField_ID.setFont(font);
-        textField_HoVaTen = new JTextField(10);
-        textField_HoVaTen.setFont(font);
-
-        textField_DiaChi = new JTextField(10);
-        textField_DiaChi.setFont(font);
-
-        textField_SDT = new JTextField(10);
-        textField_SDT.setFont(font);
-
         textField_Gmail = new JTextField(10);
+        textField_Gmail.setBounds(120, 49, 126, 24);
         textField_Gmail.setFont(font);
-
-        JPanel panelCenterBottom = new JPanel();
-        panelCenterBottom.setLayout(new GridLayout(2, 4));
-        panelCenterBottom.add(jLabelMaSinhVien);
-        panelCenterBottom.add(textField_ID);
-        panelCenterBottom.add(jLabelHoTen);
-        panelCenterBottom.add(textField_HoVaTen);
-        panelCenterBottom.add(jLabeSDT);
-        panelCenterBottom.add(textField_SDT);
-        panelCenterBottom.add(jLabelDiaChi);
-        panelCenterBottom.add(textField_DiaChi);
-        panelCenter.add(panelCenterBottom, BorderLayout.SOUTH);
 
         //bottom
         JButton btnXoa = new JButton("Xoá");
-        btnXoa.addActionListener(action);
+        btnXoa.setFont(new Font("Tahoma", Font.PLAIN, 13));
+        btnXoa.setBounds(493, 128, 66, 23);
+        btnXoa.addActionListener(ac);
+
 
         JButton btnCapNhat = new JButton("Cập Nhật");
-        btnCapNhat.addActionListener(action);
+        btnCapNhat.setFont(new Font("Tahoma", Font.PLAIN, 13));
+        btnCapNhat.setBounds(354, 128, 93, 23);
+        btnCapNhat.addActionListener(ac);
+
 
         JButton btnLuu = new JButton("Lưu");
-        btnLuu.addActionListener(action);
+        btnLuu.setFont(new Font("Tahoma", Font.PLAIN, 13));
+        btnLuu.setBounds(613, 128, 66, 23);
+        btnLuu.addActionListener(ac);
 
-        Panel panelSouth = new Panel();
-        panelSouth.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 20));
+        JPanel panelSouth = new JPanel();
+        panelSouth.setBounds(10, 10, 766, 162);
+        getContentPane().add(panelSouth);
+        panelSouth.setLayout(null);
+        panelSouth.setBorder(new LineBorder(Color.GRAY, 1));
 
         panelSouth.add(jLabelGmail);
         panelSouth.add(textField_Gmail);
@@ -200,11 +204,42 @@ public class StudentView extends JFrame {
         panelSouth.add(btnCapNhat);
         panelSouth.add(btnLuu);
 
-        this.setJMenuBar(menuBar);
-        this.setLayout(new BorderLayout());
-        this.add(panelNorth, BorderLayout.NORTH);
-        this.add(panelCenter, BorderLayout.CENTER);
-        this.add(panelSouth, BorderLayout.SOUTH);
+        //South
+        JLabel jLabelMaSinhVien = new JLabel("Mã Mượn");
+        jLabelMaSinhVien.setBounds(36, 93, 66, 24);
+        panelSouth.add(jLabelMaSinhVien);
+        jLabelMaSinhVien.setFont(font);
+        JLabel jLabelHoTen = new JLabel("Họ Tên");
+        jLabelHoTen.setBounds(36, 17, 66, 24);
+        panelSouth.add(jLabelHoTen);
+        jLabelHoTen.setFont(font);
+        JLabel jLabeSDT = new JLabel("Số Điện Thoại");
+        jLabeSDT.setBounds(354, 17, 114, 24);
+        panelSouth.add(jLabeSDT);
+        jLabeSDT.setFont(font);
+        JLabel jLabelDiaChi = new JLabel("Địa Chỉ");
+        jLabelDiaChi.setBounds(375, 49, 93, 24);
+        panelSouth.add(jLabelDiaChi);
+        jLabelDiaChi.setFont(font);
+
+        textField_ID = new JTextField(10);
+        textField_ID.setBounds(120, 93, 126, 24);
+        panelSouth.add(textField_ID);
+        textField_ID.setFont(font);
+        textField_HoVaTen = new JTextField(10);
+        textField_HoVaTen.setBounds(120, 14, 126, 24);
+        panelSouth.add(textField_HoVaTen);
+        textField_HoVaTen.setFont(font);
+
+        textField_SDT = new JTextField(10);
+        textField_SDT.setBounds(493, 17, 135, 24);
+        panelSouth.add(textField_SDT);
+        textField_SDT.setFont(font);
+
+        textField_DiaChi = new JTextField(10);
+        textField_DiaChi.setBounds(494, 49, 135, 24);
+        panelSouth.add(textField_DiaChi);
+        textField_DiaChi.setFont(font);
     }
 
     public void ThemSVvaoBang(Student student){
@@ -317,7 +352,8 @@ public class StudentView extends JFrame {
     public void ThoatKhoiChuongTrinh() {
         int luaChon = JOptionPane.showConfirmDialog(this, "thoải khỏi chương trình? ");
         if(luaChon == JOptionPane.YES_OPTION){
-            System.exit(0);
+            this.dispose();
+            new FuntionLogin();
         }
     }
 

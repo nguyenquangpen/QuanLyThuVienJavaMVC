@@ -1,4 +1,4 @@
-package LibrarianController;
+package Controller;
 
 import LibrarianView.StudentView;
 

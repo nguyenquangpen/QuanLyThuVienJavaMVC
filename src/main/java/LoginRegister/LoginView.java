@@ -1,7 +1,8 @@
 package LoginRegister;
 
-import LibrarianController.QLLoginController;
+import Controller.QLLoginController;
 import LibrarianView.QLSachView;
+import ReadersView.ReaderBookView;
 import dao.UserDAO;
 import model.User;
 
@@ -89,7 +90,7 @@ public class LoginView extends JFrame {
         if(user.getUsername().equals(username) && user.getPassword().equals(password)){
             JOptionPane.showMessageDialog(null, "Đăng nhập Thành công");
             this.dispose();
-            new QLSachView();
+            new ReaderBookView();
         }else {
             JOptionPane.showMessageDialog(null, "không thể đăng nhập");
         }

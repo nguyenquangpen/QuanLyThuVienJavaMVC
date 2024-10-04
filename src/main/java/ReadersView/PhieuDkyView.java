@@ -1,6 +1,6 @@
 package ReadersView;
 
-import ReadsController.PhieuDkyController;
+import Controller.PhieuDkyController;
 import dao.StudentDAO;
 import model.Student;
 

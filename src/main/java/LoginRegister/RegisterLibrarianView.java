@@ -1,6 +1,6 @@
 package LoginRegister;
 
-import LibrarianController.LibrarianRegisterController;
+import Controller.LibrarianRegisterController;
 import dao.LibrarianDao;
 import model.Librarian;
 

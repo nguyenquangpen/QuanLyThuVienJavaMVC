@@ -1,6 +1,6 @@
 package LoginRegister;
 
-import LibrarianController.FuntionController;
+import Controller.FuntionController;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -12,8 +12,8 @@ public class FuntionLogin extends JFrame {
     public JPanel contentPane;
 
     public FuntionLogin() {
-        this.setVisible(true);
         this.init();
+        this.setVisible(true);
     }
 
     private void init() {
