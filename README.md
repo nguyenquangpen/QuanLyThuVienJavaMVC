@@ -1,4 +1,4 @@
-# library_management_Project
+# Quản lý thư viện theo mô hình MVC sử dụng SQL
 
 - Tên đề tài : Quản Lý Thư Viện.
 - Ngôn ngữ backend:
@@ -21,7 +21,9 @@
 
 4, cài intellij idea:[intellij idea](https://www.jetbrains.com/idea/download/?section=windows)
 
-5, trong Test: chạy LoginView trước
+5, ghi file QLTV.sql vào mysql và chỉnh lại đường dẫn ở DaoInterface
+
+6, chạy chương trình trong gói Wed (QLTVview)
 
 # Các chức năng chính của chương trình
 

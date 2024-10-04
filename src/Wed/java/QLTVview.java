@@ -3,15 +3,8 @@
 //import View.QLSachView;
 
 import View.LoginView;
-import View.QLSachView;
-import View.StatisticalBookView;
-import View.StudentView;
 
-import javax.swing.*;
-import java.sql.Connection;
-import java.sql.Statement;
-
-class Test{
+class QLTVview {
     public static void main(String [] args){
 //        try {
 //            Connection connection = JDBC.getConnection();
@@ -34,7 +27,7 @@ class Test{
 //        } catch (Exception e) {
 //            throw new RuntimeException(e);
 //        }
-        new StatisticalBookView();
+        new LoginView();
     }
 }
 
