@@ -1,5 +1,4 @@
-# Quản lý thư viện theo mô hình MVC sử dụng SQL
-
+# Quản lý thư viện theo mô hình MVC JavaSwing
 - Tên đề tài : Quản Lý Thư Viện.
 - Ngôn ngữ backend:
 - Cơ sở dữ liệu: MySQL.
