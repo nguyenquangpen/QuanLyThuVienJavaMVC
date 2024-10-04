@@ -23,7 +23,7 @@
 
 5, ghi file QLTV.sql vào mysql và chỉnh lại đường dẫn ở DaoInterface
 
-6, chạy chương trình trong gói Wed (QLTVview)
+6, chạy chương trình trong gói App (AppConfig)
 
 # Các chức năng chính của chương trình
 

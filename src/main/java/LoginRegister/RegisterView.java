@@ -1,6 +1,6 @@
-package View;
+package LoginRegister;
 
-import Controller.QLRegisterController;
+import LibrarianController.QLRegisterController;
 import dao.UserDAO;
 import model.User;
 

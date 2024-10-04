@@ -1,8 +1,7 @@
-package Controller;
+package LibrarianController;
 
-import View.LoginView;
+import LoginRegister.LoginView;
 
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 

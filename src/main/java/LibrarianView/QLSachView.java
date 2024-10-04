@@ -1,6 +1,6 @@
-package View;
+package LibrarianView;
 
-import Controller.QLSachController;
+import LibrarianController.QLSachController;
 import dao.SachDAO;
 import model.*;
 
@@ -8,7 +8,6 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.io.*;
 import java.util.ArrayList;
 
 public class QLSachView extends JFrame {
@@ -124,8 +123,7 @@ public class QLSachView extends JFrame {
         panelNorth.setLayout(new FlowLayout(FlowLayout.LEFT, 20, 20));
         panelNorth.add(label_TenDauSach);
         panelNorth.add(textField_TenDauSachTimKiem);
-//        panelNorth.add(label_maDauSAch);
-//        panelNorth.add(textField_MaDauSach_TimKiem);
+
         panelNorth.add(btnTim);
         panelNorth.add(btnHuyTim);
         // center
@@ -248,7 +246,7 @@ public class QLSachView extends JFrame {
             SachDAO.getInstance().update(sach);
             for(int i = 0; i < table.getRowCount(); i++){
                 String str =model_table.getValueAt(i, 0).toString();
-                if(str.equals(sach.getId() + "")){
+                if(str.equals(sach.getId())){
                     model_table.setValueAt(sach.getId(), i, 0);
                     model_table.setValueAt(sach.getTenSach(), i, 1);
                     model_table.setValueAt(sach.getNamXuatBan()+"", i, 2);
@@ -266,7 +264,7 @@ public class QLSachView extends JFrame {
         int namXuatBan = Integer.parseInt(textField_NamXuatBan.getText());
         String tacGia = textField_TacGia.getText();
         String theLoai = textField_TheLoai.getText();
-        int SoLuong = Integer.valueOf(textFieldSoLuong.getText());
+        int SoLuong = Integer.parseInt(textFieldSoLuong.getText());
         Sach sach = new Sach(maSachId, tenDauSach, namXuatBan, theLoai, tacGia, SoLuong);
         this.ThemHoacCapNhatSach(sach);
     }
@@ -280,10 +278,10 @@ public class QLSachView extends JFrame {
         }
         String MaSachID = model_table.getValueAt(i_row, 0).toString();
         String TenDauSach = (String) model_table.getValueAt(i_row, 1);
-        int NamXB = Integer.valueOf(model_table.getValueAt(i_row, 2).toString());
+        int NamXB = Integer.parseInt(model_table.getValueAt(i_row, 2).toString());
         String TheLoai = (String) model_table.getValueAt(i_row, 3);
         String TacGia = (String) model_table.getValueAt(i_row, 4);
-        int SoLuong = Integer.valueOf(model_table.getValueAt(i_row, 5).toString());
+        int SoLuong = Integer.parseInt(model_table.getValueAt(i_row, 5).toString());
         Sach sach = new Sach(MaSachID, TenDauSach, NamXB, TheLoai, TacGia, SoLuong);
         return sach;
     }
@@ -291,7 +289,7 @@ public class QLSachView extends JFrame {
 
     public void HienThiSinhVienDaChon() {
         Sach sach = getSachDaChon();
-        this.textField_MaSach.setText(sach.getId()+"");
+        this.textField_MaSach.setText(sach.getId());
         this.textField_TacGia.setText(sach.getTenTacGia());
         this.textField_NamXuatBan.setText(sach.getNamXuatBan()+"");
         this.textField_TheLoai.setText(sach.getTheLoai());
@@ -317,9 +315,13 @@ public class QLSachView extends JFrame {
     public void ThucHienTim() {
         String tenDauSach = textField_TenDauSachTimKiem.getText();
         XoaBang();
-        if(!tenDauSach.isEmpty()){
-            Sach sach = SachDAO.getInstance().selectByCondition(tenDauSach);
-            ThemSachVaoBang(sach);
+        if (!tenDauSach.isEmpty()) {
+            ArrayList<Sach> sach = SachDAO.getInstance().selectByCondition(tenDauSach);
+            if (sach != null && !sach.isEmpty()) {
+                for (Sach book : sach) {
+                    ThemSachVaoBang(book);
+                }
+            }
         }
     }
 

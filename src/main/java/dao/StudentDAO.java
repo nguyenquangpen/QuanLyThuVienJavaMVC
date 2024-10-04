@@ -146,8 +146,9 @@ public class StudentDAO implements DAOInterface<Student> {
     }
 
     @Override
-    public Student selectByCondition(String condition) {
-        Student ketQua = null;
+    public ArrayList<Student> selectByCondition(String condition) {
+        Student student = null;
+        ArrayList<Student> arrKetQua = new ArrayList<>();
         try {
             Connection connection = JDBCUtil.getConnection();
 
@@ -156,19 +157,25 @@ public class StudentDAO implements DAOInterface<Student> {
             st.setString(1, condition);
 
             ResultSet rs = st.executeQuery();
-            if (rs.next()) {
+            while (rs.next()) {
                 String StudentID = rs.getString("StudentID");
                 String StudentName = rs.getString("StudentName");
                 String StudentLocation = rs.getString("StudentLocation");
                 int StudentSDT = rs.getInt("StudentSDT");
                 String StudentGmail = rs.getString("StudentGmail");
-                ketQua = new Student(StudentID, StudentName, StudentLocation, StudentSDT, StudentGmail);
+                student = new Student(StudentID, StudentName, StudentLocation, StudentSDT, StudentGmail);
+                arrKetQua.add(student);
             }
 
             JDBCUtil.close(connection);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return ketQua;
+        return arrKetQua;
+    }
+
+    @Override
+    public Student selectByName(String name) {
+        return null;
     }
 }

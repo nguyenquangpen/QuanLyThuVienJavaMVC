@@ -7,6 +7,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+
+import model.Student;
 import org.database.JDBCUtil;
 
 public class SachDAO implements DAOInterface<Sach> {
@@ -146,8 +148,9 @@ public class SachDAO implements DAOInterface<Sach> {
 
 
     @Override
-    public Sach selectByCondition(String condition) {
-        Sach ketQua = null;
+    public ArrayList<Sach> selectByCondition(String condition) {
+        Sach sach = null;
+        ArrayList<Sach> arrKetqua = new ArrayList<>();
         try {
             Connection connection = JDBCUtil.getConnection();
 
@@ -156,20 +159,26 @@ public class SachDAO implements DAOInterface<Sach> {
             st.setString(1, condition);
 
             ResultSet rs = st.executeQuery();
-            if (rs.next()) {
+            while (rs.next()) {
                 String MaSachId = rs.getString("MaSachId");
                 String TenSach = rs.getString("TenSach");
                 int NamXB = rs.getInt("NamXB");
                 String TheLoai = rs.getString("TheLoai");
                 String TacGia = rs.getString("TacGia");
                 int SoLuong = rs.getInt("SoLuong");
-                ketQua = new Sach(MaSachId, TenSach, NamXB, TheLoai, TacGia, SoLuong);
+                sach = new Sach(MaSachId, TenSach, NamXB, TheLoai, TacGia, SoLuong);
+                arrKetqua.add(sach);
             }
 
             JDBCUtil.close(connection);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return ketQua;
+        return arrKetqua;
+    }
+
+    @Override
+    public Sach selectByName(String name) {
+        return null;
     }
 }

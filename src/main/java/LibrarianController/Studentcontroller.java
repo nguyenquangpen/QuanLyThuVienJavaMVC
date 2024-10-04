@@ -1,14 +1,15 @@
-package Controller;
+package LibrarianController;
 
-import View.QLSachView;
+import LibrarianView.StudentView;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class QLSachController implements ActionListener {
-    private QLSachView view;
+public class Studentcontroller implements ActionListener {
+    private StudentView view;
 
-    public QLSachController(QLSachView view) {
+    public Studentcontroller(StudentView view) {
         this.view = view;
     }
 
@@ -18,11 +19,11 @@ public class QLSachController implements ActionListener {
         JOptionPane.showMessageDialog(view, "ban vua nhan vao " + cm);
         if (cm.equals("Lưu")) {
             try {
-                this.view.ThucHienThemSach();
-            }catch(Exception ex){
+                this.view.ThucHienThemSV();
+            } catch (Exception ex) {
                 ex.printStackTrace();
             }
-        } else if (cm.equals("Cập Nhật")) {
+        }else if (cm.equals("Cập Nhật")) {
             this.view.HienThiSinhVienDaChon();
         } else if (cm.equals("Xoá")) {
             this.view.ThucHienXoa();
@@ -32,8 +33,8 @@ public class QLSachController implements ActionListener {
             this.view.ThucHienHuyTim();
         } else if (cm.equals("Exit")) {
             this.view.ThoatKhoiChuongTrinh();
-        } else if (cm.equals("Quản Lý Độc Giả")) {
-            this.view.HienThiDocGia();
+        } else if (cm.equals("Quản Lý Sách")) {
+            this.view.HienThiSlideSach();
         }
     }
 }

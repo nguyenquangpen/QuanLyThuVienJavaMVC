@@ -1,9 +1,7 @@
-package View;
+package LibrarianView;
 
-import Controller.Studentcontroller;
-import dao.SachDAO;
+import LibrarianController.Studentcontroller;
 import dao.StudentDAO;
-import model.Sach;
 import model.Student;
 
 import javax.swing.*;
@@ -242,7 +240,7 @@ public class StudentView extends JFrame {
             StudentDAO.getInstance().update(student);
             for(int i = 0; i < table.getRowCount(); i++){
                 String str =model_table.getValueAt(i, 0).toString();
-                if(str.equals(student.getId() + "")){
+                if(str.equals(student.getId())){
                     model_table.setValueAt(student.getId(), i, 0);
                     model_table.setValueAt(student.getName(), i, 1);
                     model_table.setValueAt(student.getLocation(), i, 2);
@@ -269,7 +267,7 @@ public class StudentView extends JFrame {
         String StudentID = model_table.getValueAt(i_row, 0)+"";
         String StudentName = (String) model_table.getValueAt(i_row, 1);
         String StudentLocation = (String) model_table.getValueAt(i_row, 2);
-        int StudentSDT = Integer.valueOf(model_table.getValueAt(i_row, 3)+"");
+        int StudentSDT = Integer.parseInt(model_table.getValueAt(i_row, 3)+"");
         String studentGmail = (String) model_table.getValueAt(i_row, 4);
         Student student = new Student(StudentID, StudentName, StudentLocation, StudentSDT, studentGmail);
         return student;
@@ -303,8 +301,12 @@ public class StudentView extends JFrame {
         String TenSinhVien = textField_TenSinhVien_timKiem.getText();
         XoaBang();
         if(!TenSinhVien.isEmpty()){
-            Student student = StudentDAO.getInstance().selectByCondition(TenSinhVien);
-            ThemSVvaoBang(student);
+            ArrayList<Student> students = StudentDAO.getInstance().selectByCondition(TenSinhVien);
+            if (students != null && !students.isEmpty()) {
+                for (Student HS : students) {
+                    ThemSVvaoBang(HS);
+                }
+            }
         }
     }
 

@@ -1,0 +1,25 @@
+package LibrarianController;
+
+import LoginRegister.FuntionLogin;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class FuntionController implements ActionListener {
+    private FuntionLogin funtionLogin;
+    public FuntionController(FuntionLogin funtionLogin) {
+        this.funtionLogin = funtionLogin;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        String cm = e.getActionCommand();
+        if(cm.equals("Librarian")){
+            this.funtionLogin.ThuchienChuyenThuThu();
+        } else if (cm.equals("Student")) {
+            this.funtionLogin.ThuchienChuyenDocGia();
+        }
+    }
+
+}

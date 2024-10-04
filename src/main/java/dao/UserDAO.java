@@ -1,12 +1,13 @@
 package dao;
 
+import model.Sach;
+import model.Student;
 import model.User;
 import org.database.JDBCUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.ArrayList;
 
 public class UserDAO implements DAOInterface<User> {
@@ -82,15 +83,20 @@ public class UserDAO implements DAOInterface<User> {
     public User selectById(User t) {
         return null;
     }
+
     @Override
-    public User selectByCondition(String condition) {
+    public ArrayList<User> selectByCondition(String condition) {
+        return null;
+    }
+    @Override
+    public User selectByName(String name) {
         User user = null;
         try {
             Connection connection = JDBCUtil.getConnection();
 
             String sql = "SELECT * FROM User WHERE username = ?";
             PreparedStatement st = connection.prepareStatement(sql);
-            st.setString(1, condition);
+            st.setString(1, name);
 
             ResultSet rs = st.executeQuery();
 

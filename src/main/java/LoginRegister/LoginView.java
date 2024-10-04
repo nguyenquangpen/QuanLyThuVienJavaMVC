@@ -1,6 +1,7 @@
-package View;
+package LoginRegister;
 
-import Controller.QLLoginController;
+import LibrarianController.QLLoginController;
+import LibrarianView.QLSachView;
 import dao.UserDAO;
 import model.User;
 
@@ -9,7 +10,6 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Arrays;
 
 public class LoginView extends JFrame {
     public JTextField jtfUsername;
@@ -85,13 +85,13 @@ public class LoginView extends JFrame {
     public void ThucHienDangNhap() {
         String username = jtfUsername.getText();
         String password = new String(jtfPassword.getPassword());
-        User user = UserDAO.getInstance().selectByCondition(username);
+        User user = UserDAO.getInstance().selectByName(username);
         if(user.getUsername().equals(username) && user.getPassword().equals(password)){
             JOptionPane.showMessageDialog(null, "Đăng nhập Thành công");
             this.dispose();
             new QLSachView();
         }else {
-            JOptionPane.showMessageDialog(null, "Hãy thực hiện lại");
+            JOptionPane.showMessageDialog(null, "không thể đăng nhập");
         }
     }
 

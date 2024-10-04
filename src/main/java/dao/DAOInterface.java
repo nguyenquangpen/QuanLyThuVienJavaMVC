@@ -1,4 +1,5 @@
 package dao;
+
 import java.util.ArrayList;
 
 public interface DAOInterface<T> {
@@ -13,5 +14,7 @@ public interface DAOInterface<T> {
 
     public T selectById(T t);
 
-    public T selectByCondition(String condition);
+    public ArrayList<T> selectByCondition(String condition);
+
+    public T selectByName(String name);
 }
