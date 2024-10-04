@@ -15,9 +15,9 @@ public class FuntionController implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         String cm = e.getActionCommand();
-        if(cm.equals("Librarian")){
+        if(cm.equals("Thủ Thư")){
             this.funtionLogin.ThuchienChuyenThuThu();
-        } else if (cm.equals("Student")) {
+        } else if (cm.equals("Độc Giả")) {
             this.funtionLogin.ThuchienChuyenDocGia();
         }
     }

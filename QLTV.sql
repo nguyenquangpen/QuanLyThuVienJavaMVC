@@ -44,6 +44,7 @@ CREATE TABLE LibrarianLogin (
 
 select * from LibrarianLogin;
 select* from QLSach;
+select * from student;
 select * from LibrarianManager;
 select * from LibrarianLogin;
 select * from QLSach where TenSach = "DSA";

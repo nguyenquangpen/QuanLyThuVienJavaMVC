@@ -31,19 +31,19 @@ public class FuntionLogin extends JFrame {
         setContentPane(contentPane);
         contentPane.setLayout(null);
 
-        JButton btnNewButton = new JButton("Librarian");
+        JButton btnNewButton = new JButton("Thủ Thư");
         btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 14));
         btnNewButton.setBounds(53, 109, 119, 23);
         btnNewButton.addActionListener(ac);
         contentPane.add(btnNewButton);
 
-        JButton btnNewButton_1 = new JButton("Student");
+        JButton btnNewButton_1 = new JButton("Độc Giả");
         btnNewButton_1.setFont(new Font("Tahoma", Font.BOLD, 14));
         btnNewButton_1.setBounds(53, 165, 119, 23);
         btnNewButton_1.addActionListener(ac);
         contentPane.add(btnNewButton_1);
 
-        JLabel lblNewLabel = new JLabel("Your Profession");
+        JLabel lblNewLabel = new JLabel("Nghề Nghiệp");
         lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 20));
         lblNewLabel.setBounds(34, 36, 165, 36);
         contentPane.add(lblNewLabel);
