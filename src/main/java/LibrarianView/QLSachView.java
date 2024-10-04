@@ -313,7 +313,6 @@ public class QLSachView extends JFrame {
         return sach;
     }
 
-
     public void HienThiSinhVienDaChon() {
         Sach sach = getSachDaChon();
         this.textField_MaSach.setText(sach.getId());
@@ -341,9 +340,10 @@ public class QLSachView extends JFrame {
 
     public void ThucHienTim() {
         String tenDauSach = textField_TenDauSachTimKiem.getText();
+        String column = "TenSach";
         XoaBang();
         if (!tenDauSach.isEmpty()) {
-            ArrayList<Sach> sach = SachDAO.getInstance().selectByCondition(tenDauSach);
+            ArrayList<Sach> sach = SachDAO.getInstance().selectByCondition(tenDauSach, column);
             if (sach != null && !sach.isEmpty()) {
                 for (Sach book : sach) {
                     ThemSachVaoBang(book);

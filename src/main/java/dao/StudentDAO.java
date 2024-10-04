@@ -146,13 +146,13 @@ public class StudentDAO implements DAOInterface<Student> {
     }
 
     @Override
-    public ArrayList<Student> selectByCondition(String condition) {
+    public ArrayList<Student> selectByCondition(String condition, String column) {
         Student student = null;
         ArrayList<Student> arrKetQua = new ArrayList<>();
         try {
             Connection connection = JDBCUtil.getConnection();
 
-            String sql = "SELECT * FROM student WHERE StudentName = ?";
+            String sql = "SELECT * FROM student WHERE " + column + " = ?";;
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, condition);
 
@@ -166,7 +166,6 @@ public class StudentDAO implements DAOInterface<Student> {
                 student = new Student(StudentID, StudentName, StudentLocation, StudentSDT, StudentGmail);
                 arrKetQua.add(student);
             }
-
             JDBCUtil.close(connection);
         } catch (Exception e) {
             e.printStackTrace();

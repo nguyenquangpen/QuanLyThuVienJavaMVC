@@ -1,10 +1,19 @@
 package ReadersView;
 
+import Controller.QLReadBookController;
+import LoginRegister.FuntionLogin;
+import dao.SachDAO;
+import model.Sach;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.util.ArrayList;
+import java.awt.event.MouseEvent;
 
 
 public class ReaderBookView extends JFrame {
@@ -17,6 +26,8 @@ public class ReaderBookView extends JFrame {
     public JTextField jtfMaStudentID;
     public JTextField jtfStudentname;
     public JTextField jtfSoLuong;
+    public ButtonGroup btnGroup;
+    public JRadioButton rdbtnTenSach, rdbtnTheLoai;
 
     public ReaderBookView() {
         this.title();
@@ -25,15 +36,53 @@ public class ReaderBookView extends JFrame {
 
     private void title() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 856, 550);
+        setBounds(100, 100, 1101, 580);
         this.setLocationRelativeTo(null);
         this.setResizable(false);
         this.setTitle("Danh Muc Sach");
+
+        ActionListener ac = new QLReadBookController(this);
+
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
         setContentPane(contentPane);
         contentPane.setLayout(null);
+
+        Font font = new Font("Arial", Font.PLAIN, 15);
+        JMenuBar menuBar = new JMenuBar();
+        JMenu jMenuFile = new JMenu("File");
+        jMenuFile.setFont(font);
+
+        JMenuItem jMenuItemExit = new JMenuItem("Exit");
+        jMenuItemExit.setFont(font);
+        jMenuFile.addSeparator();
+        jMenuFile.add(jMenuItemExit);
+        jMenuItemExit.addActionListener(ac);
+
+        JMenuItem jMenuItemPhieu = new JMenu("Phiếu");
+        jMenuItemPhieu.setFont(font);
+
+        JMenuItem sachItem = new JMenuItem("Đăng Ký");
+        sachItem.setFont(font);
+        jMenuItemPhieu.add(sachItem);
+        sachItem.addActionListener(ac);
+
+        JMenuItem jMenuItemBook = new JMenu("Sách");
+        jMenuItemBook.setFont(font);
+
+        JMenuItem BookView = new JMenuItem("Đầu Sách");
+        BookView.setFont(font);
+        jMenuItemBook.add(BookView);
+
+        menuBar.add(jMenuFile);
+        menuBar.add(new JSeparator(SwingConstants.VERTICAL));
+        menuBar.add(jMenuItemPhieu);
+        menuBar.add(new JSeparator(SwingConstants.VERTICAL));
+        menuBar.add(jMenuItemBook);
+
+        this.setJMenuBar(menuBar);
+        getContentPane().setLayout(null);
 
         JPanel panel = new JPanel();
         panel.setBounds(25, 254, 236, 239);
@@ -59,8 +108,9 @@ public class ReaderBookView extends JFrame {
 
         JButton btnMuonSach = new JButton("Mượn");
         btnMuonSach.setBounds(67, 205, 89, 23);
-        panel.add(btnMuonSach);
         btnMuonSach.setFont(new Font("Tahoma", Font.PLAIN, 13));
+        btnMuonSach.addActionListener(ac);
+        panel.add(btnMuonSach);
 
         jtfDauSach = new JTextField();
         jtfDauSach.setFont(new Font("Tahoma", Font.PLAIN, 12));
@@ -103,28 +153,34 @@ public class ReaderBookView extends JFrame {
 
         JLabel lblNewLabel = new JLabel("Danh Mục Sách");
         lblNewLabel.setFont(new Font("Times New Roman", Font.BOLD, 22));
-        lblNewLabel.setBounds(262, 32, 174, 31);
+        lblNewLabel.setBounds(494, 30, 174, 31);
         contentPane.add(lblNewLabel);
 
         JPanel panel_1 = new JPanel();
-        panel_1.setBounds(271, 92, 561, 401);
+        panel_1.setBounds(271, 92, 806, 401);
         contentPane.add(panel_1);
         panel_1.setLayout(null);
         panel_1.setBorder(new LineBorder(Color.GRAY, 1));
         panel_1.setBackground(new Color(255, 255, 255));
 
-        JTable table = new JTable();
+        table = new JTable();
         table.setFont(new Font("Tahoma", Font.PLAIN, 16));
-        table.setBounds(10, 11, 541, 369);
         table.setModel(new DefaultTableModel(
                 new Object[][]{},
                 new String[]{"Mã Đầu sách", "Tên Đầu Sách", "Năm xuất bản", "Thể Loại",
-                        "Tác Giả", "Số Lượng", "Đã Mượn", "Tồn kho"}
-        ));
+                        "Tác Giả", "Số Lượng", "Đã Mượn", "Tồn kho"}));
+        HienThiSachMAcDinh();
         table.setRowHeight(20);
 
+        table.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                HienThiSach();
+            }
+        });
+
         JScrollPane scrollPane = new JScrollPane(table);
-        scrollPane.setBounds(10, 11, 541, 369);
+        scrollPane.setBounds(10, 11, 786, 369);
         panel_1.add(scrollPane);
 
 
@@ -140,15 +196,19 @@ public class ReaderBookView extends JFrame {
         lblNewLabel.setBounds(316, 30, 174, 31);
         panel_2.add(lblNewLabel_1);
 
-        JRadioButton rdbtnTenSach = new JRadioButton("Tên Sách");
+        rdbtnTenSach = new JRadioButton("Tên Sách");
         rdbtnTenSach.setFont(new Font("Tahoma", Font.PLAIN, 12));
         rdbtnTenSach.setBounds(16, 39, 81, 23);
         panel_2.add(rdbtnTenSach);
 
-        JRadioButton rdbtnTheLoai = new JRadioButton("Thể Loại");
+        rdbtnTheLoai = new JRadioButton("Thể Loại");
         rdbtnTheLoai.setFont(new Font("Tahoma", Font.PLAIN, 12));
         rdbtnTheLoai.setBounds(119, 39, 81, 23);
         panel_2.add(rdbtnTheLoai);
+
+        btnGroup = new ButtonGroup();
+        btnGroup.add(rdbtnTenSach);
+        btnGroup.add(rdbtnTheLoai);
 
         jtfTimKiem = new JTextField();
         jtfTimKiem.setFont(new Font("Tahoma", Font.PLAIN, 12));
@@ -157,6 +217,7 @@ public class ReaderBookView extends JFrame {
         jtfTimKiem.setColumns(10);
 
         JButton btnTim = new JButton("Tìm");
+        btnTim.addActionListener(ac);
 
         btnTim.setFont(new Font("Tahoma", Font.PLAIN, 13));
         btnTim.setBounds(16, 105, 89, 23);
@@ -165,7 +226,126 @@ public class ReaderBookView extends JFrame {
         JButton btnHuyTim = new JButton("Huỷ");
         btnHuyTim.setFont(new Font("Tahoma", Font.PLAIN, 13));
         btnHuyTim.setBounds(121, 105, 89, 23);
+        btnHuyTim.addActionListener(ac);
         panel_2.add(btnHuyTim);
 
+    }
+
+    public void ThemSachVaoBang(Sach sach){
+        DefaultTableModel model_table = (DefaultTableModel) table.getModel();
+        model_table.addRow(new Object[]{
+                sach.getId(),
+                sach.getTenSach(),
+                sach.getNamXuatBan(),
+                sach.getTheLoai(),
+                sach.getTenTacGia(),
+                sach.getSoLuong()
+        });
+    }
+
+    public void XoaBang(){
+        DefaultTableModel model_table = (DefaultTableModel) table.getModel();
+        model_table.setRowCount(0);
+    }
+
+    public void HienThiSachMAcDinh(){
+        XoaBang();
+        ArrayList<Sach> arrayList = SachDAO.getInstance().selectAll();
+        for (Sach sach : arrayList) {
+            ThemSachVaoBang(sach);
+        }
+    }
+
+    public Sach getSachDaChon() {
+        DefaultTableModel model_table = (DefaultTableModel) table.getModel();
+        int i_row = table.getSelectedRow();
+        if (i_row == -1) {
+            return null;
+        }
+        String TenDauSach = (String) model_table.getValueAt(i_row, 1);
+        String TacGia = (String) model_table.getValueAt(i_row, 4);
+        Sach sach = new Sach(TenDauSach, TacGia);
+        return sach;
+    }
+
+    public void HienThiSach() {
+        Sach sach = getSachDaChon();
+        if (sach != null) {
+            jtfDauSach.setText(sach.getTenSach());
+            jtfTacGia.setText(sach.getTenTacGia());
+        }
+    }
+
+    public boolean ThucHienKiemTra() {
+        Sach sach = getSachDaChon();
+        int amount;
+        try {
+            amount = Integer.parseInt(jtfSoLuong.getText());
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập số lượng hợp lệ!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+        String column = "MaSachID";
+        ArrayList<Sach> arrayList = SachDAO.getInstance().selectByCondition(sach.getId(), column);
+        for (Sach sach1 : arrayList) {
+            if (sach1.getSoLuong() < amount) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void ThucHienChoMuon() {
+        boolean status = ThucHienKiemTra();
+        if (status) {
+            JOptionPane.showMessageDialog(this, "Hoàn tất Mượn Sách!");
+            // ??
+        } else {
+            JOptionPane.showMessageDialog(this, "Quá Số Lượng");
+        }
+    }
+
+
+    public void ThucHienTim() {
+        String book = jtfTimKiem.getText();
+        String column;
+
+        if(rdbtnTenSach.isSelected()){
+            column = "TenSach";
+        }else {
+            column = "TheLoai";
+        }
+
+        XoaBang();
+
+        if (book != null && !book.trim().isEmpty()) {
+            ArrayList<Sach> sach = SachDAO.getInstance().selectByCondition(book, column);
+            if (sach != null && !sach.isEmpty()) {
+                for (Sach bookItem : sach) {
+                    ThemSachVaoBang(bookItem);
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Không tìm thấy sách nào.", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập tên sách hoặc thể loại để tìm kiếm.", "Thông báo", JOptionPane.WARNING_MESSAGE);
+        }
+    }
+
+    public void ThucHienHuyTim() {
+        HienThiSachMAcDinh();
+    }
+
+    public void ShowDangKyView() {
+        this.dispose();
+        new PhieuDkyView();
+    }
+
+    public void ThucHienQuayLai() {
+        int luaChon = JOptionPane.showConfirmDialog(this, "thoải khỏi chương trình? ");
+        if(luaChon == JOptionPane.YES_OPTION){
+            this.dispose();
+            new FuntionLogin();
+        }
     }
 }

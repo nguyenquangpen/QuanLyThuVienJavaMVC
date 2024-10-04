@@ -80,7 +80,7 @@ public class LibrarianDao implements DAOInterface<Librarian> {
     }
 
     @Override
-    public ArrayList<Librarian> selectByCondition(String condition) {
+    public ArrayList<Librarian> selectByCondition(String condition, String value) {
         return null;
     }
 

@@ -85,7 +85,7 @@ public class UserDAO implements DAOInterface<User> {
     }
 
     @Override
-    public ArrayList<User> selectByCondition(String condition) {
+    public ArrayList<User> selectByCondition(String condition, String column) {
         return null;
     }
     @Override

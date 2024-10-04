@@ -42,6 +42,7 @@ public class StudentView extends JFrame {
         JMenuItem jMenuItemExit = new JMenuItem("Exit");
 
         jMenuItemExit.setFont(font);
+        jMenuItemExit.addActionListener(ac);
         jMenuFile.addSeparator();
         jMenuFile.add(jMenuItemExit);
 
@@ -334,15 +335,17 @@ public class StudentView extends JFrame {
 
     public void ThucHienTim() {
         String TenSinhVien = textField_TenSinhVien_timKiem.getText();
+        String column = "StudentName";
         XoaBang();
         if(!TenSinhVien.isEmpty()){
-            ArrayList<Student> students = StudentDAO.getInstance().selectByCondition(TenSinhVien);
+            ArrayList<Student> students = StudentDAO.getInstance().selectByCondition(TenSinhVien, column);
             if (students != null && !students.isEmpty()) {
                 for (Student HS : students) {
                     ThemSVvaoBang(HS);
                 }
             }
         }
+
     }
 
     public void ThucHienHuyTim() {

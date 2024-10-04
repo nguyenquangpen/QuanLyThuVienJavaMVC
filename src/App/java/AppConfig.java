@@ -9,7 +9,7 @@ import ReadersView.ReaderBookView;
 
 class AppConfig {
     public static void main(String [] args){
-        new ReaderBookView();
+        new StudentView();
     }
 }
 

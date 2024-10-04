@@ -17,6 +17,9 @@ public class QLRegisterController implements ActionListener {
         String cm = e.getActionCommand();
         if(cm.equals("Register")){
             this.registerView.ThucHienDangKy();
+        } else if (cm.equals("Back")) {
+            this.registerView.ThucHienQuayLai();
+
         }
     }
 }

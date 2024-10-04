@@ -150,6 +150,6 @@ public class PhieuDkyView extends JFrame {
 
     public void ThucHienQuayLai() {
         this.dispose();
-        //??
+        new ReaderBookView();
     }
 }

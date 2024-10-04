@@ -9,6 +9,10 @@ public class Sach {
     private int SoLuong;
     public Sach() {
     }
+    public Sach(String tenSach, String TenTacGia) {
+        this.tenSach = tenSach;
+        this.TenTacGia = TenTacGia;
+    }
     public Sach(String id, String tenSach, int namXuatBan, String TheLoai, String TenTacGia, int SoLuong) {
         this.tenSach = tenSach;
         this.TheLoai = TheLoai;

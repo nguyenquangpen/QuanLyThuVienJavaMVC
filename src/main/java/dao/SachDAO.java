@@ -117,44 +117,17 @@ public class SachDAO implements DAOInterface<Sach> {
     }
 
     @Override
-    public Sach selectById(Sach t) {
-        Sach ketQua = null;
-        Connection connection = null;
-        PreparedStatement st = null;
-        ResultSet rs = null;
-
-        try {
-            connection = JDBCUtil.getConnection();
-            String sql = "SELECT * FROM QLSach WHERE MaSachId = ?";
-            st = connection.prepareStatement(sql);
-            st.setString(1, t.getId());
-
-            rs = st.executeQuery();
-
-            if (rs.next()) {
-                String MaSachId = rs.getString("MaSachId");
-                String TenSach = rs.getString("TenSach");
-                int NamXB = rs.getInt("NamXB");
-                String TheLoai = rs.getString("TheLoai");
-                String TacGia = rs.getString("TacGia");
-                int SoLuong = rs.getInt("SoLuong");
-                ketQua = new Sach(MaSachId, TenSach, NamXB, TheLoai, TacGia, SoLuong);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return ketQua;
+    public Sach selectById(Sach sach) {
+        return null;
     }
 
-
-    @Override
-    public ArrayList<Sach> selectByCondition(String condition) {
+    public ArrayList<Sach> selectByCondition(String condition, String column) {
         Sach sach = null;
         ArrayList<Sach> arrKetqua = new ArrayList<>();
         try {
             Connection connection = JDBCUtil.getConnection();
 
-            String sql = "SELECT * FROM QLSach WHERE TenSach = ?";
+            String sql = "SELECT * FROM QLSach WHERE " + column + " = ?";
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, condition);
 
@@ -181,4 +154,5 @@ public class SachDAO implements DAOInterface<Sach> {
     public Sach selectByName(String name) {
         return null;
     }
+
 }
