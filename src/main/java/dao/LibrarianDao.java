@@ -1,113 +1,142 @@
 package dao;
 
 import model.Librarian;
-import model.Sach;
-import model.User;
-import org.database.JDBCUtil;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
 import java.util.ArrayList;
 
-public class LibrarianDao implements DAOInterface<Librarian> {
+public class LibrarianDao {
+    private Connection c = null;
 
-    public static LibrarianDao getInstance() {
-        return new LibrarianDao();
+    public void openConnection() {
+        try {
+            String url = "jdbc:mysql://localhost:3306/library_management";
+            String user = "root";
+            String password = "11111111";
+            c = DriverManager.getConnection(url, user, password);
+            System.out.println("Connection successful!");
+        } catch (SQLException e) {
+            System.err.println("Connection failed: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
-    @Override
-    public int insert(Librarian l) {
-        int ketQua = 0;
-
-        Connection connection = null;
+    public void closeConnection() {
         try {
-            connection = JDBCUtil.getConnection();
+            if (c != null) {
+                c.close();
+                System.out.println("Connection closed.");
+            }
+        } catch (SQLException e) {
+            System.err.println("Failed to close connection: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public int insert(Librarian l) {
+        PreparedStatement st = null;
+        try {
+            openConnection();
             String sql = "INSERT INTO LibrarianLogin (username, password, LibrarianID) VALUES (?, ?, ?)";
-
-            PreparedStatement st = connection.prepareStatement(sql);
-
+            st = c.prepareStatement(sql);
             st.setString(1, l.getUsername());
             st.setString(2, l.getPassword());
             st.setInt(3, l.getLibrarianID());
-
-            ketQua = st.executeUpdate();
-        } catch (Exception e) {
-            e.printStackTrace();
+            return st.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Insert failed: " + e.getMessage(), e);
+        } finally {
+            if (st != null) {
+                try {
+                    st.close();
+                } catch (SQLException e) {
+                    System.err.println("Failed to close statement: " + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+            closeConnection();
         }
-        return ketQua;
     }
 
-    @Override
-    public int update(Librarian librarian) {
-        return 0;
-    }
-
-    @Override
-    public int delete(Librarian librarian) {
-        return 0;
-    }
-
-    @Override
-    public ArrayList<Librarian> selectAll() {
-        return null;
-    }
-
-    @Override
-    public Librarian selectById(Librarian l) {
-        Librarian ketQua = null;
-        Connection connection = null;
+    public Librarian selectById(int librarianID) {
         PreparedStatement st = null;
         ResultSet rs = null;
-
         try {
-            connection = JDBCUtil.getConnection();
+            openConnection();
             String sql = "SELECT * FROM LibrarianManager WHERE LibrarianID = ?";
-            st = connection.prepareStatement(sql);
-            st.setInt(1, l.getLibrarianID());
-
+            st = c.prepareStatement(sql);
+            st.setInt(1, librarianID);
             rs = st.executeQuery();
-
             if (rs.next()) {
-                int LibrarianID = rs.getInt("LibrarianID");
                 String CardID = rs.getString("employeeCard");
-                ketQua = new Librarian(LibrarianID, CardID);
+                return new Librarian(librarianID, CardID);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (SQLException e) {
+            throw new RuntimeException("Select by ID failed: " + e.getMessage(), e);
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    System.err.println("Failed to close result set: " + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+            if (st != null) {
+                try {
+                    st.close();
+                } catch (SQLException e) {
+                    System.err.println("Failed to close statement: " + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+            closeConnection();
         }
-        return ketQua;
-    }
-
-    @Override
-    public ArrayList<Librarian> selectByCondition(String condition, String value) {
         return null;
     }
 
-    @Override
     public Librarian selectByName(String name) {
-        Librarian librarian = null;
+        PreparedStatement st = null;
+        ResultSet rs = null;
         try {
-            Connection connection = JDBCUtil.getConnection();
-
+            openConnection();
             String sql = "SELECT * FROM LibrarianLogin WHERE username = ?";
-
-            PreparedStatement st = connection.prepareStatement(sql);
+            st = c.prepareStatement(sql);
             st.setString(1, name);
-
-            ResultSet rs = st.executeQuery();
-
+            rs = st.executeQuery();
             if (rs.next()) {
                 String username = rs.getString("username");
                 String password = rs.getString("password");
-                int LibrarianID = rs.getInt("LibrarianID");
-                librarian = new Librarian(username, password, LibrarianID);
+                int librarianID = rs.getInt("LibrarianID");
+                return new Librarian(username, password, librarianID);
             }
-
-            JDBCUtil.close(connection);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (SQLException e) {
+            throw new RuntimeException("Select by name failed: " + e.getMessage(), e);
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    System.err.println("Failed to close result set: " + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+            if (st != null) {
+                try {
+                    st.close();
+                } catch (SQLException e) {
+                    System.err.println("Failed to close statement: " + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+            closeConnection();
         }
-        return librarian;
+        return null;
     }
+
+    public ArrayList<Librarian> selectByCondition(String condition, String value) {
+
+        return null;
+    }
+
 }

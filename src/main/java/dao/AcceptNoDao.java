@@ -1,8 +1,6 @@
 package dao;
 
-import model.Sach;
 import model.Status;
-import org.database.JDBCUtil;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -12,11 +10,13 @@ public class AcceptNoDao {
 
     public void acceptNo() {
         try {
-            String url = "jdbc:mysql://localhost:3306/library_management";  // Corrected URL
+            String url = "jdbc:mysql://localhost:3306/library_management";
             String user = "root";
             String password = "11111111";
             c = DriverManager.getConnection(url, user, password);
-        } catch (Exception e) {
+            System.out.println("Connection successful!");
+        } catch (SQLException e) {
+            System.err.println("Connection failed: " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -25,8 +25,10 @@ public class AcceptNoDao {
         try {
             if (c != null) {
                 c.close();
+                System.out.println("Connection closed.");
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
+            System.err.println("Failed to close connection: " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -43,13 +45,14 @@ public class AcceptNoDao {
             st.setString(4, cm);
 
             return st.executeUpdate() > 0;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } catch (SQLException e) {
+            throw new RuntimeException("Insert failed: " + e.getMessage(), e);
         } finally {
             if (st != null) {
                 try {
                     st.close();
-                } catch (Exception e) {
+                } catch (SQLException e) {
+                    System.err.println("Failed to close statement: " + e.getMessage());
                     e.printStackTrace();
                 }
             }
@@ -61,7 +64,7 @@ public class AcceptNoDao {
         PreparedStatement st = null;
         ResultSet rs = null;
         try {
-            acceptNo(); // Open connection
+            acceptNo();
             String sql = "SELECT * FROM LibrarianAcept WHERE StudentID = ? AND MaSachID = ?";
             st = c.prepareStatement(sql);
             st.setString(1, studentID);
@@ -75,12 +78,13 @@ public class AcceptNoDao {
                 return new Status(StudentID, BookID, amount, status);
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Select by ID failed: " + e.getMessage(), e);
         } finally {
             if (rs != null) {
                 try {
                     rs.close();
                 } catch (SQLException e) {
+                    System.err.println("Failed to close result set: " + e.getMessage());
                     e.printStackTrace();
                 }
             }
@@ -88,6 +92,7 @@ public class AcceptNoDao {
                 try {
                     st.close();
                 } catch (SQLException e) {
+                    System.err.println("Failed to close statement: " + e.getMessage());
                     e.printStackTrace();
                 }
             }
@@ -100,24 +105,25 @@ public class AcceptNoDao {
         PreparedStatement st = null;
         try {
             acceptNo(); // Open connection
-            String sql = "UPDATE LibrarianAcept SET SoLuong = ?, ChoMuon = ? WHERE StudentID = ? AND MaSachID = ?";
+            String sql = "UPDATE LibrarianAcept SET ChoMuon = ? WHERE StudentID = ? AND MaSachID = ?";
             st = c.prepareStatement(sql);
-            st.setInt(1, amount);
-            st.setString(2, cm);
-            st.setString(3, studentID);
-            st.setString(4, bookID);
+
+            st.setString(1, cm);
+            st.setString(2, studentID);
+            st.setString(3, bookID);
             return st.executeUpdate() > 0;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } catch (SQLException e) {
+            throw new RuntimeException("Update failed: " + e.getMessage(), e);
         } finally {
             if (st != null) {
                 try {
                     st.close();
-                } catch (Exception e) {
+                } catch (SQLException e) {
+                    System.err.println("Failed to close statement: " + e.getMessage());
                     e.printStackTrace();
                 }
             }
-            close(); // Close connection
+            close();
         }
     }
 
@@ -137,13 +143,14 @@ public class AcceptNoDao {
                 String status = rs.getString("ChoMuon");
                 ketQua.add(new Status(StudentID, BookID, amount, status));
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (SQLException e) {
+            throw new RuntimeException("Select all failed: " + e.getMessage(), e);
         } finally {
             if (rs != null) {
                 try {
                     rs.close();
                 } catch (SQLException e) {
+                    System.err.println("Failed to close result set: " + e.getMessage());
                     e.printStackTrace();
                 }
             }
@@ -151,11 +158,35 @@ public class AcceptNoDao {
                 try {
                     st.close();
                 } catch (SQLException e) {
+                    System.err.println("Failed to close statement: " + e.getMessage());
                     e.printStackTrace();
                 }
             }
             close(); // Close connection
         }
         return ketQua;
+    }
+    public int delete(String studentID, String bookID) {
+        PreparedStatement st = null;
+        try {
+            acceptNo(); // Open connection
+            String sql = "DELETE FROM LibrarianAcept WHERE StudentID = ? AND MaSachID = ?";
+            st = c.prepareStatement(sql);
+            st.setString(1, studentID);
+            st.setString(2, bookID);
+            return st.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Delete failed: " + e.getMessage(), e);
+        } finally {
+            if (st != null) {
+                try {
+                    st.close();
+                } catch (SQLException e) {
+                    System.err.println("Failed to close statement: " + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+            close(); // Close connection
+        }
     }
 }

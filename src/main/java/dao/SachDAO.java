@@ -2,136 +2,123 @@ package dao;
 
 import model.Sach;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 
-import model.Student;
-import org.database.JDBCUtil;
+public class SachDAO {
+    private Connection c = null;
 
-public class SachDAO implements DAOInterface<Sach> {
-
-    public static SachDAO getInstance(){
-        return new SachDAO();
+    public void openConnection() {
+        try {
+            String url = "jdbc:mysql://localhost:3306/library_management";
+            String user = "root";
+            String password = "11111111";
+            c = DriverManager.getConnection(url, user, password);
+            System.out.println("Connection successful!");
+        } catch (SQLException e) {
+            System.err.println("Connection failed: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
-    @Override
-    public int insert(Sach t) {
-        int ketQua = 0;
-        Connection connection = null;
-
+    public void closeConnection() {
         try {
-            connection = JDBCUtil.getConnection();
+            if (c != null) {
+                c.close();
+                System.out.println("Connection closed.");
+            }
+        } catch (SQLException e) {
+            System.err.println("Failed to close connection: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public int insert(Sach t) {
+        PreparedStatement st = null;
+        try {
+            openConnection();
             String sql = "INSERT INTO QLSach (MaSachId, TenSach, NamXB, TheLoai, TacGia) VALUES (?, ?, ?, ?, ?)";
-
-            PreparedStatement st = connection.prepareStatement(sql);
-
+            st = c.prepareStatement(sql);
             st.setString(1, t.getId());
             st.setString(2, t.getTenSach());
             st.setInt(3, t.getNamXuatBan());
             st.setString(4, t.getTheLoai());
             st.setString(5, t.getTenTacGia());
-
-            ketQua = st.executeUpdate();
-        } catch (Exception e) {
-            e.printStackTrace();
+            return st.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Insert failed: " + e.getMessage(), e);
+        } finally {
+            if (st != null) {
+                try {
+                    st.close();
+                } catch (SQLException e) {
+                    System.err.println("Failed to close statement: " + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+            closeConnection();
         }
-        return ketQua;
     }
 
-
-    @Override
     public int update(Sach t) {
-        int ketQua = 0;
-        try{
-            Connection connection = JDBCUtil.getConnection();
-
-            String sql = "UPDATE QLSach "+
-                    " SET " +
-                    " tenSach=?"+
-                    ", NamXB=?"+
-                    ", TheLoai=?"+
-                    ", TacGia=?"+
-                    " WHERE MaSachId =?";
-
-            PreparedStatement st = connection.prepareStatement(sql);
+        PreparedStatement st = null;
+        try {
+            openConnection();
+            String sql = "UPDATE QLSach SET TenSach=?, NamXB=?, TheLoai=?, TacGia=? WHERE MaSachId=?";
+            st = c.prepareStatement(sql);
             st.setString(1, t.getTenSach());
             st.setInt(2, t.getNamXuatBan());
             st.setString(3, t.getTheLoai());
             st.setString(4, t.getTenTacGia());
             st.setString(5, t.getId());
-
-            ketQua = st.executeUpdate();
-            JDBCUtil.close(connection);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return ketQua;
-    }
-
-    @Override
-    public int delete(Sach t) {
-        int ketQua = 0;
-        try {
-            Connection connection = JDBCUtil.getConnection();
-
-            String sql = "DELETE FROM QLSach WHERE MaSachId = ?";
-            PreparedStatement st = connection.prepareStatement(sql);
-            st.setString(1, t.getId());
-
-            ketQua = st.executeUpdate();
-
-            JDBCUtil.close(connection);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return ketQua;
-    }
-
-    @Override
-    public ArrayList<Sach> selectAll() {
-        ArrayList ketQua = new ArrayList();
-        try{
-            Connection connection = JDBCUtil.getConnection();
-            Statement st = connection.createStatement();
-
-            String sql = "SELECT * FROM QLSach";
-            ResultSet rs = st.executeQuery(sql);
-            while (rs.next()){
-                String MaSachId = rs.getString("MaSachId");
-                String TenSach = rs.getString("TenSach");
-                int NamXB = rs.getInt("NamXB");
-                String TheLoai = rs.getString("TheLoai");
-                String TacGia = rs.getString("TacGia");
-                int SoLuong = rs.getInt("SoLuong");
-                Sach sach = new Sach(MaSachId, TenSach, NamXB, TheLoai, TacGia, SoLuong);
-                ketQua.add(sach);
+            return st.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Update failed: " + e.getMessage(), e);
+        } finally {
+            if (st != null) {
+                try {
+                    st.close();
+                } catch (SQLException e) {
+                    System.err.println("Failed to close statement: " + e.getMessage());
+                    e.printStackTrace();
+                }
             }
-            JDBCUtil.close(connection);
-        }catch (Exception e){
-            e.printStackTrace();
+            closeConnection();
         }
-        return ketQua;
     }
 
-    @Override
-    public Sach selectById(Sach sach) {
-        return null;
-    }
-
-    public ArrayList<Sach> selectByCondition(String condition, String column) {
-        Sach sach = null;
-        ArrayList<Sach> arrKetqua = new ArrayList<>();
+    public int delete(Sach t) {
+        PreparedStatement st = null;
         try {
-            Connection connection = JDBCUtil.getConnection();
+            openConnection();
+            String sql = "DELETE FROM QLSach WHERE MaSachId = ?";
+            st = c.prepareStatement(sql);
+            st.setString(1, t.getId());
+            return st.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Delete failed: " + e.getMessage(), e);
+        } finally {
+            if (st != null) {
+                try {
+                    st.close();
+                } catch (SQLException e) {
+                    System.err.println("Failed to close statement: " + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+            closeConnection();
+        }
+    }
 
-            String sql = "SELECT * FROM QLSach WHERE " + column + " = ?";
-            PreparedStatement st = connection.prepareStatement(sql);
-            st.setString(1, condition);
-
-            ResultSet rs = st.executeQuery();
+    public ArrayList<Sach> selectAll() {
+        ArrayList<Sach> ketQua = new ArrayList<>();
+        Statement st = null;
+        ResultSet rs = null;
+        try {
+            openConnection();
+            st = c.createStatement();
+            String sql = "SELECT * FROM QLSach";
+            rs = st.executeQuery(sql);
             while (rs.next()) {
                 String MaSachId = rs.getString("MaSachId");
                 String TenSach = rs.getString("TenSach");
@@ -139,20 +126,114 @@ public class SachDAO implements DAOInterface<Sach> {
                 String TheLoai = rs.getString("TheLoai");
                 String TacGia = rs.getString("TacGia");
                 int SoLuong = rs.getInt("SoLuong");
-                sach = new Sach(MaSachId, TenSach, NamXB, TheLoai, TacGia, SoLuong);
-                arrKetqua.add(sach);
+                ketQua.add(new Sach(MaSachId, TenSach, NamXB, TheLoai, TacGia, SoLuong));
             }
-
-            JDBCUtil.close(connection);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (SQLException e) {
+            throw new RuntimeException("Select all failed: " + e.getMessage(), e);
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    System.err.println("Failed to close result set: " + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+            if (st != null) {
+                try {
+                    st.close();
+                } catch (SQLException e) {
+                    System.err.println("Failed to close statement: " + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+            closeConnection();
         }
-        return arrKetqua;
+        return ketQua;
     }
 
-    @Override
-    public Sach selectByName(String name) {
+    public Sach selectById(String BookID) {
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try {
+            openConnection();
+            String sql = "SELECT * FROM QLSach WHERE MaSachId = ?";
+            st = c.prepareStatement(sql);
+            st.setString(1, BookID);
+            rs = st.executeQuery();
+            if (rs.next()) {
+                String MaSachId = rs.getString("MaSachId");
+                String TenSach = rs.getString("TenSach");
+                int NamXB = rs.getInt("NamXB");
+                String TheLoai = rs.getString("TheLoai");
+                String TacGia = rs.getString("TacGia");
+                int SoLuong = rs.getInt("SoLuong");
+                return new Sach(MaSachId, TenSach, NamXB, TheLoai, TacGia, SoLuong);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Select by ID failed: " + e.getMessage(), e);
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    System.err.println("Failed to close result set: " + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+            if (st != null) {
+                try {
+                    st.close();
+                } catch (SQLException e) {
+                    System.err.println("Failed to close statement: " + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+            closeConnection();
+        }
         return null;
     }
 
+    public ArrayList<Sach> selectByCondition(String condition, String column) {
+        ArrayList<Sach> arrKetqua = new ArrayList<>();
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try {
+            openConnection();
+            String sql = "SELECT * FROM QLSach WHERE " + column + " = ?";
+            st = c.prepareStatement(sql);
+            st.setString(1, condition);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                String MaSachId = rs.getString("MaSachId");
+                String TenSach = rs.getString("TenSach");
+                int NamXB = rs.getInt("NamXB");
+                String TheLoai = rs.getString("TheLoai");
+                String TacGia = rs.getString("TacGia");
+                int SoLuong = rs.getInt("SoLuong");
+                arrKetqua.add(new Sach(MaSachId, TenSach, NamXB, TheLoai, TacGia, SoLuong));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Select by condition failed: " + e.getMessage(), e);
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    System.err.println("Failed to close result set: " + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+            if (st != null) {
+                try {
+                    st.close();
+                } catch (SQLException e) {
+                    System.err.println("Failed to close statement: " + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+            closeConnection();
+        }
+        return arrKetqua;
+    }
 }

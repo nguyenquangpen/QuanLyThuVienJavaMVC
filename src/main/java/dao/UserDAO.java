@@ -1,115 +1,259 @@
 package dao;
 
-import model.Sach;
-import model.Student;
 import model.User;
-import org.database.JDBCUtil;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
 import java.util.ArrayList;
 
-public class UserDAO implements DAOInterface<User> {
+public class UserDAO {
 
-    public static UserDAO getInstance() {
-        return new UserDAO();
-    }
+    private Connection c = null;
 
-    @Override
-    public int insert(User t) {
-        int ketQua = 0;
-        Connection connection = null;
-        PreparedStatement pstmt = null;
-
+    public void openConnection() {
         try {
-            connection = JDBCUtil.getConnection();
-            String sql = "INSERT INTO User (username, password) VALUES (?, ?)";
-            pstmt = connection.prepareStatement(sql);
-
-            pstmt.setString(1, t.getUsername());
-            pstmt.setString(2, t.getPassword());
-
-            ketQua = pstmt.executeUpdate();
-
-        } catch (Exception e) {
+            String url = "jdbc:mysql://localhost:3306/library_management";
+            String user = "root";
+            String password = "11111111";
+            c = DriverManager.getConnection(url, user, password);
+            System.out.println("Connection successful!");
+        } catch (SQLException e) {
+            System.err.println("Connection failed: " + e.getMessage());
             e.printStackTrace();
-        } finally {
-            try {
-                if (pstmt != null) pstmt.close();
-                if (connection != null) JDBCUtil.close(connection);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
-        return ketQua;
     }
 
+    public void closeConnection() {
+        try {
+            if (c != null) {
+                c.close();
+                System.out.println("Connection closed.");
+            }
+        } catch (SQLException e) {
+            System.err.println("Failed to close connection: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
 
-    @Override
+    public int insert(User t) {
+        PreparedStatement st = null;
+        try {
+            openConnection();
+            String sql = "INSERT INTO User (username, password) VALUES (?, ?)";
+            st = c.prepareStatement(sql);
+            st.setString(1, t.getUsername());
+            st.setString(2, t.getPassword());
+            return st.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Insert failed: " + e.getMessage(), e);
+        } finally {
+            if (st != null) {
+                try {
+                    st.close();
+                } catch (SQLException e) {
+                    System.err.println("Failed to close statement: " + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+            closeConnection();
+        }
+    }
+
     public int update(User t) {
-        int ketQua = 0;
-        try{
-            Connection connection = JDBCUtil.getConnection();
-
-            String sql = "UPDATE User "+
-                    " SET " +
-                    ", password=?"+
-                    " WHERE username =?";
-
-            PreparedStatement st = connection.prepareStatement(sql);
+        PreparedStatement st = null;
+        try {
+            openConnection();
+            String sql = "UPDATE User SET password=? WHERE username=?";
+            st = c.prepareStatement(sql);
             st.setString(1, t.getPassword());
             st.setString(2, t.getUsername());
-
-            ketQua = st.executeUpdate(sql);
-            JDBCUtil.close(connection);
-        }catch (Exception e){
-            e.printStackTrace();
+            return st.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Update failed: " + e.getMessage(), e);
+        } finally {
+            if (st != null) {
+                try {
+                    st.close();
+                } catch (SQLException e) {
+                    System.err.println("Failed to close statement: " + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+            closeConnection();
         }
-        return ketQua;
     }
 
-    @Override
     public int delete(User t) {
-        return 0;
-    }
-
-    @Override
-    public ArrayList<User> selectAll() {
-        return null;
-    }
-
-    @Override
-    public User selectById(User t) {
-        return null;
-    }
-
-    @Override
-    public ArrayList<User> selectByCondition(String condition, String column) {
-        return null;
-    }
-    @Override
-    public User selectByName(String name) {
-        User user = null;
+        PreparedStatement st = null;
         try {
-            Connection connection = JDBCUtil.getConnection();
+            openConnection();
+            String sql = "DELETE FROM User WHERE username=?";
+            st = c.prepareStatement(sql);
+            st.setString(1, t.getUsername());
+            return st.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Delete failed: " + e.getMessage(), e);
+        } finally {
+            if (st != null) {
+                try {
+                    st.close();
+                } catch (SQLException e) {
+                    System.err.println("Failed to close statement: " + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+            closeConnection();
+        }
+    }
 
-            String sql = "SELECT * FROM User WHERE username = ?";
-            PreparedStatement st = connection.prepareStatement(sql);
+    public ArrayList<User> selectAll() {
+        ArrayList<User> users = new ArrayList<>();
+        Statement st = null;
+        ResultSet rs = null;
+        try {
+            openConnection();
+            st = c.createStatement();
+            String sql = "SELECT * FROM User";
+            rs = st.executeQuery(sql);
+            while (rs.next()) {
+                String username = rs.getString("username");
+                String password = rs.getString("password");
+                users.add(new User(username, password));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Select all failed: " + e.getMessage(), e);
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    System.err.println("Failed to close result set: " + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+            if (st != null) {
+                try {
+                    st.close();
+                } catch (SQLException e) {
+                    System.err.println("Failed to close statement: " + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+            closeConnection();
+        }
+        return users;
+    }
+
+    public User selectById(String username) {
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try {
+            openConnection();
+            String sql = "SELECT * FROM User WHERE username=?";
+            st = c.prepareStatement(sql);
+            st.setString(1, username);
+            rs = st.executeQuery();
+            if (rs.next()) {
+                String password = rs.getString("password");
+                return new User(username, password);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Select by ID failed: " + e.getMessage(), e);
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    System.err.println("Failed to close result set: " + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+            if (st != null) {
+                try {
+                    st.close();
+                } catch (SQLException e) {
+                    System.err.println("Failed to close statement: " + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+            closeConnection();
+        }
+        return null;
+    }
+
+    public ArrayList<User> selectByCondition(String condition, String column) {
+        ArrayList<User> users = new ArrayList<>();
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try {
+            openConnection();
+            String sql = "SELECT * FROM User WHERE " + column + "=?";
+            st = c.prepareStatement(sql);
+            st.setString(1, condition);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                String username = rs.getString("username");
+                String password = rs.getString("password");
+                users.add(new User(username, password));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Select by condition failed: " + e.getMessage(), e);
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    System.err.println("Failed to close result set: " + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+            if (st != null) {
+                try {
+                    st.close();
+                } catch (SQLException e) {
+                    System.err.println("Failed to close statement: " + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+            closeConnection();
+        }
+        return users;
+    }
+
+    public User selectByName(String name) {
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try {
+            openConnection();
+            String sql = "SELECT * FROM User WHERE username=?";
+            st = c.prepareStatement(sql);
             st.setString(1, name);
-
-            ResultSet rs = st.executeQuery();
-
+            rs = st.executeQuery();
             if (rs.next()) {
                 String username = rs.getString("username");
                 String password = rs.getString("password");
-                user = new User(username, password);
+                return new User(username, password);
             }
-
-            JDBCUtil.close(connection);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (SQLException e) {
+            throw new RuntimeException("Select by name failed: " + e.getMessage(), e);
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    System.err.println("Failed to close result set: " + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+            if (st != null) {
+                try {
+                    st.close();
+                } catch (SQLException e) {
+                    System.err.println("Failed to close statement: " + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+            closeConnection();
         }
-        return user;
+        return null;
     }
 }

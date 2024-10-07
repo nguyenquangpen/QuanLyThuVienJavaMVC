@@ -24,6 +24,8 @@ public class QLReadBookController implements ActionListener {
             this.readerBookView.ShowDangKyView();
         } else if (cm.equals("Exit")) {
             this.readerBookView.ThucHienQuayLai();
+        } else if (cm.equals("Trạng Thái")) {
+            this.readerBookView.HienThiTrangThai();
         }
     }
 }

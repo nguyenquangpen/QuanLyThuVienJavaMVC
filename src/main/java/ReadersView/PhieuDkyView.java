@@ -139,9 +139,10 @@ public class PhieuDkyView extends JFrame {
         int studentSDT = Integer.parseInt(jtfStudentSDT.getText());
         String studentGmail = jtfStudentGmail.getText();
         Student student = new Student(studentID, studentName, studentLocation, studentSDT, studentGmail);
-        Student student1 = StudentDAO.getInstance().selectById(student);
+        StudentDAO studentDAO = new StudentDAO();
+        Student student1 = studentDAO.selectById(studentID);
         if(student1 == null) {
-            StudentDAO.getInstance().insert(student);
+            studentDAO.insert(student);
             JOptionPane.showMessageDialog(null, "Hoàn tất đăng ký");
         }else{
             JOptionPane.showMessageDialog(null, "Đã tồn tại");

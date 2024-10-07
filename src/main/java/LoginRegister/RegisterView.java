@@ -93,6 +93,7 @@ public class RegisterView extends JFrame {
         String password = new String(jtfPasswordField.getPassword());
         String confirmPassword = new String(jtfConfirmPasswordField.getPassword());
         String column = "username";
+        UserDAO userDAO = new UserDAO();
 
         // Kiểm tra mật khẩu
         if (!password.equals(confirmPassword)) {
@@ -103,12 +104,12 @@ public class RegisterView extends JFrame {
             JOptionPane.showMessageDialog(null, "Không được để trống");
         }
         // Kiểm tra người dùng đã tồn tại
-        else if (UserDAO.getInstance().selectByCondition(username, column) != null) {
+        else if (userDAO.selectByCondition(username, column) != null) {
             JOptionPane.showMessageDialog(null, "Đã tồn tại, vui lòng nhập lại thông tin");
         }
         else {
             User user = new User(username, password);
-            UserDAO.getInstance().insert(user);
+            userDAO.insert(user);
             JOptionPane.showMessageDialog(null, "Đăng ký thành công");
             this.dispose();
             new LoginView();

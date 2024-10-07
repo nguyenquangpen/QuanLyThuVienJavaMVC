@@ -16,8 +16,16 @@ public class AcceptNoController implements ActionListener {
         String cm = e.getActionCommand();
         if(cm.equals("Chấp Nhận")) {
             this.accept_no.ChapNhanMuon();
-        } else if (cm.equals("Từ chối")) {
+        } else if (cm.equals("Từ Chối")) {
             this.accept_no.TuChoiMuon();
+        } else if (cm.equals("Xoá")) {
+            this.accept_no.ThucHienXoa();
+        } else if (cm.equals("Exit")) {
+            this.accept_no.ThucHienThoat();
+        } else if (cm.equals("Quản Lý Sách")) {
+            this.accept_no.HienThiSach();
+        } else if (cm.equals("Quản Lý Độc Giả")) {
+            this.accept_no.HienThiDocGia();
         }
     }
 }

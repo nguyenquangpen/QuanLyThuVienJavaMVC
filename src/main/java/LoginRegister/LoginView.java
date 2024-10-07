@@ -85,7 +85,8 @@ public class LoginView extends JFrame {
     public void ThucHienDangNhap() {
         String username = jtfUsername.getText();
         String password = new String(jtfPassword.getPassword());
-        User user = UserDAO.getInstance().selectByName(username);
+        UserDAO userDAO = new UserDAO();
+        User user = userDAO.selectByName(username);
         if(user.getUsername().equals(username) && user.getPassword().equals(password)){
             JOptionPane.showMessageDialog(null, "Đăng nhập Thành công");
             this.dispose();

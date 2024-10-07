@@ -95,9 +95,12 @@ public class RegisterLibrarianView extends JFrame {
         String password = new String(jtfPassword.getPassword());
         int libraianID = Integer.parseInt(String.valueOf(jtfLibraianID.getText()));
         String cardID = jtfCardID.getText();
+
+        LibrarianDao librarianDao = new LibrarianDao();
         Librarian librarian1 = new Librarian(username, password, libraianID);
+
         if(ThucHienKiemTraLibrarian()){
-            LibrarianDao.getInstance().insert(librarian1);
+            librarianDao.insert(librarian1);
             JOptionPane.showMessageDialog(null, "Hoàn tất đăng ký");
             this.dispose();
             new LoginLibrarianView();
@@ -126,7 +129,8 @@ public class RegisterLibrarianView extends JFrame {
         int librarianID = Integer.parseInt(jtfLibraianID.getText());
         String cardID = jtfCardID.getText();
         Librarian librarian = new Librarian(librarianID, cardID);
-        Librarian condition = LibrarianDao.getInstance().selectById(librarian);
+        LibrarianDao librarianDao = new LibrarianDao();
+        Librarian condition = librarianDao.selectById(librarianID);
 
         return condition != null && condition.getEmployeeCard().equals(cardID) && condition.getLibrarianID() == librarianID;
     }

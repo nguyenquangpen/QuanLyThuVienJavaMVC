@@ -1,6 +1,7 @@
 package LibrarianView;
 
 import Controller.AcceptNoController;
+import LoginRegister.FuntionLogin;
 import dao.AcceptNoDao;
 import dao.SachDAO;
 import dao.StudentDAO;
@@ -26,7 +27,7 @@ public class AcceptNoView extends JFrame {
     }
     public void init(){
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 524, 449);
+        setBounds(100, 100, 524, 476);
         this.setLocationRelativeTo(null);
         this.setResizable(false);
         this.setTitle("Duyệt Phiếu Mượn");
@@ -38,8 +39,69 @@ public class AcceptNoView extends JFrame {
         setContentPane(contentPane);
         contentPane.setLayout(null);
 
+        Font font = new Font("Arial", Font.PLAIN, 15);
+        // jMenu
+        JMenuBar menuBar = new JMenuBar();
+        JMenu jMenuFile = new JMenu("File");
+        jMenuFile.setFont(font);
+
+        JMenuItem jMenuItemExit = new JMenuItem("Exit");
+        jMenuItemExit.setFont(font);
+        jMenuFile.addSeparator();
+        jMenuFile.add(jMenuItemExit);
+        jMenuItemExit.addActionListener(ac);
+
+        JMenuItem jMenuItemSach = new JMenu("Sách");
+        jMenuItemSach.setFont(font);
+
+        JMenuItem sachItem = new JMenuItem("Quản Lý Sách");
+        sachItem.setFont(font);
+        jMenuItemSach.add(sachItem);
+        sachItem.addActionListener(ac);
+
+        JMenuItem jMenuItemDocGia = new JMenu("Độc Giả");
+        jMenuItemDocGia.setFont(font);
+
+        JMenuItem docGiaItem = new JMenuItem("Quản Lý Độc Giả");
+        docGiaItem.setFont(font);
+        jMenuItemDocGia.add(docGiaItem);
+        docGiaItem.addActionListener(ac);
+
+        JMenuItem jMenuItemMuonTra = new JMenu("Mượn Trả");
+        jMenuItemMuonTra.setFont(font);
+
+        JMenuItem muonTraItem = new JMenuItem("Quản Lý Mượn Trả");
+        muonTraItem.setFont(font);
+        jMenuItemMuonTra.add(muonTraItem);
+        muonTraItem.addActionListener(ac);
+
+        JMenuItem duytIteam = new JMenuItem("Duyệt Phiếu Mượn");
+        duytIteam.setFont(font);
+        jMenuItemMuonTra.add(duytIteam);
+        duytIteam.addActionListener(ac);
+
+
+
+        // Điều chỉnh khoảng cách giữa các menu item
+        jMenuItemSach.setMargin(new Insets(0, 5, 0, 5));
+        jMenuItemDocGia.setMargin(new Insets(0, 5, 0, 5));
+        jMenuItemMuonTra.setMargin(new Insets(0, 5, 0, 5));
+
+        menuBar.add(jMenuFile);
+        menuBar.add(new JSeparator(SwingConstants.VERTICAL));
+        menuBar.add(jMenuItemSach);
+        menuBar.add(new JSeparator(SwingConstants.VERTICAL));
+        menuBar.add(jMenuItemDocGia);
+        menuBar.add(new JSeparator(SwingConstants.VERTICAL));
+        menuBar.add(jMenuItemMuonTra);
+        menuBar.add(new JSeparator(SwingConstants.VERTICAL));
+
+        this.setJMenuBar(menuBar);
+        getContentPane().setLayout(null);
+
         JPanel panel = new JPanel();
         panel.setBounds(10, 79, 490, 262);
+        panel.setBackground(new Color(255, 255, 255));
         contentPane.add(panel);
         panel.setLayout(null);
 
@@ -88,77 +150,123 @@ public class AcceptNoView extends JFrame {
         XoaBang();
         AcceptNoDao acceptNoDao = new AcceptNoDao();
         ArrayList<Status> status = acceptNoDao.selectAll();
-        for (Status s: status) {
+        for (Status s : status) {
             DefaultTableModel model_table = (DefaultTableModel) table.getModel();
             model_table.addRow(new Object[]{s.getStudentID(), s.getBookID(), s.getAmount(), s.getStatus()});
         }
     }
 
-    public Sach getDanhSachChonSach(){
+    public Status getDanhSachMuonTra(){
         DefaultTableModel model_table = (DefaultTableModel) table.getModel();
         int i_row = table.getSelectedRow();
         if (i_row == -1) {
             return null;
         }
-        String MaSach = model_table.getValueAt(i_row, 2).toString();
-        ArrayList<Sach> sach = SachDAO.getInstance().selectByCondition(MaSach, "MaSachID");
-        return sach.get(0);
-    }
-
-    public Student getDanhSachSinhVien(){
-        DefaultTableModel model_table = (DefaultTableModel) table.getModel();
-        int i_row = table.getSelectedRow();
-        if (i_row == -1) {
-            return null;
-        }
-        String MaSinhVien = model_table.getValueAt(i_row, 1).toString();
-        ArrayList<Student> student = StudentDAO.getInstance().selectByCondition(MaSinhVien, "StudentID");
-        return student.get(0);
+        String studentID = model_table.getValueAt(i_row, 0).toString();
+        String bookID = model_table.getValueAt(i_row, 1).toString();
+        int amount = Integer.parseInt(model_table.getValueAt(i_row, 2).toString());
+        String status1 = model_table.getValueAt(i_row, 3).toString();
+        Status status = new Status(studentID, bookID, amount, status1);
+        return status;
     }
 
     public void TuChoiMuon() {
-        String cm = "Không";
-        Sach sach = getDanhSachChonSach();
-        Student student = getDanhSachSinhVien();
-        String studentID = student.getId();
-        String BookID = sach.getId();
-        int amount = sach.getSoLuong();
-        AcceptNoDao acceptNoDao = new AcceptNoDao();
-        acceptNoDao.update(studentID, BookID, amount, cm);
+        final String REJECTED = "Declined";
+        Status status = getDanhSachMuonTra();
 
-        if(checkStudentIDAndSachID(studentID, BookID)){
-            JOptionPane.showMessageDialog(null, "Sách đã được từ chối mượn");
-        }else {
+        if (status.getBookID() == null || status.getStudentID() == null) {
+            JOptionPane.showMessageDialog(null, "Chọn Mã Học Sinh và Mã Sách hợp lệ.");
+            return;
+        }
+        String studentID = status.getStudentID();
+        String bookID = status.getBookID();
+        int amount = status.getAmount();
+        AcceptNoDao acceptNoDao = new AcceptNoDao();
+        acceptNoDao.update(studentID, bookID, amount, REJECTED);
+        int result = checkStudentIDAndSachID();
+        if (result == 2) {
             HienThiVapBangMacDinh();
-            JOptionPane.showMessageDialog(null, "Từ chối mượn thành công");
+            JOptionPane.showMessageDialog(null, "Sách đã được từ chối mượn");
+        } else if (result == 0) {
+            HienThiVapBangMacDinh();
+            JOptionPane.showMessageDialog(null, "Từ chối mượn thành công"); // không cần thông báo
+        }
+        else {
+            JOptionPane.showMessageDialog(null, "Sách đã được chấp nhận mượn"); //không cần thông báo
         }
     }
 
     public void ChapNhanMuon() {
-        String cm = "Có";
-        Sach sach = getDanhSachChonSach();
-        Student student = getDanhSachSinhVien();
-        String studentID = student.getId();
-        String BookID = sach.getId();
-        int amount = sach.getSoLuong();
-        AcceptNoDao acceptNoDao = new AcceptNoDao();
-        acceptNoDao.update(studentID, BookID, amount, cm);
+        final String ACCEPTED = "Accepted";
+        Status status = getDanhSachMuonTra();
 
-        if(checkStudentIDAndSachID(studentID, BookID)) {
-            JOptionPane.showMessageDialog(null, "Sách đã được chấp nhận mượn");
+        if (status.getBookID() == null || status.getStudentID() == null) {
+            JOptionPane.showMessageDialog(null, "Chọn Mã Học Sinh và Mã Sách hợp lệ.");
+            return;
         }
-        else {
+        String studentID = status.getStudentID();
+        String bookID = status.getBookID();
+        int amount = status.getAmount();
+        AcceptNoDao acceptNoDao = new AcceptNoDao();
+        acceptNoDao.update(studentID, bookID, amount, ACCEPTED);
+
+        int result = checkStudentIDAndSachID();
+        if (result == 1) {
             HienThiVapBangMacDinh();
-            JOptionPane.showMessageDialog(null, "Chấp nhận mượn thành công");
+            JOptionPane.showMessageDialog(null, "Sách đã được chấp nhận mượn");
+        } else if (result == 0) {
+            HienThiVapBangMacDinh();
+            JOptionPane.showMessageDialog(null, "Chấp nhận mượn thành công");  //không cần thông báo
+        }else{
+            JOptionPane.showMessageDialog(null, "Sách đã được từ chối mượn"); //không cần thông báo
         }
     }
 
-    public boolean checkStudentIDAndSachID(String studentID, String sachID){
+    public int checkStudentIDAndSachID(){
+        int ketqua = 0;
+        DefaultTableModel model_table = (DefaultTableModel) table.getModel();
+        int i_row = table.getSelectedRow();
+
+        String studentID = model_table.getValueAt(i_row, 0).toString();
+        String bookID = model_table.getValueAt(i_row, 1).toString();
         AcceptNoDao acceptNoDao = new AcceptNoDao();
-        Status status =  acceptNoDao.selectByID(studentID, sachID);
-        if (status.getStatus().equals("Có") || status.getStatus().equals("Không")){
-            return true;
+        Status status = acceptNoDao.selectByID(studentID, bookID);
+        if("Accepted".equals(status.getStatus())){
+            return 1;
         }
-        return false;
+        if("Declined".equals(status.getStatus())){
+            return 2;
+        }
+        return ketqua;
+    }
+
+    public void ThucHienXoa() {
+        DefaultTableModel model_table = (DefaultTableModel) table.getModel();
+        AcceptNoDao acceptNoDao = new AcceptNoDao();
+        int i_row = table.getSelectedRow();
+        if (i_row != -1) {
+            Status status = getDanhSachMuonTra();
+            if (status != null) {
+                int result = acceptNoDao.delete(status.getStudentID(), status.getBookID());
+                if (result > 0) {
+                    model_table.removeRow(i_row);
+                }
+            }
+        }
+    }
+
+    public void HienThiDocGia() {
+        this.dispose();
+        new StudentView();
+    }
+
+    public void HienThiSach() {
+        this.dispose();
+        new QLSachView();
+    }
+
+    public void ThucHienThoat() {
+        this.dispose();
+        new FuntionLogin();
     }
 }

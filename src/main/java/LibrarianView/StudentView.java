@@ -36,73 +36,47 @@ public class StudentView extends JFrame {
         // jMenu
         JMenuBar menuBar = new JMenuBar();
         JMenu jMenuFile = new JMenu("File");
-
         jMenuFile.setFont(font);
 
         JMenuItem jMenuItemExit = new JMenuItem("Exit");
-
         jMenuItemExit.setFont(font);
-        jMenuItemExit.addActionListener(ac);
         jMenuFile.addSeparator();
         jMenuFile.add(jMenuItemExit);
+        jMenuItemExit.addActionListener(ac);
 
-        // Tạo các JMenu như bình thường
         JMenuItem jMenuItemSach = new JMenu("Sách");
         jMenuItemSach.setFont(font);
 
         JMenuItem sachItem = new JMenuItem("Quản Lý Sách");
         sachItem.setFont(font);
-        sachItem.addActionListener(ac);
-
         jMenuItemSach.add(sachItem);
+        sachItem.addActionListener(ac);
 
         JMenuItem jMenuItemDocGia = new JMenu("Độc Giả");
         jMenuItemDocGia.setFont(font);
 
         JMenuItem docGiaItem = new JMenuItem("Quản Lý Độc Giả");
         docGiaItem.setFont(font);
-        docGiaItem.addActionListener(ac);
-
         jMenuItemDocGia.add(docGiaItem);
+        docGiaItem.addActionListener(ac);
 
         JMenuItem jMenuItemMuonTra = new JMenu("Mượn Trả");
         jMenuItemMuonTra.setFont(font);
 
         JMenuItem muonTraItem = new JMenuItem("Quản Lý Mượn Trả");
         muonTraItem.setFont(font);
+        jMenuItemMuonTra.add(muonTraItem);
         muonTraItem.addActionListener(ac);
 
-        jMenuItemMuonTra.add(muonTraItem);
-
-        JMenuItem jMenuItemTrangThai = new JMenu("Thống kê");
-        jMenuItemTrangThai.setFont(font);
-
-        JMenuItem trangThaiSach = new JMenuItem("Sách");
-        trangThaiSach.setFont(font);
-        trangThaiSach.addActionListener(ac);
-
-        jMenuItemTrangThai.add(trangThaiSach);
-        JSeparator separator = new JSeparator();
-
-        JMenuItem trangThaiUser = new JMenuItem("Độc Giả");
-        trangThaiUser.setFont(font);
-        trangThaiUser.addActionListener(ac);
-
-        jMenuItemTrangThai.add(trangThaiUser);
-
-        jMenuItemTrangThai.add(separator);
-
-        JMenuItem trangThaiMuonTra = new JMenuItem("Mượn Trả");
-        trangThaiMuonTra.setFont(font);
-        trangThaiMuonTra.addActionListener(ac);
-
-        jMenuItemTrangThai.add(trangThaiMuonTra);
+        JMenuItem duytIteam = new JMenuItem("Duyệt Phiếu Mượn");
+        duytIteam.setFont(font);
+        jMenuItemMuonTra.add(duytIteam);
+        duytIteam.addActionListener(ac);
 
         // Điều chỉnh khoảng cách giữa các menu item
         jMenuItemSach.setMargin(new Insets(0, 5, 0, 5));
         jMenuItemDocGia.setMargin(new Insets(0, 5, 0, 5));
         jMenuItemMuonTra.setMargin(new Insets(0, 5, 0, 5));
-        jMenuItemTrangThai.setMargin(new Insets(0, 5, 0, 5));
 
         menuBar.add(jMenuFile);
         menuBar.add(new JSeparator(SwingConstants.VERTICAL));
@@ -111,8 +85,6 @@ public class StudentView extends JFrame {
         menuBar.add(jMenuItemDocGia);
         menuBar.add(new JSeparator(SwingConstants.VERTICAL));
         menuBar.add(jMenuItemMuonTra);
-        menuBar.add(new JSeparator(SwingConstants.VERTICAL));
-        menuBar.add(jMenuItemTrangThai);
         menuBar.add(new JSeparator(SwingConstants.VERTICAL));
 
         //North
@@ -261,7 +233,8 @@ public class StudentView extends JFrame {
 
     public void HienThiSinhVienVaoBangMacDinh() {
         XoaBang();
-        ArrayList<Student> arrayList = StudentDAO.getInstance().selectAll();
+        StudentDAO studentDAO = new StudentDAO();
+        ArrayList<Student> arrayList = studentDAO.selectAll();
         for (Student student : arrayList) {
             ThemSVvaoBang(student);
         }
@@ -269,11 +242,13 @@ public class StudentView extends JFrame {
 
     public void ThemHoacCapNhatStudent(Student student){
         DefaultTableModel model_table = (DefaultTableModel) table.getModel();
-        if(StudentDAO.getInstance().selectById(student)==null){
-            StudentDAO.getInstance().insert(student);
+        StudentDAO studentDAO = new StudentDAO();
+        String StudentID = student.getId();
+        if(studentDAO.selectById(StudentID)==null){
+            studentDAO.insert(student);
             ThemSVvaoBang(student);
         }else{
-            StudentDAO.getInstance().update(student);
+            studentDAO.update(student);
             for(int i = 0; i < table.getRowCount(); i++){
                 String str =model_table.getValueAt(i, 0).toString();
                 if(str.equals(student.getId())){
@@ -321,11 +296,12 @@ public class StudentView extends JFrame {
 
     public void ThucHienXoa() {
         DefaultTableModel model_table = (DefaultTableModel) table.getModel();
+        StudentDAO studentDAO = new StudentDAO();
         int i_row = table.getSelectedRow();
         if (i_row != -1) {
             Student student = getSVDaChon();
             if (student != null) {
-                int result = StudentDAO.getInstance().delete(student);
+                int result = studentDAO.delete(student);
                 if (result > 0) {
                     model_table.removeRow(i_row);
                 }
@@ -335,10 +311,11 @@ public class StudentView extends JFrame {
 
     public void ThucHienTim() {
         String TenSinhVien = textField_TenSinhVien_timKiem.getText();
+        StudentDAO studentDAO = new StudentDAO();
         String column = "StudentName";
         XoaBang();
         if(!TenSinhVien.isEmpty()){
-            ArrayList<Student> students = StudentDAO.getInstance().selectByCondition(TenSinhVien, column);
+            ArrayList<Student> students = studentDAO.selectByCondition(TenSinhVien, column);
             if (students != null && !students.isEmpty()) {
                 for (Student HS : students) {
                     ThemSVvaoBang(HS);
@@ -363,5 +340,10 @@ public class StudentView extends JFrame {
     public void HienThiSlideSach() {
         this.dispose();
         new QLSachView();
+    }
+
+    public void HienThiPhieuMuon() {
+        this.dispose();
+        new AcceptNoView();
     }
 }

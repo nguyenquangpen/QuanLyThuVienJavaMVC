@@ -1,8 +1,19 @@
 package ReadersView;
 
+import Controller.StatusController;
+import LoginRegister.FuntionLogin;
+import dao.AcceptNoDao;
+import dao.SachDAO;
+import dao.StudentDAO;
+import model.Status;
+import model.Student;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class StatusView extends JFrame {
     public static final long serialVersionUID = 1L;
@@ -18,25 +29,74 @@ public class StatusView extends JFrame {
 
     private void init() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 509, 428);
+        setBounds(100, 100, 538, 428);
         this.setLocationRelativeTo(null);
         this.setResizable(false);
         this.setTitle("Trạng Thái");
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
+        ActionListener ac = new StatusController(this);
+
         setContentPane(contentPane);
         contentPane.setLayout(null);
 
+        Font font = new Font("Arial", Font.PLAIN, 15);
+        JMenuBar menuBar = new JMenuBar();
+        JMenu jMenuFile = new JMenu("File");
+        jMenuFile.setFont(font);
+
+        JMenuItem jMenuItemExit = new JMenuItem("Exit");
+        jMenuItemExit.setFont(font);
+        jMenuFile.addSeparator();
+        jMenuFile.add(jMenuItemExit);
+        jMenuItemExit.addActionListener(ac);
+
+        JMenuItem jMenuItemPhieu = new JMenu("Phiếu");
+        jMenuItemPhieu.setFont(font);
+
+        JMenuItem sachItem = new JMenuItem("Đăng Ký");
+        sachItem.setFont(font);
+        jMenuItemPhieu.add(sachItem);
+        sachItem.addActionListener(ac);
+
+        JMenuItem StatusView = new JMenuItem("Trạng Thái");
+        StatusView.setFont(font);
+        jMenuItemPhieu.add(StatusView);
+        StatusView.addActionListener(ac);
+
+        JMenuItem jMenuItemBook = new JMenu("Sách");
+        jMenuItemBook.setFont(font);
+
+        JMenuItem BookView = new JMenuItem("Đầu Sách");
+        BookView.setFont(font);
+        jMenuItemBook.add(BookView);
+        BookView.addActionListener(ac);
+
+        menuBar.add(jMenuFile);
+        menuBar.add(new JSeparator(SwingConstants.VERTICAL));
+        menuBar.add(jMenuItemPhieu);
+        menuBar.add(new JSeparator(SwingConstants.VERTICAL));
+        menuBar.add(jMenuItemBook);
+
+        this.setJMenuBar(menuBar);
+        getContentPane().setLayout(null);
+
         JPanel panel = new JPanel();
         panel.setBackground(new Color(255, 255, 255));
-        panel.setBounds(210, 87, 275, 269);
+        panel.setBounds(188, 87, 326, 269);
         contentPane.add(panel);
         panel.setLayout(null);
 
         table = new JTable();
-        table.setBounds(10, 11, 241, 247);
-        panel.add(table);
+        table.setModel(new DefaultTableModel(
+                new Object[][]{},
+                new String[]{"Mã Sinh Viên", "Mã Sách", "Số Lượng", "Cho Mượn"}));
+        HienThiVaoBangMacDinh();
+
+        JScrollPane tableScrollPane = new JScrollPane(table);
+        tableScrollPane.setBounds(10, 11, 306, 247);
+        panel.add(tableScrollPane);
 
         JPanel panel_1 = new JPanel();
         panel_1.setBackground(new Color(255, 255, 255));
@@ -47,6 +107,7 @@ public class StatusView extends JFrame {
         JButton btnNewButton = new JButton("Huỷ Mượn");
         btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 13));
         btnNewButton.setBounds(24, 224, 114, 23);
+        btnNewButton.addActionListener(ac);
         panel_1.add(btnNewButton);
 
         JLabel lblNewLabel_1 = new JLabel("Mã Sinh Viên");
@@ -82,4 +143,94 @@ public class StatusView extends JFrame {
         contentPane.add(lblNewLabel);
     }
 
+    public void ThucHienThoat() {
+        this.dispose();
+        new FuntionLogin();
+    }
+
+    public void HienThiDangKy() {
+        this.dispose();
+        new PhieuDkyView();
+    }
+
+    public void HienThiDauSach() {
+        this.dispose();
+        new ReaderBookView();
+    }
+
+    public void XoaBang() {
+        DefaultTableModel model_table = (DefaultTableModel) table.getModel();
+        model_table.setRowCount(0);
+    }
+
+    public void HienThiVaoBangMacDinh(){
+        XoaBang();
+        AcceptNoDao acceptNoDao = new AcceptNoDao();
+        ArrayList<Status> status = acceptNoDao.selectAll();
+        for (Status s : status) {
+            DefaultTableModel model_table = (DefaultTableModel) table.getModel();
+            model_table.addRow(new Object[]{s.getStudentID(), s.getBookID(), s.getAmount(), s.getStatus()});
+        }
+    }
+
+    public Status getDanhSachMuonTra(){
+        DefaultTableModel model_table = (DefaultTableModel) table.getModel();
+        int i_row = table.getSelectedRow();
+        if (i_row == -1) {
+            return null;
+        }
+        String studentID = model_table.getValueAt(i_row, 0).toString();
+        String bookID = model_table.getValueAt(i_row, 1).toString();
+        int amount = Integer.parseInt(model_table.getValueAt(i_row, 2).toString());
+        String status1 = model_table.getValueAt(i_row, 3).toString();
+        Status status = new Status(studentID, bookID, amount, status1);
+        return status;
+    }
+
+    public boolean KiemTraStudentID(){
+        String jtfstudentID = jtfMaSV.getText();
+        String StudentName = jtfTenSV.getText();
+        Status status = getDanhSachMuonTra();
+
+        String StudentId = status.getStudentID();
+        if (jtfstudentID.isEmpty() || StudentName.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Không được để trống");
+            return false;
+        }
+        StudentDAO studentDAO = new StudentDAO();
+
+        Student student = studentDAO.selectById(jtfstudentID);
+        if(student == null) {
+            JOptionPane.showMessageDialog(null, "Không tồn tại");
+            return false;
+        }
+        if(!StudentId.equals(jtfstudentID) || !student.getName().equals(StudentName)){
+            JOptionPane.showMessageDialog(null, "Sai thông tin");
+            return false;
+        }
+        return true;
+    }
+
+    public void ThucHienXoa() {
+        DefaultTableModel model_table = (DefaultTableModel) table.getModel();
+        AcceptNoDao acceptNoDao = new AcceptNoDao();
+        int i_row = table.getSelectedRow();
+        if (i_row != -1) {
+            Status status = getDanhSachMuonTra();
+            if (status != null) {
+                int result = acceptNoDao.delete(status.getStudentID(), status.getBookID());
+                if (result > 0) {
+                    model_table.removeRow(i_row);
+                }
+            }
+        }
+    }
+
+    public void ThucHienHuyMuon() {
+        boolean check = KiemTraStudentID();
+        if(check){
+            ThucHienXoa();
+            HienThiVaoBangMacDinh();
+        }
+    }
 }

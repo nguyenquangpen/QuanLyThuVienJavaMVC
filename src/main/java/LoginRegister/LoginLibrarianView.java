@@ -108,6 +108,7 @@ public class LoginLibrarianView extends JFrame {
     public void ThucHienDangNhapLibrarian() {
         String username = jtfUserName.getText();
         String password = new String(jtfPassword.getPassword());
+        LibrarianDao librarianDao = new LibrarianDao();
         int librarianID;
 
         try {
@@ -117,7 +118,7 @@ public class LoginLibrarianView extends JFrame {
             return;
         }
 
-        Librarian librarian = LibrarianDao.getInstance().selectByName(username);
+        Librarian librarian = librarianDao.selectByName(username);
 
         if (librarian == null) {
             JOptionPane.showMessageDialog(null, "Tên đăng nhập không tồn tại.");

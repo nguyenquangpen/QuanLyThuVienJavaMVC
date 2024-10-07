@@ -34,6 +34,8 @@ public class QLSachController implements ActionListener {
             this.view.ThoatKhoiChuongTrinh();
         } else if (cm.equals("Quản Lý Độc Giả")) {
             this.view.HienThiDocGia();
+        } else if (cm.equals("Duyệt Phiếu Mượn")) {
+            this.view.HienThiPhieuMuon();
         }
     }
 }

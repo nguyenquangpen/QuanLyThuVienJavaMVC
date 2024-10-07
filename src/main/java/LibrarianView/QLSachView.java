@@ -68,30 +68,15 @@ public class QLSachView extends JFrame {
         jMenuItemMuonTra.add(muonTraItem);
         muonTraItem.addActionListener(ac);
 
-        JMenuItem jMenuItemTrangThai = new JMenu("Thống kê");
-        jMenuItemTrangThai.setFont(font);
-
-        JSeparator separator = new JSeparator();
-
-        JMenuItem trangThaiSach = new JMenuItem("Sách");
-        trangThaiSach.setFont(font);
-        jMenuItemTrangThai.add(trangThaiSach);
-
-        JMenuItem trangThaiUser = new JMenuItem("Độc Giả");
-        trangThaiUser.setFont(font);
-        jMenuItemTrangThai.add(trangThaiUser);
-
-        jMenuItemTrangThai.add(separator);
-
-        JMenuItem trangThaiMuonTra = new JMenuItem("Mượn Trả");
-        trangThaiMuonTra.setFont(font);
-        jMenuItemTrangThai.add(trangThaiMuonTra);
+        JMenuItem duytIteam = new JMenuItem("Duyệt Phiếu Mượn");
+        duytIteam.setFont(font);
+        jMenuItemMuonTra.add(duytIteam);
+        duytIteam.addActionListener(ac);
 
         // Điều chỉnh khoảng cách giữa các menu item
         jMenuItemSach.setMargin(new Insets(0, 5, 0, 5));
         jMenuItemDocGia.setMargin(new Insets(0, 5, 0, 5));
         jMenuItemMuonTra.setMargin(new Insets(0, 5, 0, 5));
-        jMenuItemTrangThai.setMargin(new Insets(0, 5, 0, 5));
 
         menuBar.add(jMenuFile);
         menuBar.add(new JSeparator(SwingConstants.VERTICAL));
@@ -100,8 +85,6 @@ public class QLSachView extends JFrame {
         menuBar.add(jMenuItemDocGia);
         menuBar.add(new JSeparator(SwingConstants.VERTICAL));
         menuBar.add(jMenuItemMuonTra);
-        menuBar.add(new JSeparator(SwingConstants.VERTICAL));
-        menuBar.add(jMenuItemTrangThai);
         menuBar.add(new JSeparator(SwingConstants.VERTICAL));
         // center
         table = new JTable();
@@ -258,7 +241,8 @@ public class QLSachView extends JFrame {
 
     public void HienThiSachBangMacDinh() {
         XoaBang();
-        ArrayList<Sach> arrayList = SachDAO.getInstance().selectAll();
+        SachDAO sachDAO = new SachDAO();
+        ArrayList<Sach> arrayList = sachDAO.selectAll();
         for (Sach sach : arrayList) {
             ThemSachVaoBang(sach);
         }
@@ -266,11 +250,13 @@ public class QLSachView extends JFrame {
 
     public void ThemHoacCapNhatSach(Sach sach){
         DefaultTableModel model_table = (DefaultTableModel) table.getModel();
-        if(SachDAO.getInstance().selectById(sach)==null){
-            SachDAO.getInstance().insert(sach);
+        String maSachId = sach.getId();
+        SachDAO sachDAO = new SachDAO();
+        if(sachDAO.selectById(maSachId)==null){
+            sachDAO.insert(sach);
             ThemSachVaoBang(sach);
         }else{
-            SachDAO.getInstance().update(sach);
+            sachDAO.update(sach);
             for(int i = 0; i < table.getRowCount(); i++){
                 String str =model_table.getValueAt(i, 0).toString();
                 if(str.equals(sach.getId())){
@@ -326,11 +312,12 @@ public class QLSachView extends JFrame {
 
     public void ThucHienXoa() {
         DefaultTableModel model_table = (DefaultTableModel) table.getModel();
+        SachDAO sachDAO = new SachDAO();
         int i_row = table.getSelectedRow();
         if (i_row != -1) {
             Sach sach = getSachDaChon();
             if (sach != null) {
-                int result = SachDAO.getInstance().delete(sach);
+                int result = sachDAO.delete(sach);
                 if (result > 0) {
                     model_table.removeRow(i_row);
                 }
@@ -340,10 +327,11 @@ public class QLSachView extends JFrame {
 
     public void ThucHienTim() {
         String tenDauSach = textField_TenDauSachTimKiem.getText();
+        SachDAO sachDAO = new SachDAO();
         String column = "TenSach";
         XoaBang();
         if (!tenDauSach.isEmpty()) {
-            ArrayList<Sach> sach = SachDAO.getInstance().selectByCondition(tenDauSach, column);
+            ArrayList<Sach> sach = sachDAO.selectByCondition(tenDauSach, column);
             if (sach != null && !sach.isEmpty()) {
                 for (Sach book : sach) {
                     ThemSachVaoBang(book);
@@ -367,5 +355,10 @@ public class QLSachView extends JFrame {
     public void HienThiDocGia() {
         this.dispose();
         new StudentView();
+    }
+
+    public void HienThiPhieuMuon() {
+        this.dispose();
+        new AcceptNoView();
     }
 }

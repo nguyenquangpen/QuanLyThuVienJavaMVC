@@ -2,8 +2,12 @@ package ReadersView;
 
 import Controller.QLReadBookController;
 import LoginRegister.FuntionLogin;
+import dao.AcceptNoDao;
 import dao.SachDAO;
+import dao.StudentDAO;
 import model.Sach;
+import model.Status;
+import model.Student;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -68,12 +72,18 @@ public class ReaderBookView extends JFrame {
         jMenuItemPhieu.add(sachItem);
         sachItem.addActionListener(ac);
 
+        JMenuItem StatusView = new JMenuItem("Trạng Thái");
+        StatusView.setFont(font);
+        jMenuItemPhieu.add(StatusView);
+        StatusView.addActionListener(ac);
+
         JMenuItem jMenuItemBook = new JMenu("Sách");
         jMenuItemBook.setFont(font);
 
         JMenuItem BookView = new JMenuItem("Đầu Sách");
         BookView.setFont(font);
         jMenuItemBook.add(BookView);
+
 
         menuBar.add(jMenuFile);
         menuBar.add(new JSeparator(SwingConstants.VERTICAL));
@@ -250,7 +260,8 @@ public class ReaderBookView extends JFrame {
 
     public void HienThiSachMAcDinh(){
         XoaBang();
-        ArrayList<Sach> arrayList = SachDAO.getInstance().selectAll();
+        SachDAO sachDAO = new SachDAO();
+        ArrayList<Sach> arrayList = sachDAO.selectAll();
         for (Sach sach : arrayList) {
             ThemSachVaoBang(sach);
         }
@@ -262,9 +273,13 @@ public class ReaderBookView extends JFrame {
         if (i_row == -1) {
             return null;
         }
+        String MaSachID = (String) model_table.getValueAt(i_row, 0);
         String TenDauSach = (String) model_table.getValueAt(i_row, 1);
+        int  NamXB = (int) model_table.getValueAt(i_row, 2);
+        String TheLoai = (String) model_table.getValueAt(i_row, 3);
         String TacGia = (String) model_table.getValueAt(i_row, 4);
-        Sach sach = new Sach(TenDauSach, TacGia);
+        int amout = (int) model_table.getValueAt(i_row, 5);
+        Sach sach = new Sach(MaSachID, TenDauSach, NamXB, TheLoai, TacGia, amout);
         return sach;
     }
 
@@ -278,6 +293,7 @@ public class ReaderBookView extends JFrame {
 
     public boolean ThucHienKiemTra() {
         Sach sach = getSachDaChon();
+        SachDAO sachDAO = new SachDAO();
         int amount;
         try {
             amount = Integer.parseInt(jtfSoLuong.getText());
@@ -286,22 +302,49 @@ public class ReaderBookView extends JFrame {
             return false;
         }
         String column = "MaSachID";
-        ArrayList<Sach> arrayList = SachDAO.getInstance().selectByCondition(sach.getId(), column);
+        ArrayList<Sach> arrayList = sachDAO.selectByCondition(sach.getId(), column);
         for (Sach sach1 : arrayList) {
             if (sach1.getSoLuong() < amount) {
+                JOptionPane.showMessageDialog(this, "Quá Số Lượng");
                 return false;
             }
         }
         return true;
     }
 
+    public boolean ThucHienKiemTraSV(){
+        String studentID = jtfMaStudentID.getText();
+        String studentName = jtfStudentname.getText();
+
+        StudentDAO studentDAO = new StudentDAO();
+        Student student = studentDAO.selectById(studentID);
+
+        if(studentID.isEmpty() || studentName.isEmpty()){
+            JOptionPane.showMessageDialog(this, "Không được để trống");
+            return false;
+        }
+        if(student == null){
+            JOptionPane.showMessageDialog(this, "Không tồn tại Phiếu Mượn");
+            return false;
+        }
+        if(!student.getName().equals(studentName)){
+            JOptionPane.showMessageDialog(this, "Sai thông tin");
+            return false;
+        }
+        return true;
+    }
+
     public void ThucHienChoMuon() {
-        boolean status = ThucHienKiemTra();
-        if (status) {
+        boolean statusBook = ThucHienKiemTra();
+        boolean statusSV = ThucHienKiemTraSV();
+        AcceptNoDao acceptNoDao = new AcceptNoDao();
+        if (statusBook && statusSV) {
             JOptionPane.showMessageDialog(this, "Hoàn tất Mượn Sách!");
-            // ??
-        } else {
-            JOptionPane.showMessageDialog(this, "Quá Số Lượng");
+            String studentID = jtfMaStudentID.getText();
+            String bookID = getSachDaChon().getId();
+            int amount = Integer.parseInt(jtfSoLuong.getText());
+            String statusBorrow = "Waiting";
+            acceptNoDao.insert(studentID, bookID, amount, statusBorrow);
         }
     }
 
@@ -309,7 +352,7 @@ public class ReaderBookView extends JFrame {
     public void ThucHienTim() {
         String book = jtfTimKiem.getText();
         String column;
-
+        SachDAO sachDAO = new SachDAO();
         if(rdbtnTenSach.isSelected()){
             column = "TenSach";
         }else {
@@ -319,7 +362,7 @@ public class ReaderBookView extends JFrame {
         XoaBang();
 
         if (book != null && !book.trim().isEmpty()) {
-            ArrayList<Sach> sach = SachDAO.getInstance().selectByCondition(book, column);
+            ArrayList<Sach> sach = sachDAO.selectByCondition(book, column);
             if (sach != null && !sach.isEmpty()) {
                 for (Sach bookItem : sach) {
                     ThemSachVaoBang(bookItem);
@@ -347,5 +390,10 @@ public class ReaderBookView extends JFrame {
             this.dispose();
             new FuntionLogin();
         }
+    }
+
+    public void HienThiTrangThai() {
+        this.dispose();
+        new StatusView();
     }
 }
