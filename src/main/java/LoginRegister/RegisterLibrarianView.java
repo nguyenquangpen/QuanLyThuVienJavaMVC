@@ -111,15 +111,23 @@ public class RegisterLibrarianView extends JFrame {
         }
     }
 
+//    public boolean ThucHienKiemTraLibrarian() {
+//        int libraianID = Integer.parseInt(String.valueOf(jtfLibraianID.getText()));
+//        String cardID = jtfCardID.getText();
+//        Librarian librarian = new Librarian(libraianID, cardID);
+//        Librarian condition = LibrarianDao.getInstance().selectById(librarian);
+//
+//        if(condition.getEmployeeCard().equals(cardID) && condition.getLibrarianID() == libraianID) {
+//            return true;
+//        }
+//        return false;
+//    }
     public boolean ThucHienKiemTraLibrarian() {
-        int libraianID = Integer.parseInt(String.valueOf(jtfLibraianID.getText()));
+        int librarianID = Integer.parseInt(jtfLibraianID.getText());
         String cardID = jtfCardID.getText();
-        Librarian librarian = new Librarian(libraianID, cardID);
+        Librarian librarian = new Librarian(librarianID, cardID);
         Librarian condition = LibrarianDao.getInstance().selectById(librarian);
 
-        if(condition.getEmployeeCard().equals(cardID) && condition.getLibrarianID() == libraianID) {
-            return true;
-        }
-        return false;
+        return condition != null && condition.getEmployeeCard().equals(cardID) && condition.getLibrarianID() == librarianID;
     }
 }
