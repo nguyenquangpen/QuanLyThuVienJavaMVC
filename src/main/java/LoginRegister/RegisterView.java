@@ -104,8 +104,8 @@ public class RegisterView extends JFrame {
             JOptionPane.showMessageDialog(null, "Không được để trống");
         }
         // Kiểm tra người dùng đã tồn tại
-        else if (userDAO.selectByCondition(username, column) != null) {
-            JOptionPane.showMessageDialog(null, "Đã tồn tại, vui lòng nhập lại thông tin");
+        else if (userDAO.selectByName(username) != null) {
+            JOptionPane.showMessageDialog(null, "Tên Đã tồn tại, vui lòng nhập lại thông tin");
         }
         else {
             User user = new User(username, password);
