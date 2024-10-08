@@ -1,6 +1,6 @@
 package Controller;
 
-import LoginRegister.LoginLibrarianView;
+import LoginRegisterView.LoginLibrarianView;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

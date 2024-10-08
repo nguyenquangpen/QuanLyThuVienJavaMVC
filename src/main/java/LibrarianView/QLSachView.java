@@ -1,7 +1,7 @@
 package LibrarianView;
 
 import Controller.QLSachController;
-import LoginRegister.FuntionLogin;
+import LoginRegisterView.FuntionLogin;
 import dao.SachDAO;
 import model.*;
 
@@ -104,7 +104,6 @@ public class QLSachView extends JFrame {
         panelCenter.setLayout(null);
         panelCenter.add(tableScrollPane);
 
-
         this.setJMenuBar(menuBar);
         getContentPane().setLayout(null);
         getContentPane().add(panelCenter);
@@ -141,7 +140,6 @@ public class QLSachView extends JFrame {
         textFieldSoLuong.setFont(font);
 
         //bottom
-
         JButton btnXoa = new JButton("Xoá");
         btnXoa.setFont(new Font("Tahoma", Font.PLAIN, 13));
         btnXoa.setBounds(124, 164, 76, 23);
@@ -219,8 +217,9 @@ public class QLSachView extends JFrame {
 
         panelSouth.add(textField_TacGia);
         textField_TacGia.setFont(font);
-    }
 
+        ImageIcon icon = new ImageIcon("D:\\Academic\\lap-trinh\\Project\\IdeaProject\\library_management_Project\\Image\\book.png");
+    }
 
     public void ThemSachVaoBang(Sach sach){
         DefaultTableModel model_table = (DefaultTableModel) table.getModel();

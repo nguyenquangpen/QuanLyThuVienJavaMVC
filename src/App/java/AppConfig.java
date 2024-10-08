@@ -1,9 +1,9 @@
 import LibrarianView.QLSachView;
 import LibrarianView.StudentView;
-import LoginRegister.FuntionLogin;
-import LoginRegister.LoginLibrarianView;
-import LoginRegister.LoginView;
-import LoginRegister.RegisterLibrarianView;
+import LoginRegisterView.FuntionLogin;
+import LoginRegisterView.LoginLibrarianView;
+import LoginRegisterView.LoginView;
+import LoginRegisterView.RegisterLibrarianView;
 import ReadersView.PhieuDkyView;
 import ReadersView.ReaderBookView;
 

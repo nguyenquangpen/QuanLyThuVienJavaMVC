@@ -1,15 +1,11 @@
-import LibrarianView.AcceptNoView;
 import LibrarianView.QLSachView;
-import LibrarianView.StudentView;
-import LoginRegister.FuntionLogin;
-import LoginRegister.LoginLibrarianView;
-import ReadersView.PhieuDkyView;
+import LoginRegisterView.FuntionLogin;
+import LoginRegisterView.LoginLibrarianView;
+import LoginRegisterView.LoginView;
 import ReadersView.ReaderBookView;
-import ReadersView.StatusView;
-import dao.AcceptNoDao;
 
 public class AppConfig {
     public static void main(String[] args) {
-        new ReaderBookView();
+        new LoginLibrarianView()  ;
     }
 }

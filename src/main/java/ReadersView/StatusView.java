@@ -1,9 +1,8 @@
 package ReadersView;
 
 import Controller.StatusController;
-import LoginRegister.FuntionLogin;
+import LoginRegisterView.FuntionLogin;
 import dao.AcceptNoDao;
-import dao.SachDAO;
 import dao.StudentDAO;
 import model.Status;
 import model.Student;

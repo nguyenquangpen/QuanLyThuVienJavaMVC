@@ -1,7 +1,7 @@
 package LibrarianView;
 
 import Controller.Studentcontroller;
-import LoginRegister.FuntionLogin;
+import LoginRegisterView.FuntionLogin;
 import dao.StudentDAO;
 import model.Student;
 

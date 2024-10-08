@@ -1,4 +1,4 @@
-package LoginRegister;
+package LoginRegisterView;
 
 import Controller.LibrarianLoginController;
 import LibrarianView.QLSachView;
@@ -26,71 +26,83 @@ public class LoginLibrarianView extends JFrame {
     }
     private void init() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 285, 331);
+        setBounds(100, 100, 310, 373);
         this.setLocationRelativeTo(null);
         this.setResizable(false);
         this.setTitle("Login Librarian");
+        ActionListener ac = new LibrarianLoginController(this);
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-
-        ActionListener ac = new LibrarianLoginController(this);
 
         setContentPane(contentPane);
         contentPane.setLayout(null);
 
         JLabel LoginTitle = new JLabel("Login Librarian");
-        LoginTitle.setFont(new Font("Georgia", Font.BOLD, 20));
-        LoginTitle.setBounds(64, 30, 173, 29);
+        LoginTitle.setFont(new Font("Georgia", Font.BOLD, 23));
+        LoginTitle.setBounds(64, 26, 189, 33);
         contentPane.add(LoginTitle);
 
         jtfUserName = new JTextField();
         jtfUserName.setFont(new Font("Tahoma", Font.PLAIN, 13));
-        jtfUserName.setBounds(114, 98, 123, 20);
+        jtfUserName.setBounds(166, 81, 123, 33);
         contentPane.add(jtfUserName);
         jtfUserName.setColumns(10);
 
         jtfPassword = new JPasswordField();
-        jtfPassword.setBounds(114, 175, 123, 20);
+        jtfPassword.setBounds(166, 206, 123, 33);
         contentPane.add(jtfPassword);
 
-        JLabel lblNewLabel_1 = new JLabel("Username");
-        lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 13));
-        lblNewLabel_1.setBounds(10, 101, 74, 14);
-        contentPane.add(lblNewLabel_1);
-
-        JLabel lblNewLabel_2 = new JLabel("Password");
-        lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 13));
-        lblNewLabel_2.setBounds(10, 177, 68, 14);
-        contentPane.add(lblNewLabel_2);
-
         JButton btnLogin = new JButton("Login");
-        btnLogin.setBounds(110, 216, 89, 23);
-        contentPane.add(btnLogin);
+        btnLogin.setFont(new Font("Tahoma", Font.PLAIN, 13));
+        btnLogin.setBounds(97, 269, 89, 23);
         btnLogin.addActionListener(ac);
+        contentPane.add(btnLogin);
 
         JLabel lblNewLabel_3 = new JLabel("New Librarian ?");
         lblNewLabel_3.setFont(new Font("Tahoma", Font.PLAIN, 13));
-        lblNewLabel_3.setBounds(64, 269, 92, 14);
+        lblNewLabel_3.setBounds(64, 311, 92, 14);
         contentPane.add(lblNewLabel_3);
 
         jlabel_Register = new JLabel("<html><u>Sign Up</u></html>");
         jlabel_Register.setFont(new Font("Tahoma", Font.PLAIN, 13));
-        jlabel_Register.setBounds(166, 269, 49, 14);
+        jlabel_Register.setBounds(166, 311, 49, 14);
         jlabel_Register.setForeground(Color.BLUE);
-        contentPane.add(jlabel_Register);
         AddSignUp();
-
-        JLabel lblNewLabel = new JLabel("Librarian ID");
-        lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
-        lblNewLabel.setBounds(10, 139, 74, 14);
-        contentPane.add(lblNewLabel);
+        contentPane.add(jlabel_Register);
 
         jtfLibrarianID = new JTextField();
         jtfLibrarianID.setFont(new Font("Tahoma", Font.PLAIN, 13));
-        jtfLibrarianID.setBounds(114, 136, 123, 20);
+        jtfLibrarianID.setBounds(166, 143, 123, 33);
         contentPane.add(jtfLibrarianID);
         jtfLibrarianID.setColumns(10);
+
+        JPanel panel = new JPanel();
+        panel.setBounds(10, 71, 132, 168);
+        panel.setBackground(new Color(255, 255, 255));
+        contentPane.add(panel);
+        panel.setLayout(null);
+
+        JLabel jlbpassworld = new JLabel("Password");
+        jlbpassworld.setIcon(new ImageIcon("D:\\Academic\\lap-trinh\\Project\\IdeaProject\\library_management_Project\\Image\\40_104848.png"));
+        jlbpassworld.setBounds(4, 125, 104, 32);
+        panel.add(jlbpassworld);
+        jlbpassworld.setFont(new Font("Tahoma", Font.PLAIN, 13));
+
+        JLabel jldlibrarianID = new JLabel("Librarian ID");
+        jldlibrarianID.setIcon(new ImageIcon("D:\\Academic\\lap-trinh\\Project\\IdeaProject\\library_management_Project\\Image\\11_104884.png"));
+        jldlibrarianID.setBounds(4, 69, 118, 36);
+        panel.add(jldlibrarianID);
+        jldlibrarianID.setFont(new Font("Tahoma", Font.PLAIN, 13));
+
+        JLabel jldusername = new JLabel("Username");
+        jldusername.setIcon(new ImageIcon("D:\\Academic\\lap-trinh\\Project\\IdeaProject\\library_management_Project\\Image\\22_104877.png"));
+        jldusername.setBounds(4, 11, 104, 37);
+        panel.add(jldusername);
+        jldusername.setFont(new Font("Tahoma", Font.PLAIN, 13));
+
+
     }
+
     public void AddSignUp(){
         jlabel_Register.addMouseListener(new MouseAdapter() {
             @Override

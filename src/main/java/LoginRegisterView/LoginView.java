@@ -1,4 +1,4 @@
-package LoginRegister;
+package LoginRegisterView;
 
 import Controller.QLLoginController;
 import ReadersView.ReaderBookView;
@@ -21,51 +21,62 @@ public class LoginView extends JFrame {
     }
 
     private void init() {
+        getContentPane().setBackground(new Color(223, 225, 221));
         this.setTitle("Login");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(280, 300);
+        this.setSize(297, 342);
         this.setLocationRelativeTo(null);
 
-        ActionListener action = new QLLoginController(this);
+        ActionListener ac = new QLLoginController(this);
 
         Font fontTitle = new Font("Times New Roman", Font.BOLD, 30);
         JLabel jLabelTitle = new JLabel("Login");
+        jLabelTitle.setBounds(0, 0, 266, 35);
         jLabelTitle.setFont(fontTitle);
         jLabelTitle.setHorizontalAlignment(SwingConstants.CENTER);
 
         Font font = new Font("Arial", Font.PLAIN, 15);
 
         JLabel jLabelUsername = new JLabel("Username");
+        jLabelUsername.setBounds(10, 19, 246, 32);
+        jLabelUsername.setIcon(new ImageIcon("D:\\Academic\\lap-trinh\\Project\\IdeaProject\\library_management_Project\\Image\\22_104877.png"));
         jLabelUsername.setFont(font);
         jtfUsername = new JTextField(15);
+        jtfUsername.setFont(new Font("Tahoma", Font.PLAIN, 13));
+        jtfUsername.setBounds(10, 62, 246, 32);
 
         JLabel jLabelPassword = new JLabel("Password");
+        jLabelPassword.setBounds(10, 105, 246, 32);
+        jLabelPassword.setIcon(new ImageIcon("D:\\Academic\\lap-trinh\\Project\\IdeaProject\\library_management_Project\\Image\\40_104848.png"));
         jLabelPassword.setFont(font);
         jtfPassword = new JPasswordField(15);
+        jtfPassword.setFont(new Font("Tahoma", Font.PLAIN, 13));
+        jtfPassword.setBounds(10, 148, 246, 32);
 
-        JButton loginButton = new JButton("Login");
-        loginButton.addActionListener(action);
-
-        jLabel_SignUp = new JLabel("<html><u>Sign Up</u></html>");
-        jLabel_SignUp.setForeground(Color.BLUE);
-        AddSignUp();
-
-        JPanel panelCenter = new JPanel(new GridLayout(5, 1, 5, 5));
+        JPanel panelCenter = new JPanel();
+        panelCenter.setBackground(new Color(239, 240, 238));
+        panelCenter.setBounds(10, 41, 266, 185);
         panelCenter.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+        panelCenter.setLayout(null);
         panelCenter.add(jLabelUsername);
         panelCenter.add(jtfUsername);
         panelCenter.add(jLabelPassword);
         panelCenter.add(jtfPassword);
-        panelCenter.add(jLabel_SignUp);
+        getContentPane().setLayout(null);
+        getContentPane().add(jLabelTitle);
+        getContentPane().add(panelCenter);
 
-        JPanel panelDow = new JPanel(new GridLayout(1, 2, 10, 0));
-        panelDow.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        panelDow.add(loginButton);
+        JButton loginButton = new JButton("Login");
+        loginButton.setFont(new Font("Tahoma", Font.PLAIN, 13));
+        loginButton.setBounds(67, 271, 131, 23);
+        loginButton.addActionListener(ac);
+        getContentPane().add(loginButton);
 
-        this.setLayout(new BorderLayout());
-        this.add(jLabelTitle, BorderLayout.NORTH);
-        this.add(panelCenter, BorderLayout.CENTER);
-        this.add(panelDow, BorderLayout.SOUTH);
+        jLabel_SignUp = new JLabel("<html><u>Sign Up</u></html>");
+        jLabel_SignUp.setBounds(20, 237, 68, 23);
+        AddSignUp();
+        getContentPane().add(jLabel_SignUp);
+        jLabel_SignUp.setForeground(Color.BLUE);
     }
 
     public void AddSignUp(){
@@ -87,12 +98,16 @@ public class LoginView extends JFrame {
         String password = new String(jtfPassword.getPassword());
         UserDAO userDAO = new UserDAO();
         User user = userDAO.selectByName(username);
-        if(user.getUsername().equals(username) && user.getPassword().equals(password)){
+        if(username.isEmpty() || password.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin");
+        }
+        if(!user.getUsername().equals(username) || !user.getPassword().equals(password)){
+            JOptionPane.showMessageDialog(null, "Sai tên đăng nhập hoặc mật khẩu");
+        }
+        else {
             JOptionPane.showMessageDialog(null, "Đăng nhập Thành công");
             this.dispose();
             new ReaderBookView();
-        }else {
-            JOptionPane.showMessageDialog(null, "không thể đăng nhập");
         }
     }
 

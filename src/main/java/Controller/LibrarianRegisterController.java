@@ -1,6 +1,6 @@
 package Controller;
 
-import LoginRegister.RegisterLibrarianView;
+import LoginRegisterView.RegisterLibrarianView;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,8 +17,8 @@ public class LibrarianRegisterController implements ActionListener {
         String cm = e.getActionCommand();
         if(cm.equals("Sign Up")){
             this.register.ThucHienDangKyLibrarian();
-        }else if(cm.equals("Check")){
-            this.register.ThucHienKiemTraLibrarian();
+        }else if(cm.equals("Back")) {
+            this.register.ThucHienQuayLai();
         }
     }
 }

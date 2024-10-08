@@ -1,6 +1,6 @@
 package Controller;
 
-import LoginRegister.FuntionLogin;
+import LoginRegisterView.FuntionLogin;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
