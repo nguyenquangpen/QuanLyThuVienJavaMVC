@@ -20,9 +20,16 @@
 
 4, cài intellij idea:[intellij idea](https://www.jetbrains.com/idea/download/?section=windows)
 
-5, ghi file QLTV.sql vào mysql và chỉnh lại đường dẫn ở DaoInterface
+7, tạo project maven và cập nhật pom.xml file
+
+5, ghi file QLTV.sql vào mysql và chỉnh lại đường dẫn ở các file trong thư mục dao
 
 6, chạy chương trình trong gói App (AppConfig)
 
 # Các chức năng chính của chương trình
+
+- có 2 chứ năng chính (thủ thư) và (độc giả)
+- Với độc giả:
+    
+
 
