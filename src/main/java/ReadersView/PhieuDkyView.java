@@ -114,7 +114,7 @@ public class PhieuDkyView extends JFrame {
         lblNewLabel_6.setBounds(10, 144, 62, 19);
         panel_1.add(lblNewLabel_6);
 
-        JComboBox<String> comboBox_NamHoc = new JComboBox<>();
+        JComboBox<String> comboBox_NamHoc = new JComboBox<>(new String[]{"1", "2", "3", "4"});
         comboBox_NamHoc.setBounds(82, 143, 76, 22);
         panel_1.add(comboBox_NamHoc);
 

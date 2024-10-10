@@ -3,7 +3,7 @@ package LibrarianView;
 import Controller.AcceptNoController;
 import LoginRegisterView.FuntionLogin;
 import dao.AcceptNoDao;
-import model.Status;
+import model.AcceptNo;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -22,7 +22,7 @@ public class AcceptNoView extends JFrame {
         this.setVisible(true);
     }
     public void init(){
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setBounds(100, 100, 524, 476);
         this.setLocationRelativeTo(null);
         this.setResizable(false);
@@ -145,14 +145,14 @@ public class AcceptNoView extends JFrame {
     public void HienThiVapBangMacDinh(){
         XoaBang();
         AcceptNoDao acceptNoDao = new AcceptNoDao();
-        ArrayList<Status> status = acceptNoDao.selectAll();
-        for (Status s : status) {
+        ArrayList<AcceptNo> acceptNos = acceptNoDao.selectAll();
+        for (AcceptNo s : acceptNos) {
             DefaultTableModel model_table = (DefaultTableModel) table.getModel();
             model_table.addRow(new Object[]{s.getStudentID(), s.getBookID(), s.getAmount(), s.getStatus()});
         }
     }
 
-    public Status getDanhSachMuonTra(){
+    public AcceptNo getDanhSachMuonTra(){
         DefaultTableModel model_table = (DefaultTableModel) table.getModel();
         int i_row = table.getSelectedRow();
         if (i_row == -1) {
@@ -162,21 +162,21 @@ public class AcceptNoView extends JFrame {
         String bookID = model_table.getValueAt(i_row, 1).toString();
         int amount = Integer.parseInt(model_table.getValueAt(i_row, 2).toString());
         String status1 = model_table.getValueAt(i_row, 3).toString();
-        Status status = new Status(studentID, bookID, amount, status1);
-        return status;
+        AcceptNo acceptNo = new AcceptNo(studentID, bookID, amount, status1);
+        return acceptNo;
     }
 
     public void TuChoiMuon() {
         final String REJECTED = "Declined";
-        Status status = getDanhSachMuonTra();
+        AcceptNo acceptNo = getDanhSachMuonTra();
 
-        if (status.getBookID() == null || status.getStudentID() == null) {
+        if (acceptNo.getBookID() == null || acceptNo.getStudentID() == null) {
             JOptionPane.showMessageDialog(null, "Chọn Mã Học Sinh và Mã Sách hợp lệ.");
             return;
         }
-        String studentID = status.getStudentID();
-        String bookID = status.getBookID();
-        int amount = status.getAmount();
+        String studentID = acceptNo.getStudentID();
+        String bookID = acceptNo.getBookID();
+        int amount = acceptNo.getAmount();
         AcceptNoDao acceptNoDao = new AcceptNoDao();
         acceptNoDao.update(studentID, bookID, amount, REJECTED);
         int result = checkStudentIDAndSachID();
@@ -194,15 +194,15 @@ public class AcceptNoView extends JFrame {
 
     public void ChapNhanMuon() {
         final String ACCEPTED = "Accepted";
-        Status status = getDanhSachMuonTra();
+        AcceptNo acceptNo = getDanhSachMuonTra();
 
-        if (status.getBookID() == null || status.getStudentID() == null) {
+        if (acceptNo.getBookID() == null || acceptNo.getStudentID() == null) {
             JOptionPane.showMessageDialog(null, "Chọn Mã Học Sinh và Mã Sách hợp lệ.");
             return;
         }
-        String studentID = status.getStudentID();
-        String bookID = status.getBookID();
-        int amount = status.getAmount();
+        String studentID = acceptNo.getStudentID();
+        String bookID = acceptNo.getBookID();
+        int amount = acceptNo.getAmount();
         AcceptNoDao acceptNoDao = new AcceptNoDao();
         acceptNoDao.update(studentID, bookID, amount, ACCEPTED);
 
@@ -212,9 +212,9 @@ public class AcceptNoView extends JFrame {
             JOptionPane.showMessageDialog(null, "Sách đã được chấp nhận mượn");
         } else if (result == 0) {
             HienThiVapBangMacDinh();
-            JOptionPane.showMessageDialog(null, "Chấp nhận mượn thành công");  //không cần thông báo
+            JOptionPane.showMessageDialog(null, "Chấp nhận mượn thành công");
         }else{
-            JOptionPane.showMessageDialog(null, "Sách đã được từ chối mượn"); //không cần thông báo
+            JOptionPane.showMessageDialog(null, "Sách đã được từ chối mượn");
         }
     }
 
@@ -226,11 +226,11 @@ public class AcceptNoView extends JFrame {
         String studentID = model_table.getValueAt(i_row, 0).toString();
         String bookID = model_table.getValueAt(i_row, 1).toString();
         AcceptNoDao acceptNoDao = new AcceptNoDao();
-        Status status = acceptNoDao.selectByID(studentID, bookID);
-        if("Accepted".equals(status.getStatus())){
+        AcceptNo acceptNo = acceptNoDao.selectByID(studentID, bookID);
+        if("Accepted".equals(acceptNo.getStatus())){
             return 1;
         }
-        if("Declined".equals(status.getStatus())){
+        if("Declined".equals(acceptNo.getStatus())){
             return 2;
         }
         return ketqua;
@@ -241,14 +241,15 @@ public class AcceptNoView extends JFrame {
         AcceptNoDao acceptNoDao = new AcceptNoDao();
         int i_row = table.getSelectedRow();
         if (i_row != -1) {
-            Status status = getDanhSachMuonTra();
-            if (status != null) {
-                int result = acceptNoDao.delete(status.getStudentID(), status.getBookID());
+            AcceptNo acceptNo = getDanhSachMuonTra();
+            if (acceptNo != null) {
+                int result = acceptNoDao.delete(acceptNo.getStudentID(), acceptNo.getBookID());
                 if (result > 0) {
                     model_table.removeRow(i_row);
                 }
             }
         }
+        HienThiVapBangMacDinh();
     }
 
     public void HienThiDocGia() {
@@ -264,5 +265,10 @@ public class AcceptNoView extends JFrame {
     public void ThucHienThoat() {
         this.dispose();
         new FuntionLogin();
+    }
+
+    public void HienThiMuonTra() {
+        this.dispose();
+        new TransactionView();
     }
 }

@@ -26,6 +26,8 @@ public class AcceptNoController implements ActionListener {
             this.accept_no.HienThiSach();
         } else if (cm.equals("Quản Lý Độc Giả")) {
             this.accept_no.HienThiDocGia();
+        } else if (cm.equals("Quản Lý Mượn Trả")) {
+            this.accept_no.HienThiMuonTra();
         }
     }
 }

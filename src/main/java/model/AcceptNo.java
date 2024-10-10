@@ -1,13 +1,13 @@
 package model;
 
-public class Status {
+public class AcceptNo {
     private String StudentID;
     private String BookID;
     private int amount;
     private String status;
-    public Status() {
+    public AcceptNo() {
     }
-    public Status(String StudentID, String BookID, int amount, String status) {
+    public AcceptNo(String StudentID, String BookID, int amount, String status) {
         this.StudentID = StudentID;
         this.BookID = BookID;
         this.amount = amount;

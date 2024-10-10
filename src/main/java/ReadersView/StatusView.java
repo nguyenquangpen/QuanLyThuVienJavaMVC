@@ -4,7 +4,7 @@ import Controller.StatusController;
 import LoginRegisterView.FuntionLogin;
 import dao.AcceptNoDao;
 import dao.StudentDAO;
-import model.Status;
+import model.AcceptNo;
 import model.Student;
 
 import javax.swing.*;
@@ -165,14 +165,14 @@ public class StatusView extends JFrame {
     public void HienThiVaoBangMacDinh(){
         XoaBang();
         AcceptNoDao acceptNoDao = new AcceptNoDao();
-        ArrayList<Status> status = acceptNoDao.selectAll();
-        for (Status s : status) {
+        ArrayList<AcceptNo> acceptNos = acceptNoDao.selectAll();
+        for (AcceptNo s : acceptNos) {
             DefaultTableModel model_table = (DefaultTableModel) table.getModel();
             model_table.addRow(new Object[]{s.getStudentID(), s.getBookID(), s.getAmount(), s.getStatus()});
         }
     }
 
-    public Status getDanhSachMuonTra(){
+    public AcceptNo getDanhSachMuonTra(){
         DefaultTableModel model_table = (DefaultTableModel) table.getModel();
         int i_row = table.getSelectedRow();
         if (i_row == -1) {
@@ -182,16 +182,16 @@ public class StatusView extends JFrame {
         String bookID = model_table.getValueAt(i_row, 1).toString();
         int amount = Integer.parseInt(model_table.getValueAt(i_row, 2).toString());
         String status1 = model_table.getValueAt(i_row, 3).toString();
-        Status status = new Status(studentID, bookID, amount, status1);
-        return status;
+        AcceptNo acceptNo = new AcceptNo(studentID, bookID, amount, status1);
+        return acceptNo;
     }
 
     public boolean KiemTraStudentID(){
         String jtfstudentID = jtfMaSV.getText();
         String StudentName = jtfTenSV.getText();
-        Status status = getDanhSachMuonTra();
+        AcceptNo acceptNo = getDanhSachMuonTra();
 
-        String StudentId = status.getStudentID();
+        String StudentId = acceptNo.getStudentID();
         if (jtfstudentID.isEmpty() || StudentName.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Không được để trống");
             return false;
@@ -215,9 +215,9 @@ public class StatusView extends JFrame {
         AcceptNoDao acceptNoDao = new AcceptNoDao();
         int i_row = table.getSelectedRow();
         if (i_row != -1) {
-            Status status = getDanhSachMuonTra();
-            if (status != null) {
-                int result = acceptNoDao.delete(status.getStudentID(), status.getBookID());
+            AcceptNo acceptNo = getDanhSachMuonTra();
+            if (acceptNo != null) {
+                int result = acceptNoDao.delete(acceptNo.getStudentID(), acceptNo.getBookID());
                 if (result > 0) {
                     model_table.removeRow(i_row);
                 }

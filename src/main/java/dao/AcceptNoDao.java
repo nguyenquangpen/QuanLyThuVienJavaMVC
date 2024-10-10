@@ -1,6 +1,6 @@
 package dao;
 
-import model.Status;
+import model.AcceptNo;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -60,7 +60,7 @@ public class AcceptNoDao {
         }
     }
 
-    public Status selectByID(String studentID, String bookID) {
+    public AcceptNo selectByID(String studentID, String bookID) {
         PreparedStatement st = null;
         ResultSet rs = null;
         try {
@@ -75,7 +75,7 @@ public class AcceptNoDao {
                 String BookID = rs.getString("MaSachID");
                 int amount = rs.getInt("SoLuong");
                 String status = rs.getString("ChoMuon");
-                return new Status(StudentID, BookID, amount, status);
+                return new AcceptNo(StudentID, BookID, amount, status);
             }
         } catch (SQLException e) {
             throw new RuntimeException("Select by ID failed: " + e.getMessage(), e);
@@ -127,8 +127,8 @@ public class AcceptNoDao {
         }
     }
 
-    public ArrayList<Status> selectAll() {
-        ArrayList<Status> ketQua = new ArrayList<>();
+    public ArrayList<AcceptNo> selectAll() {
+        ArrayList<AcceptNo> ketQua = new ArrayList<>();
         Statement st = null;
         ResultSet rs = null;
         try {
@@ -141,7 +141,7 @@ public class AcceptNoDao {
                 String BookID = rs.getString("MaSachID");
                 int amount = rs.getInt("SoLuong");
                 String status = rs.getString("ChoMuon");
-                ketQua.add(new Status(StudentID, BookID, amount, status));
+                ketQua.add(new AcceptNo(StudentID, BookID, amount, status));
             }
         } catch (SQLException e) {
             throw new RuntimeException("Select all failed: " + e.getMessage(), e);

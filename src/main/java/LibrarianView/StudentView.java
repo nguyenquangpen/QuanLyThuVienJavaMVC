@@ -346,4 +346,9 @@ public class StudentView extends JFrame {
         this.dispose();
         new AcceptNoView();
     }
+
+    public void HienThiMuonTra() {
+        this.dispose();
+        new TransactionView();
+    }
 }
