@@ -8,6 +8,7 @@ import model.Transaction;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -49,6 +50,8 @@ public class BillView extends JFrame {
         panel.setBounds(10, 47, 381, 385);
         contentPane.add(panel);
         panel.setLayout(null);
+        panel.setBorder(new LineBorder(Color.GRAY, 1));
+        panel.setBackground(new Color(255, 255, 255));
 
         JLabel lblNewLabel_1 = new JLabel("Mã Độc Giả: ");
         lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 13));

@@ -7,6 +7,7 @@ import model.AcceptNo;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -100,6 +101,7 @@ public class AcceptNoView extends JFrame {
         panel.setBackground(new Color(255, 255, 255));
         contentPane.add(panel);
         panel.setLayout(null);
+        panel.setBorder(new LineBorder(Color.GRAY, 1));
 
         table = new JTable();
         table.setBounds(10, 11, 470, 240);

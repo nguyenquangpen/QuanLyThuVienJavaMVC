@@ -9,6 +9,7 @@ import model.Student;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -86,6 +87,7 @@ public class StatusView extends JFrame {
         panel.setBounds(188, 87, 326, 269);
         contentPane.add(panel);
         panel.setLayout(null);
+        panel.setBorder(new LineBorder(Color.GRAY, 1));
 
         table = new JTable();
         table.setModel(new DefaultTableModel(
@@ -102,6 +104,7 @@ public class StatusView extends JFrame {
         panel_1.setBounds(10, 87, 168, 269);
         contentPane.add(panel_1);
         panel_1.setLayout(null);
+        panel_1.setBorder(new LineBorder(Color.GRAY, 1));
 
         JButton btnNewButton = new JButton("Huỷ Mượn");
         btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 13));

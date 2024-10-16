@@ -10,6 +10,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.concurrent.TimeUnit;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import Controller.TransactionController;
 import LoginRegisterView.FuntionLogin;
@@ -131,6 +132,7 @@ public class TransactionView extends JFrame {
         panel.setBounds(10, 69, 274, 237);
         contentPane.add(panel);
         panel.setLayout(null);
+        panel.setBorder(new LineBorder(Color.GRAY, 1));
 
         lblNewLabel_2 = new JLabel("Mã Độc Giả");
         lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 13));
@@ -167,6 +169,7 @@ public class TransactionView extends JFrame {
         panel_1.setBounds(294, 69, 294, 237);
         contentPane.add(panel_1);
         panel_1.setLayout(null);
+        panel_1.setBorder(new LineBorder(Color.GRAY, 1));
 
         lblNewLabel_5 = new JLabel("Trả Sách");
         lblNewLabel_5.setFont(new Font("Tahoma", Font.BOLD, 17));
@@ -225,6 +228,7 @@ public class TransactionView extends JFrame {
         panel_2.setBounds(598, 69, 202, 93);
         contentPane.add(panel_2);
         panel_2.setLayout(null);
+        panel_2.setBorder(new LineBorder(Color.GRAY, 1));
 
         JLabel lblNewLabel_8 = new JLabel("Bảng Phiếu Duyệt");
         lblNewLabel_8.setBounds(17, 11, 148, 28);
@@ -241,6 +245,7 @@ public class TransactionView extends JFrame {
         panel_3.setBounds(598, 173, 202, 133);
         contentPane.add(panel_3);
         panel_3.setLayout(null);
+        panel_3.setBorder(new LineBorder(Color.GRAY, 1));
 
         JButton btnNewButton = new JButton("Xuất Bill");
         btnNewButton.setBounds(111, 97, 85, 25);
