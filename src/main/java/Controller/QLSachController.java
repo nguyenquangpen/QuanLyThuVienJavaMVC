@@ -15,7 +15,6 @@ public class QLSachController implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         String cm = e.getActionCommand();
-//        JOptionPane.showMessageDialog(view, "ban vua nhan vao " + cm);
         if (cm.equals("Lưu")) {
             try {
                 this.view.ThucHienThemSach();

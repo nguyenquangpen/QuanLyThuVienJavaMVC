@@ -3,6 +3,7 @@ package LibrarianView;
 import java.awt.*;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -10,14 +11,15 @@ import java.time.format.DateTimeFormatter;
 import java.util.concurrent.TimeUnit;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import Controller.TransactionController;
 import LoginRegisterView.FuntionLogin;
 import dao.AcceptNoDao;
+import dao.SachDAO;
 import dao.StudentDAO;
 import dao.TransactionDao;
 import model.AcceptNo;
+import model.Sach;
 import model.Student;
 import model.Transaction;
 
@@ -35,16 +37,22 @@ public class TransactionView extends JFrame {
     public JTextField jtfSoLuong;
     public JTextField jtfNgayTra;
     public JTextField jtfMaSachTra;
+    private JComboBox<String> comboBox;
     public static JTextField jtfMaDocGiaBill;
-
+    private AcceptNoView acceptNoView;  // Khai báo biến lưu AcceptNoView
     public TransactionView() {
         this.init();
         this.setVisible(true);
+        if (acceptNoView == null) {
+            acceptNoView = new AcceptNoView();
+        }
     }
+    
     public void init() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 822, 702);
-        this.setLocationRelativeTo(null);
+        this.setLocation(100, 60);
+
         this.setResizable(false);
         this.setTitle("Quản Lý Mượn Trả");
         contentPane = new JPanel();
@@ -132,7 +140,6 @@ public class TransactionView extends JFrame {
         panel.setBounds(10, 69, 274, 237);
         contentPane.add(panel);
         panel.setLayout(null);
-        panel.setBorder(new LineBorder(Color.GRAY, 1));
 
         lblNewLabel_2 = new JLabel("Mã Độc Giả");
         lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 13));
@@ -160,6 +167,7 @@ public class TransactionView extends JFrame {
         jtfMaSach.setColumns(10);
 
         JButton btnMuon = new JButton("Mượn");
+        btnMuon.setToolTipText("Bạn được mượn trong vòng 30 ngày");
         btnMuon.setFont(new Font("Tahoma", Font.PLAIN, 13));
         btnMuon.setBounds(96, 164, 89, 22);
         btnMuon.addActionListener(ac);
@@ -169,7 +177,6 @@ public class TransactionView extends JFrame {
         panel_1.setBounds(294, 69, 294, 237);
         contentPane.add(panel_1);
         panel_1.setLayout(null);
-        panel_1.setBorder(new LineBorder(Color.GRAY, 1));
 
         lblNewLabel_5 = new JLabel("Trả Sách");
         lblNewLabel_5.setFont(new Font("Tahoma", Font.BOLD, 17));
@@ -178,11 +185,11 @@ public class TransactionView extends JFrame {
 
         lblNewLabel_6 = new JLabel("Mã Độc Giả");
         lblNewLabel_6.setFont(new Font("Tahoma", Font.PLAIN, 13));
-        lblNewLabel_6.setBounds(10, 60, 89, 14);
+        lblNewLabel_6.setBounds(10, 41, 89, 14);
         panel_1.add(lblNewLabel_6);
 
         jtfDocGiaTraSach = new JTextField();
-        jtfDocGiaTraSach.setBounds(117, 57, 149, 20);
+        jtfDocGiaTraSach.setBounds(117, 40, 149, 20);
         panel_1.add(jtfDocGiaTraSach);
         jtfDocGiaTraSach.setColumns(10);
 
@@ -200,21 +207,21 @@ public class TransactionView extends JFrame {
 
         JLabel lblNewLabel_9 = new JLabel("Ngày Trả");
         lblNewLabel_9.setFont(new Font("Tahoma", Font.PLAIN, 13));
-        lblNewLabel_9.setBounds(10, 95, 89, 20);
+        lblNewLabel_9.setBounds(10, 70, 89, 20);
         panel_1.add(lblNewLabel_9);
 
         jtfNgayTra = new JTextField();
-        jtfNgayTra.setBounds(117, 96, 149, 20);
+        jtfNgayTra.setBounds(117, 71, 149, 20);
         panel_1.add(jtfNgayTra);
         jtfNgayTra.setColumns(10);
 
         JLabel lblNewLabel_10 = new JLabel("Mã Sách");
         lblNewLabel_10.setFont(new Font("Tahoma", Font.PLAIN, 13));
-        lblNewLabel_10.setBounds(10, 143, 65, 14);
+        lblNewLabel_10.setBounds(10, 102, 65, 14);
         panel_1.add(lblNewLabel_10);
 
         jtfMaSachTra = new JTextField();
-        jtfMaSachTra.setBounds(117, 141, 149, 20);
+        jtfMaSachTra.setBounds(117, 100, 149, 20);
         panel_1.add(jtfMaSachTra);
         jtfMaSachTra.setColumns(10);
 
@@ -223,12 +230,25 @@ public class TransactionView extends JFrame {
         btnHuyTim.setBounds(152, 169, 89, 23);
         btnHuyTim.addActionListener(ac);
         panel_1.add(btnHuyTim);
+        
+        JLabel lblNewLabel_trangthaitra = new JLabel("Trạng Thái Trả");
+        lblNewLabel_trangthaitra.setFont(new Font("Tahoma", Font.PLAIN, 13));
+        lblNewLabel_trangthaitra.setBounds(10, 132, 89, 14);
+        panel_1.add(lblNewLabel_trangthaitra);
+        
+        comboBox = new JComboBox<>();
+        comboBox.setToolTipText("<html>Hoàn hảo<br>Nhàu, tổn hại nhẹ: 20.000đ<br>Rách: 50.000đ<br>Mất: 100.000đ</html>");
+        comboBox.addItem("Hoàn hảo");
+        comboBox.addItem("Nhàu, tổn hại nhẹ");
+        comboBox.addItem("Rách");
+        comboBox.addItem("Mất");
+        comboBox.setBounds(117, 130, 149, 21);
+        panel_1.add(comboBox);
 
         JPanel panel_2 = new JPanel();
         panel_2.setBounds(598, 69, 202, 93);
         contentPane.add(panel_2);
         panel_2.setLayout(null);
-        panel_2.setBorder(new LineBorder(Color.GRAY, 1));
 
         JLabel lblNewLabel_8 = new JLabel("Bảng Phiếu Duyệt");
         lblNewLabel_8.setBounds(17, 11, 148, 28);
@@ -245,7 +265,6 @@ public class TransactionView extends JFrame {
         panel_3.setBounds(598, 173, 202, 133);
         contentPane.add(panel_3);
         panel_3.setLayout(null);
-        panel_3.setBorder(new LineBorder(Color.GRAY, 1));
 
         JButton btnNewButton = new JButton("Xuất Bill");
         btnNewButton.setBounds(111, 97, 85, 25);
@@ -262,6 +281,16 @@ public class TransactionView extends JFrame {
         jtfMaDocGiaBill.setBounds(10, 66, 147, 20);
         panel_3.add(jtfMaDocGiaBill);
         jtfMaDocGiaBill.setColumns(10);
+        
+        jMenuFile.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\google-docs.png"));
+        jMenuItemExit.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\logout.png"));
+        jMenuItemSach.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\bookshelf.png"));
+        sachItem.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\book.png"));
+        jMenuItemDocGia.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\reading.png"));
+        docGiaItem.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\magazine.png"));
+        jMenuItemMuonTra.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\transaction.png"));
+        muonTraItem.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\delivery-note.png"));
+        duytIteam.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\scan.png"));
 
         JLabel lblNewLabel_12 = new JLabel("Bill");
         lblNewLabel_12.setFont(new Font("Tahoma", Font.BOLD, 15));
@@ -305,34 +334,41 @@ public class TransactionView extends JFrame {
         String studentID = jtfDocGiaTraSach.getText();
         String bookID = jtfMaSachTra.getText();
 
-        // Lấy danh sách giao dịch theo điều kiện studentID và bookID
-        ArrayList<Transaction> transactions = transactionDao.selectByCondition(studentID, "BookID" ,bookID);
+        ArrayList<Transaction> transactions = transactionDao.selectByCondition(studentID, "BookID", bookID);
 
         if (!transactions.isEmpty()) {
             for (Transaction transaction : transactions) {
-                // Kiểm tra nếu ngày trả vẫn là "1970-01-01" (chưa trả sách)
                 if (transaction.getReturnDate().toString().equals("1970-01-01")) {
-                    // Định dạng ngày
                     SimpleDateFormat inputDateFormat = new SimpleDateFormat("dd/MM/yyyy");
                     SimpleDateFormat outputDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
                     try {
-                        // Chuyển đổi returnDate từ String sang Date
-                        java.util.Date returnDate1 = inputDateFormat.parse(returnDate);
+                    	Date returnDate1 = inputDateFormat.parse(returnDate);
+                    	String formattedDate = outputDateFormat.format(returnDate1);
 
-                        // Chuyển đổi ngày mượn sang định dạng yyyy-MM-dd
-                        String formattedDate = outputDateFormat.format(returnDate1);
-
-                        // Tính số ngày mượn
                         long diff = returnDate1.getTime() - transaction.getDate().getTime();
                         long diffDays = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
 
-                        // Tính tiền phạt (chuyển sang String)
+                        String condition = (String) comboBox.getSelectedItem();
+
                         String fine = "0";
-                        if (diffDays > 7) {
-                            fine = String.valueOf((diffDays - 7) * 1000);
+                        if (diffDays > 30) {
+                            fine = String.valueOf((diffDays - 30) * 1000);
                         }
 
+                        switch (condition) {
+                            case "Hoàn hảo":
+                                break;
+                            case "Nhàu, tổn hại nhẹ":
+                                fine = String.valueOf(Integer.parseInt(fine) + 20000); 
+                                break;
+                            case "Rách":
+                                fine = String.valueOf(Integer.parseInt(fine) + 50000); 
+                                break;
+                            case "Mất":
+                                fine = String.valueOf(Integer.parseInt(fine) + 100000); 
+                                break;
+                        }
                         transactionDao.update(studentID, bookID, formattedDate, fine);
                     } catch (ParseException e) {
                         e.printStackTrace();
@@ -347,7 +383,8 @@ public class TransactionView extends JFrame {
         TransactionDao transactionDao = new TransactionDao();
         String studentID = jtfDocGiaTraSach.getText();
         String bookID = jtfMaSachTra.getText();
-
+        SachDAO sachDAO = new SachDAO();
+        AcceptNoDao acceptNoDao = new AcceptNoDao();
         if (studentID != null && !studentID.trim().isEmpty() && bookID != null && !bookID.trim().isEmpty()) {
 
             ThucHienTinhPhi();
@@ -360,6 +397,11 @@ public class TransactionView extends JFrame {
                 JOptionPane.showMessageDialog(null, "Trả sách thất bại");
             } else {
                 JOptionPane.showMessageDialog(null, "Trả sách thành công");
+                int daMuon = sachDAO.getDaMuon(bookID);
+                Sach sach = sachDAO.selectById(bookID);
+                int newSoLuong = sach.getSoLuong() + daMuon;
+                daMuon = 0;
+                sachDAO.updateSoLuong(bookID, newSoLuong, daMuon);
                 HienThiVaoBang();
             }
         } else {
@@ -371,41 +413,36 @@ public class TransactionView extends JFrame {
     public void ThucHienMuonSach() {
         String studentID = jtfDocGia.getText();
         String bookID = jtfMaSach.getText();
-
         String date = LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
         String returnDate = "1970-01-01";
         String status = "Null";
         TransactionDao transactionDao = new TransactionDao();
-
         AcceptNoDao acceptNoDao = new AcceptNoDao();
-        AcceptNo acceptNo1 = acceptNoDao.selectByID(studentID, bookID);
+        if (!acceptNoDao.isAccepted(bookID)) { 
+            JOptionPane.showMessageDialog(null, "Sách chưa được phép cho mượn");
+            return;  
+        }
 
-        // Định dạng ngày
-        SimpleDateFormat inputDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        SimpleDateFormat outputDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        if(acceptNo1 == null){
+        AcceptNo acceptNo1 = acceptNoDao.selectByID(studentID, bookID);
+        if (acceptNo1 == null) {
             JOptionPane.showMessageDialog(null, "Nhập Sai Dữ Liệu");
             return;
-
-        }else{
+        } else {
             try {
-                // Chuyển đổi date từ String sang Date
-                java.util.Date borrowDate = inputDateFormat.parse(date);
-
-                // Chuyển đổi ngày mượn sang định dạng yyyy-MM-dd
+                SimpleDateFormat inputDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                SimpleDateFormat outputDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                Date borrowDate = inputDateFormat.parse(date);
                 String formattedDate = outputDateFormat.format(borrowDate);
-
-                // Thực hiện chèn dữ liệu vào bảng mà không cần tính toán ngày trả ban đầu
                 transactionDao.insert(studentID, bookID, acceptNo1.getAmount(), formattedDate, returnDate, status);
-
                 JOptionPane.showMessageDialog(null, "Mượn sách thành công");
-
-                HienThiVaoBang(); // Hiển thị giao dịch mới vào bảng
+                acceptNoView.ThucHienXoaByIDandBookId(studentID, bookID);
+                HienThiVaoBang();
 
             } catch (ParseException e) {
                 e.printStackTrace();
             }
         }
+        refreshAcceptNoView();
     }
 
     public void ThucHienTimKiem() {
@@ -467,5 +504,12 @@ public class TransactionView extends JFrame {
     public void HienThiSach() {
         this.dispose();
         new QLSachView();
+    }
+ // Phương thức để làm mới AcceptNoView khi có thay đổi
+    public void refreshAcceptNoView() {
+        if (acceptNoView != null) {
+            acceptNoView.HienThiVapBangMacDinh();  // Cập nhật lại bảng
+            acceptNoView.refreshTable();  // Refresh giao diện bảng
+        }
     }
 }

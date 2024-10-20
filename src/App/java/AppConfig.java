@@ -1,15 +1,21 @@
+package AppConfig;
+
+import javax.swing.UIManager;
 import LibrarianView.QLSachView;
 import LibrarianView.StudentView;
+import LibrarianView.TransactionView;
 import LoginRegisterView.FuntionLogin;
-import LoginRegisterView.LoginLibrarianView;
 import LoginRegisterView.LoginView;
-import LoginRegisterView.RegisterLibrarianView;
 import ReadersView.PhieuDkyView;
 import ReadersView.ReaderBookView;
 
-class AppConfig {
-    public static void main(String [] args){
-        new StudentView();
-    }
+public class AppConfig {
+	public static void main(String[] args) {
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			new FuntionLogin();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }
-

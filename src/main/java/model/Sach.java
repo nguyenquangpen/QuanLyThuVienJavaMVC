@@ -9,22 +9,25 @@ public class Sach {
     private int namXuatBan;
     private String TenTacGia;
     private int SoLuong;
+    private int DaMuon;
+    private int TonKho;
     public Sach() {
     }
 //    public Sach(String tenSach, String TenTacGia) {
 //        this.tenSach = tenSach;
 //        this.TenTacGia = TenTacGia;
 //    }
-    public Sach(String id, String tenSach, int namXuatBan, String TheLoai, String TenTacGia, int SoLuong) {
+    public Sach(String id, String tenSach, int namXuatBan, String TheLoai, String TenTacGia, int SoLuong, int DaMuon) {
         this.tenSach = tenSach;
         this.TheLoai = TheLoai;
         this.namXuatBan = namXuatBan;
         this.id = id;
         this.TenTacGia = TenTacGia;
         this.SoLuong = SoLuong;
+        this.DaMuon = DaMuon;
+        setTonKho();
     }
-
-    public String getId() {
+	public String getId() {
         return id;
     }
 
@@ -71,16 +74,25 @@ public class Sach {
     public void setSoLuong(int soLuong) {
         SoLuong = soLuong;
     }
-
-    @Override
-    public String toString() {
-        return "Sach{" +
-                "id=" + id +
-                ", tenSach='" + tenSach + '\'' +
-                ", TheLoai='" + TheLoai + '\'' +
-                ", namXuatBan=" + namXuatBan +
-                ", TenTacGia='" + TenTacGia + '\'' +
-                ", SoLuong=" + SoLuong +
-                '}';
-    }
+    
+    public int getDaMuon() {
+		return DaMuon;
+	}
+	public void setDaMuon(int daMuon) {
+		this.DaMuon = daMuon;
+		setTonKho();
+	}
+	public void setTonKho() {
+		this.TonKho = this.SoLuong - this.DaMuon;
+	}
+	public int getTonKho() {
+		return TonKho;
+	}
+	
+	@Override
+	public String toString() {
+		return "Sach [id=" + id + ", tenSach=" + tenSach + ", TheLoai=" + TheLoai + ", namXuatBan=" + namXuatBan
+				+ ", TenTacGia=" + TenTacGia + ", SoLuong=" + SoLuong + ", DaMuon=" + DaMuon + ", TonKho=" + TonKho
+				+ "]";
+	}
 }

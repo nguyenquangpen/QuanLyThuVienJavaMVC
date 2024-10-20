@@ -10,9 +10,9 @@ public class LibrarianDao {
 
     public void openConnection() {
         try {
-            String url = "jdbc:mysql://localhost:3306/library_management";
+        	String url = "jdbc:mySQL://localhost:3306/library_management";
             String user = "root";
-            String password = "11111111";
+            String password = "";
             c = DriverManager.getConnection(url, user, password);
             System.out.println("Connection successful!");
         } catch (SQLException e) {
@@ -37,7 +37,7 @@ public class LibrarianDao {
         PreparedStatement st = null;
         try {
             openConnection();
-            String sql = "INSERT INTO LibrarianLogin (username, password, LibrarianID) VALUES (?, ?, ?)";
+            String sql = "INSERT INTO librarianlogin (username, password, LibrarianID) VALUES (?, ?, ?)";
             st = c.prepareStatement(sql);
             st.setString(1, l.getUsername());
             st.setString(2, l.getPassword());
@@ -63,7 +63,7 @@ public class LibrarianDao {
         ResultSet rs = null;
         try {
             openConnection();
-            String sql = "SELECT * FROM LibrarianManager WHERE LibrarianID = ?";
+            String sql = "SELECT * FROM librarianmanager WHERE LibrarianID = ?";
             st = c.prepareStatement(sql);
             st.setInt(1, librarianID);
             rs = st.executeQuery();
@@ -100,7 +100,7 @@ public class LibrarianDao {
         ResultSet rs = null;
         try {
             openConnection();
-            String sql = "SELECT * FROM LibrarianLogin WHERE username = ?";
+            String sql = "SELECT * FROM librarianlogin WHERE username = ?";
             st = c.prepareStatement(sql);
             st.setString(1, name);
             rs = st.executeQuery();

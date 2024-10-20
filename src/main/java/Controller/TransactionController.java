@@ -9,8 +9,6 @@ import LibrarianView.AcceptNoView;
 
 public class TransactionController implements ActionListener {
 	private TransactionView transactionView;
-	private BillView billView;
-
 	public TransactionController(TransactionView transactionView) {
 		this.transactionView = transactionView;
 	}
@@ -19,7 +17,7 @@ public class TransactionController implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		String src = e.getActionCommand();
 		if (src.equals("Mượn")) {
-			this.transactionView.ThucHienMuonSach();
+	        this.transactionView.ThucHienMuonSach();
 		} else if (src.equals("Trả Sách")) {
 			this.transactionView.ThucHienTraSachDocGia();
 		} else if (src.equals("Tìm")) {

@@ -36,15 +36,15 @@ public class RegisterView extends JFrame {
         Font font = new Font("Arial", Font.PLAIN, 15);
 
         JLabel jtfUsername = new JLabel("Username");
-        jtfUsername.setIcon(new ImageIcon("D:\\Academic\\lap-trinh\\Project\\IdeaProject\\library_management_Project\\Image\\22_104877.png"));
+        jtfUsername.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\22_104877.png"));
         jtfUsername.setBounds(10, 11, 131, 36);
         jtfUsername.setFont(font);
         JLabel jtfPassword = new JLabel("Password");
-        jtfPassword.setIcon(new ImageIcon("D:\\Academic\\lap-trinh\\Project\\IdeaProject\\library_management_Project\\Image\\40_104848.png"));
+        jtfPassword.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\40_104848.png"));
         jtfPassword.setBounds(10, 104, 118, 36);
         jtfPassword.setFont(font);
         JLabel jtfConfirmPassword = new JLabel("Confirm Password");
-        jtfConfirmPassword.setIcon(new ImageIcon("D:\\Academic\\lap-trinh\\Project\\IdeaProject\\library_management_Project\\Image\\11_104884.png"));
+        jtfConfirmPassword.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\11_104884.png"));
         jtfConfirmPassword.setBounds(10, 186, 160, 36);
         jtfConfirmPassword.setFont(font);
 

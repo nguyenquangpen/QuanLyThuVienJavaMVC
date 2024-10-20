@@ -10,9 +10,9 @@ public class AcceptNoDao {
 
     public void acceptNo() {
         try {
-            String url = "jdbc:mysql://localhost:3306/library_management";
+        	String url = "jdbc:mySQL://localhost:3306/library_management"; //library_management
             String user = "root";
-            String password = "11111111";
+            String password = "";
             c = DriverManager.getConnection(url, user, password);
             System.out.println("Connection successful!");
         } catch (SQLException e) {
@@ -37,7 +37,7 @@ public class AcceptNoDao {
         PreparedStatement st = null;
         try {
             acceptNo(); // Open connection
-            String sql = "INSERT INTO LibrarianAcept (StudentID, MaSachID, SoLuong, ChoMuon) VALUES (?, ?, ?, ?)";
+            String sql = "INSERT INTO librarianacept (StudentID, MaSachID, SoLuong, ChoMuon) VALUES (?, ?, ?, ?)";
             st = c.prepareStatement(sql);
             st.setString(1, studentID);
             st.setString(2, bookID);
@@ -65,7 +65,7 @@ public class AcceptNoDao {
         ResultSet rs = null;
         try {
             acceptNo();
-            String sql = "SELECT * FROM LibrarianAcept WHERE StudentID = ? AND MaSachID = ?";
+            String sql = "SELECT * FROM librarianacept WHERE StudentID = ? AND MaSachID = ?";
             st = c.prepareStatement(sql);
             st.setString(1, studentID);
             st.setString(2, bookID);
@@ -105,7 +105,7 @@ public class AcceptNoDao {
         PreparedStatement st = null;
         try {
             acceptNo(); // Open connection
-            String sql = "UPDATE LibrarianAcept SET ChoMuon = ? WHERE StudentID = ? AND MaSachID = ?";
+            String sql = "UPDATE librarianacept SET ChoMuon = ? WHERE StudentID = ? AND MaSachID = ?";
             st = c.prepareStatement(sql);
 
             st.setString(1, cm);
@@ -134,7 +134,7 @@ public class AcceptNoDao {
         try {
             acceptNo(); // Open connection
             st = c.createStatement();
-            String sql = "SELECT * FROM LibrarianAcept";
+            String sql = "SELECT * FROM librarianacept";
             rs = st.executeQuery(sql);
             while (rs.next()) {
                 String StudentID = rs.getString("StudentID");
@@ -170,7 +170,7 @@ public class AcceptNoDao {
         PreparedStatement st = null;
         try {
             acceptNo(); // Open connection
-            String sql = "DELETE FROM LibrarianAcept WHERE StudentID = ? AND MaSachID = ?";
+            String sql = "DELETE FROM librarianacept WHERE StudentID = ? AND MaSachID = ?";
             st = c.prepareStatement(sql);
             st.setString(1, studentID);
             st.setString(2, bookID);
@@ -189,4 +189,33 @@ public class AcceptNoDao {
             close(); // Close connection
         }
     }
+    public boolean isAccepted(String MaSachid) {
+        String query = "SELECT ChoMuon FROM librarianacept WHERE MaSachID = ?";
+        PreparedStatement st = null;
+        ResultSet rs = null;
+
+        try {
+            acceptNo(); 
+            st = c.prepareStatement(query);	
+            st.setString(1, MaSachid);  
+            rs = st.executeQuery();
+            if (rs.next()) {            
+                return "Accepted".equals(rs.getString("ChoMuon"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); 
+        } finally {
+    
+            try {
+                if (rs != null) rs.close();
+                if (st != null) st.close();
+                close();  
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return false;  
+    }
+
 }

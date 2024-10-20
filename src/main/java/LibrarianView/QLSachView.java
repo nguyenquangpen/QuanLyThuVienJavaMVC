@@ -9,6 +9,10 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import javax.swing.border.LineBorder;
 
@@ -18,6 +22,7 @@ public class QLSachView extends JFrame {
     public JTextField textField_MaSach, textField_TenDauSach, textField_NamXuatBan, textFieldSoLuong, textField_TheLoai, textField_TacGia;
     public JButton btnHuyTim, btnTim;
     public JTextField textField_TenDauSachTimKiem;
+    private JTextField textField_daMuon;
 
     public QLSachView() {
         this.inti();
@@ -27,9 +32,9 @@ public class QLSachView extends JFrame {
     private void inti() {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setTitle("Quản lý đầu sách");
-        this.setSize(800, 600);
+        this.setSize(800, 646);
         this.setLocationRelativeTo(null);
-
+        this.setResizable(false);
         ActionListener ac = new QLSachController(this);
 
         Font font = new Font("Arial", Font.PLAIN, 15);
@@ -37,41 +42,53 @@ public class QLSachView extends JFrame {
         JMenuBar menuBar = new JMenuBar();
         JMenu jMenuFile = new JMenu("File");
         jMenuFile.setFont(font);
-
+        jMenuFile.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\google-docs.png"));
+        
         JMenuItem jMenuItemExit = new JMenuItem("Exit");
         jMenuItemExit.setFont(font);
         jMenuFile.addSeparator();
         jMenuFile.add(jMenuItemExit);
+		jMenuItemExit.setToolTipText("Nhan vao la thoat");
+		jMenuItemExit.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\logout.png"));
         jMenuItemExit.addActionListener(ac);
 
         JMenuItem jMenuItemSach = new JMenu("Sách");
         jMenuItemSach.setFont(font);
-
+        jMenuItemSach.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\bookshelf.png"));
+        
         JMenuItem sachItem = new JMenuItem("Quản Lý Sách");
         sachItem.setFont(font);
         jMenuItemSach.add(sachItem);
         sachItem.addActionListener(ac);
-
+        sachItem.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\book.png"));
+        
         JMenuItem jMenuItemDocGia = new JMenu("Độc Giả");
         jMenuItemDocGia.setFont(font);
-
+        jMenuItemDocGia.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\reading.png"));
+        
         JMenuItem docGiaItem = new JMenuItem("Quản Lý Độc Giả");
         docGiaItem.setFont(font);
         jMenuItemDocGia.add(docGiaItem);
         docGiaItem.addActionListener(ac);
-
+        docGiaItem.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\magazine.png"));
         JMenuItem jMenuItemMuonTra = new JMenu("Mượn Trả");
         jMenuItemMuonTra.setFont(font);
+        jMenuItemMuonTra.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\transaction.png"));
+
 
         JMenuItem muonTraItem = new JMenuItem("Quản Lý Mượn Trả");
         muonTraItem.setFont(font);
         jMenuItemMuonTra.add(muonTraItem);
         muonTraItem.addActionListener(ac);
+        muonTraItem.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\delivery-note.png"));
 
+        
         JMenuItem duytIteam = new JMenuItem("Duyệt Phiếu Mượn");
         duytIteam.setFont(font);
         jMenuItemMuonTra.add(duytIteam);
         duytIteam.addActionListener(ac);
+        duytIteam.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\scan.png"));
+
 
         // Điều chỉnh khoảng cách giữa các menu item
         jMenuItemSach.setMargin(new Insets(0, 5, 0, 5));
@@ -97,7 +114,7 @@ public class QLSachView extends JFrame {
         table.setRowHeight(20);
 
         JScrollPane tableScrollPane = new JScrollPane(table);
-        tableScrollPane.setBounds(10, 67, 766, 313);
+        tableScrollPane.setBounds(10, 67, 766, 269);
 
         JPanel panelCenter = new JPanel();
         panelCenter.setBounds(0, 236, 786, 379);
@@ -133,7 +150,7 @@ public class QLSachView extends JFrame {
         panelNorth.add(btnTim);
         panelNorth.add(btnHuyTim);
         JLabel jLabelSoLuong = new JLabel("Số Lượng");
-        jLabelSoLuong.setBounds(383, 23, 67, 18);
+        jLabelSoLuong.setBounds(383, 23, 98, 18);
         jLabelSoLuong.setFont(font);
         textFieldSoLuong = new JTextField(10);
         textFieldSoLuong.setBounds(509, 20, 197, 24);
@@ -198,28 +215,38 @@ public class QLSachView extends JFrame {
         textField_TenDauSach.setFont(font);
 
         JLabel jLabelNamXuatBan = new JLabel("Năm xuất bản");
-        jLabelNamXuatBan.setBounds(383, 67, 111, 24);
+        jLabelNamXuatBan.setBounds(383, 51, 111, 24);
         panelSouth.add(jLabelNamXuatBan);
         jLabelNamXuatBan.setFont(font);
 
         JLabel jLabelTacGia = new JLabel("Tác Giả");
-        jLabelTacGia.setBounds(383, 117, 111, 24);
+        jLabelTacGia.setBounds(383, 85, 111, 24);
         panelSouth.add(jLabelTacGia);
         jLabelTacGia.setFont(font);
 
         textField_NamXuatBan = new JTextField(10);
-        textField_NamXuatBan.setBounds(509, 67, 197, 24);
+        textField_NamXuatBan.setBounds(509, 54, 197, 24);
 
         panelSouth.add(textField_NamXuatBan);
         textField_NamXuatBan.setFont(font);
         textField_TacGia = new JTextField(10);
-        textField_TacGia.setBounds(509, 117, 197, 24);
+        textField_TacGia.setBounds(509, 85, 197, 24);
 
         panelSouth.add(textField_TacGia);
-        textField_TacGia.setFont(font);
+        textField_TacGia.setFont(font);		
+        
+        JLabel jLabel_daMuon = new JLabel("Đã Mượn");
+        jLabel_daMuon.setFont(new Font("Arial", Font.PLAIN, 15));
+        jLabel_daMuon.setBounds(383, 117, 111, 24);
+        panelSouth.add(jLabel_daMuon);
+        
+        textField_daMuon = new JTextField(10);
+        textField_daMuon.setFont(new Font("Arial", Font.PLAIN, 15));
+        textField_daMuon.setBounds(509, 117, 197, 24);
+        panelSouth.add(textField_daMuon);
+        
 
-        ImageIcon icon = new ImageIcon("D:\\Academic\\lap-trinh\\Project\\IdeaProject\\library_management_Project\\Image\\book.png");
-    }
+}
 
     public void ThemSachVaoBang(Sach sach){
         DefaultTableModel model_table = (DefaultTableModel) table.getModel();
@@ -229,7 +256,9 @@ public class QLSachView extends JFrame {
             sach.getNamXuatBan(),
             sach.getTheLoai(),
             sach.getTenTacGia(),
-            sach.getSoLuong()
+            sach.getSoLuong(), 
+            sach.getDaMuon(), 
+            sach.getTonKho()
         });
     }
 
@@ -265,6 +294,8 @@ public class QLSachView extends JFrame {
                     model_table.setValueAt(sach.getTheLoai(), i, 3);
                     model_table.setValueAt(sach.getTenTacGia(), i, 4);
                     model_table.setValueAt(sach.getSoLuong(), i, 5);
+                    model_table.setValueAt(sach.getDaMuon(), i, 6);
+                    model_table.setValueAt(sach.getTonKho(), i, 7);
                 }
             }
         }
@@ -277,7 +308,8 @@ public class QLSachView extends JFrame {
         String tacGia = textField_TacGia.getText();
         String theLoai = textField_TheLoai.getText();
         int SoLuong = Integer.parseInt(textFieldSoLuong.getText());
-        Sach sach = new Sach(maSachId, tenDauSach, namXuatBan, theLoai, tacGia, SoLuong);
+        int DaMuon = Integer.parseInt(textField_daMuon.getText());
+        Sach sach = new Sach(maSachId, tenDauSach, namXuatBan, theLoai, tacGia, SoLuong, DaMuon);
         this.ThemHoacCapNhatSach(sach);
     }
 
@@ -294,7 +326,8 @@ public class QLSachView extends JFrame {
         String TheLoai = (String) model_table.getValueAt(i_row, 3);
         String TacGia = (String) model_table.getValueAt(i_row, 4);
         int SoLuong = Integer.parseInt(model_table.getValueAt(i_row, 5).toString());
-        Sach sach = new Sach(MaSachID, TenDauSach, NamXB, TheLoai, TacGia, SoLuong);
+        int DaMuon = Integer.parseInt(model_table.getValueAt(i_row, 6).toString());
+        Sach sach = new Sach(MaSachID, TenDauSach, NamXB, TheLoai, TacGia, SoLuong, DaMuon);
         return sach;
     }
 
@@ -306,6 +339,7 @@ public class QLSachView extends JFrame {
         this.textField_TheLoai.setText(sach.getTheLoai());
         this.textField_TenDauSach.setText(sach.getTenSach());
         this.textFieldSoLuong.setText(sach.getSoLuong()+"");
+        this.textField_daMuon.setText(sach.getDaMuon()+"");
     }
 
 
