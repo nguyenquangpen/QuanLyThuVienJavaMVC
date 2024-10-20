@@ -1,6 +1,8 @@
 package LoginRegisterView;
 
 import Controller.QLLoginController;
+import LibrarianView.QLSachView;
+import LibrarianView.StudentView;
 import ReadersView.ReaderBookView;
 import dao.UserDAO;
 import model.User;
@@ -39,7 +41,7 @@ public class LoginView extends JFrame {
 
         JLabel jLabelUsername = new JLabel("Username");
         jLabelUsername.setBounds(10, 19, 246, 32);
-        jLabelUsername.setIcon(new ImageIcon("D:\\Academic\\lap-trinh\\Project\\IdeaProject\\library_management_Project\\Image\\22_104877.png"));
+        jLabelUsername.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\22_104877.png"));
         jLabelUsername.setFont(font);
         jtfUsername = new JTextField(15);
         jtfUsername.setFont(new Font("Tahoma", Font.PLAIN, 13));
@@ -47,7 +49,7 @@ public class LoginView extends JFrame {
 
         JLabel jLabelPassword = new JLabel("Password");
         jLabelPassword.setBounds(10, 105, 246, 32);
-        jLabelPassword.setIcon(new ImageIcon("D:\\Academic\\lap-trinh\\Project\\IdeaProject\\library_management_Project\\Image\\40_104848.png"));
+        jLabelPassword.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\40_104848.png"));
         jLabelPassword.setFont(font);
         jtfPassword = new JPasswordField(15);
         jtfPassword.setFont(new Font("Tahoma", Font.PLAIN, 13));
@@ -68,7 +70,7 @@ public class LoginView extends JFrame {
 
         JButton loginButton = new JButton("Login");
         loginButton.setFont(new Font("Tahoma", Font.PLAIN, 13));
-        loginButton.setBounds(67, 271, 131, 23);
+        loginButton.setBounds(30, 270, 102, 23);
         loginButton.addActionListener(ac);
         getContentPane().add(loginButton);
 
@@ -77,6 +79,12 @@ public class LoginView extends JFrame {
         AddSignUp();
         getContentPane().add(jLabel_SignUp);
         jLabel_SignUp.setForeground(Color.BLUE);
+        
+        JButton btnback = new JButton("Back");
+        btnback.setFont(new Font("Tahoma", Font.PLAIN, 13));
+        btnback.setBounds(164, 272, 102, 23);
+        btnback.addActionListener(ac);
+        getContentPane().add(btnback);
     }
 
     public void AddSignUp(){
@@ -98,21 +106,32 @@ public class LoginView extends JFrame {
         String password = new String(jtfPassword.getPassword());
         UserDAO userDAO = new UserDAO();
         User user = userDAO.selectByName(username);
-        if(username.isEmpty() || password.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin");
-        }
-        if(!user.getUsername().equals(username) || !user.getPassword().equals(password)){
-            JOptionPane.showMessageDialog(null, "Sai tên đăng nhập hoặc mật khẩu");
-        }
-        else {
-            JOptionPane.showMessageDialog(null, "Đăng nhập Thành công");
-            this.dispose();
-            new ReaderBookView();
-        }
+        try {
+        	if (username.isEmpty() || password.isEmpty()) {
+        		JOptionPane.showMessageDialog(null, "Vui lòng nhập đầu đủ thông tin", "Lỗi", JOptionPane.ERROR_MESSAGE);
+        	}
+        	else if (!user.getUsername().equals(username) || !user.getPassword().equals(password)) {
+                JOptionPane.showMessageDialog(null, "Sai tên đăng nhập hoặc mật khẩu", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            }
+        	else {
+                JOptionPane.showMessageDialog(null, "Đăng nhập thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                this.dispose(); 
+                new ReaderBookView(); 
+            }
+        }catch(NullPointerException e) {
+        	JOptionPane.showMessageDialog(null,"Người dùng không tồn tại", "Lỗi", JOptionPane.ERROR_MESSAGE);
+        }catch (Exception e) {
+        	JOptionPane.showMessageDialog(null,"Lỗi nhập thông tin sai", "Lỗi", JOptionPane.ERROR_MESSAGE);
+		}
     }
 
     public void ThuchienDangKy() {
         this.dispose();
         new RegisterView();
+    }
+    
+    public void QuayLaiLogin() {
+    	this.dispose();
+    	new FuntionLogin();
     }
 }

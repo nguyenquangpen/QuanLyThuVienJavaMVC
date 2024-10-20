@@ -17,5 +17,9 @@ public class LibrarianLoginController implements ActionListener {
         if(cm.equals("Login")){
             this.loginView.ThucHienDangNhapLibrarian();
         }
+        else if(cm.equals("Back")) {
+        	this.loginView.QuayLaiLogin();
+        }
+        
     }
 }

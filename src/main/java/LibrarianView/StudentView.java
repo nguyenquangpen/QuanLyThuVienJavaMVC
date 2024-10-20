@@ -213,6 +213,16 @@ public class StudentView extends JFrame {
         textField_DiaChi.setBounds(494, 49, 135, 24);
         panelSouth.add(textField_DiaChi);
         textField_DiaChi.setFont(font);
+        jMenuFile.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\google-docs.png"));
+        jMenuItemExit.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\logout.png"));
+        jMenuItemSach.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\bookshelf.png"));
+        sachItem.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\book.png"));
+        jMenuItemDocGia.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\reading.png"));
+        docGiaItem.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\magazine.png"));
+        jMenuItemMuonTra.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\transaction.png"));
+        muonTraItem.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\delivery-note.png"));
+        duytIteam.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\scan.png"));
+
     }
 
     public void ThemSVvaoBang(Student student){

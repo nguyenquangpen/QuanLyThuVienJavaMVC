@@ -17,6 +17,7 @@ public class PhieuDkyView extends JFrame {
     public JTextField jtfStudentName;
     public JTextField jtfStudentSDT;
     public JTextField jtfStudentGmail;
+	private Student student;
 
     public PhieuDkyView() {
         init();
@@ -114,7 +115,7 @@ public class PhieuDkyView extends JFrame {
         lblNewLabel_6.setBounds(10, 144, 62, 19);
         panel_1.add(lblNewLabel_6);
 
-        JComboBox<String> comboBox_NamHoc = new JComboBox<>(new String[]{"1", "2", "3", "4"});
+        JComboBox<String> comboBox_NamHoc = new JComboBox<>(new String[]{"K18", "K17", "K16", "K15", "K14", "K13", "Không học tại trường"});
         comboBox_NamHoc.setBounds(82, 143, 76, 22);
         panel_1.add(comboBox_NamHoc);
 
@@ -130,23 +131,40 @@ public class PhieuDkyView extends JFrame {
         btnNewButton.setBounds(232, 257, 89, 23);
         contentPane.add(btnNewButton);
         btnNewButton.addActionListener(ac);
+        
+        
     }
 
     public void ThucHienDangKy() {
-        String studentID = jtfStudentID.getText();
-        String studentName = jtfStudentName.getText();
-        String studentLocation = jtfStudentLocation.getText();
-        int studentSDT = Integer.parseInt(jtfStudentSDT.getText());
-        String studentGmail = jtfStudentGmail.getText();
-        Student student = new Student(studentID, studentName, studentLocation, studentSDT, studentGmail);
-        StudentDAO studentDAO = new StudentDAO();
-        Student student1 = studentDAO.selectById(studentID);
-        if(student1 == null) {
-            studentDAO.insert(student);
-            JOptionPane.showMessageDialog(null, "Hoàn tất đăng ký");
-        }else{
-            JOptionPane.showMessageDialog(null, "Đã tồn tại");
-        }
+        String studentID;
+		String studentName;
+		String studentLocation;
+		int studentSDT;
+		String studentGmail ;
+		try {
+			studentID = jtfStudentID.getText();
+			studentName = jtfStudentName.getText();
+			studentLocation = jtfStudentLocation.getText();
+			studentSDT = Integer.parseInt(jtfStudentSDT.getText());
+			studentGmail = jtfStudentGmail.getText();
+			if(!studentGmail.endsWith("@gmail.com")) {
+				throw new Exception("Gmail không hợp lệ! Vui lòng nhập địa chỉ kết thúc bằng @gmail.com.");
+			} 
+			Student student = new Student(studentID, studentName, studentLocation, studentSDT, studentGmail);
+			StudentDAO studentDAO = new StudentDAO();
+	        Student existing_student = studentDAO.selectById(studentID);
+	        if(existing_student == null) {
+	            studentDAO.insert(student);
+	            JOptionPane.showMessageDialog(null, "Hoàn tất đăng ký");
+	        }else{
+	            JOptionPane.showMessageDialog(null, "Đã tồn tại");
+	        }
+		} catch (NumberFormatException e) {
+			JOptionPane.showMessageDialog(null, "Nhập sai dữ liệu", "Lỗi", JOptionPane.ERROR_MESSAGE);
+		}catch (Exception e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+		}
+
     }
 
     public void ThucHienQuayLai() {

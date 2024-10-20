@@ -65,7 +65,7 @@ public class ReaderBookView extends JFrame {
 
         JMenuItem jMenuItemPhieu = new JMenu("Phiếu");
         jMenuItemPhieu.setFont(font);
-
+        
         JMenuItem sachItem = new JMenuItem("Đăng Ký");
         sachItem.setFont(font);
         jMenuItemPhieu.add(sachItem);
@@ -237,7 +237,15 @@ public class ReaderBookView extends JFrame {
         btnHuyTim.setBounds(121, 105, 89, 23);
         btnHuyTim.addActionListener(ac);
         panel_2.add(btnHuyTim);
-
+        
+      //set them icon cho cac menu 
+        jMenuFile.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\google-docs.png"));
+        jMenuItemExit.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\logout.png"));
+        jMenuItemBook.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\bookshelf.png"));
+        BookView.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\book.png"));
+        jMenuItemPhieu.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\check-list.png"));
+        sachItem.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\register.png"));
+        StatusView.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\verified.png"));
     }
 
     public void ThemSachVaoBang(Sach sach){
@@ -248,7 +256,9 @@ public class ReaderBookView extends JFrame {
                 sach.getNamXuatBan(),
                 sach.getTheLoai(),
                 sach.getTenTacGia(),
-                sach.getSoLuong()
+                sach.getSoLuong(),
+                sach.getDaMuon(), 
+                sach.getTonKho()
         });
     }
 
@@ -278,7 +288,8 @@ public class ReaderBookView extends JFrame {
         String TheLoai = (String) model_table.getValueAt(i_row, 3);
         String TacGia = (String) model_table.getValueAt(i_row, 4);
         int amout = (int) model_table.getValueAt(i_row, 5);
-        Sach sach = new Sach(MaSachID, TenDauSach, NamXB, TheLoai, TacGia, amout);
+        int DaMuon = (int) model_table.getValueAt(i_row, 6);
+        Sach sach = new Sach(MaSachID, TenDauSach, NamXB, TheLoai, TacGia, amout, DaMuon);
         return sach;
     }
 
@@ -289,9 +300,12 @@ public class ReaderBookView extends JFrame {
             jtfTacGia.setText(sach.getTenTacGia());
         }
     }
-
     public boolean ThucHienKiemTra() {
-        Sach sach = getSachDaChon();
+        Sach sach = getSachDaChon(); 
+        if (sach == null) { 
+            JOptionPane.showMessageDialog(this, "Chưa chọn sách!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            return false; 
+        }
         SachDAO sachDAO = new SachDAO();
         int amount;
         try {
@@ -300,16 +314,24 @@ public class ReaderBookView extends JFrame {
             JOptionPane.showMessageDialog(this, "Vui lòng nhập số lượng hợp lệ!", "Thông báo", JOptionPane.WARNING_MESSAGE);
             return false;
         }
-        String column = "MaSachID";
-        ArrayList<Sach> arrayList = sachDAO.selectByCondition(sach.getId(), column);
+        String column = "MaSachId"; 
+        ArrayList<Sach> arrayList = sachDAO.selectByCondition(sach.getId(), column); 
+
+        if (arrayList.isEmpty()) { 
+            JOptionPane.showMessageDialog(this, "Không tìm thấy sách!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+
         for (Sach sach1 : arrayList) {
-            if (sach1.getSoLuong() < amount) {
-                JOptionPane.showMessageDialog(this, "Quá Số Lượng");
+            if (sach1.getTonKho() < amount) {
+                JOptionPane.showMessageDialog(this, "Mượn quá số lượng tồn kho. Tồn kho hiện tại: " + sach1.getTonKho(), "Thông báo", JOptionPane.WARNING_MESSAGE);
                 return false;
             }
         }
-        return true;
+
+        return true; // All checks passed
     }
+
 
     public boolean ThucHienKiemTraSV(){
         String studentID = jtfMaStudentID.getText();
@@ -337,13 +359,27 @@ public class ReaderBookView extends JFrame {
         boolean statusBook = ThucHienKiemTra();
         boolean statusSV = ThucHienKiemTraSV();
         AcceptNoDao acceptNoDao = new AcceptNoDao();
+        SachDAO sachDAO = new SachDAO();
         if (statusBook && statusSV) {
-            JOptionPane.showMessageDialog(this, "Hoàn tất Mượn Sách!");
+        	JOptionPane.showMessageDialog(this, "Hoàn tất Mượn Sách!");
             String studentID = jtfMaStudentID.getText();
-            String bookID = getSachDaChon().getId();
+            Sach selectedBook = getSachDaChon();
+            String bookID = selectedBook.getId();
             int amount = Integer.parseInt(jtfSoLuong.getText());
+            
+            // Update the borrowing status
             String statusBorrow = "Waiting";
             acceptNoDao.insert(studentID, bookID, amount, statusBorrow);
+            
+            // Update the book stock and borrowed count
+            int newTonKho = selectedBook.getTonKho() - amount; // Decrease inventory
+            int newDaMuon = selectedBook.getDaMuon() + amount;  // Increase borrowed count
+
+            // Update the book in the database with new values
+            sachDAO.updateStockAndBorrowed(bookID, newTonKho, newDaMuon);
+            
+            // Refresh the table to show the updated stock
+            HienThiSachMAcDinh();
         }
     }
 

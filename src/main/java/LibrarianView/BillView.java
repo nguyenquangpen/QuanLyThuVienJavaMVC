@@ -8,7 +8,6 @@ import model.Transaction;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -28,7 +27,7 @@ public class BillView extends JFrame {
         this.setVisible(true);
     }
     public void init() {
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setBounds(100, 100, 413, 478);
         this.setLocationRelativeTo(null);
         this.setResizable(false);
@@ -50,8 +49,6 @@ public class BillView extends JFrame {
         panel.setBounds(10, 47, 381, 385);
         contentPane.add(panel);
         panel.setLayout(null);
-        panel.setBorder(new LineBorder(Color.GRAY, 1));
-        panel.setBackground(new Color(255, 255, 255));
 
         JLabel lblNewLabel_1 = new JLabel("Mã Độc Giả: ");
         lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 13));
@@ -88,7 +85,7 @@ public class BillView extends JFrame {
         scrollPane.setBounds(10, 101, 361, 130);
         panel.add(scrollPane);
 
-        String imagePath = "D:\\Academic\\lap-trinh\\Project\\IdeaProject\\library_management_Project\\Image\\MaQr.jpg";
+        String imagePath = "D:\\Eclipse_java\\Final_prj\\Image\\MaQr.jpg";
 
         // Tạo ImageIcon từ ảnh gốc
         ImageIcon originalIcon = new ImageIcon(imagePath);
@@ -123,6 +120,7 @@ public class BillView extends JFrame {
         btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 13));
         btnNewButton.setBounds(35, 331, 89, 23);
         btnNewButton.addActionListener(ac);
+        
         panel.add(btnNewButton);
     }
 

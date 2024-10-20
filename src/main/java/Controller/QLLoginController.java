@@ -20,5 +20,8 @@ public class QLLoginController implements ActionListener {
         } else if (cm.equals("Sign Up")) {
             this.loginView.ThuchienDangKy();
         }
+        else if (cm.equals("Back")) {
+            this.loginView.QuayLaiLogin();
+        }
     }
 }

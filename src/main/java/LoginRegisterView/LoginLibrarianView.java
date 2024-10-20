@@ -9,6 +9,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -54,7 +55,7 @@ public class LoginLibrarianView extends JFrame {
 
         JButton btnLogin = new JButton("Login");
         btnLogin.setFont(new Font("Tahoma", Font.PLAIN, 13));
-        btnLogin.setBounds(97, 269, 89, 23);
+        btnLogin.setBounds(41, 269, 89, 23);
         btnLogin.addActionListener(ac);
         contentPane.add(btnLogin);
 
@@ -83,23 +84,28 @@ public class LoginLibrarianView extends JFrame {
         panel.setLayout(null);
 
         JLabel jlbpassworld = new JLabel("Password");
-        jlbpassworld.setIcon(new ImageIcon("D:\\Academic\\lap-trinh\\Project\\IdeaProject\\library_management_Project\\Image\\40_104848.png"));
+        jlbpassworld.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\40_104848.png"));
         jlbpassworld.setBounds(4, 125, 104, 32);
         panel.add(jlbpassworld);
         jlbpassworld.setFont(new Font("Tahoma", Font.PLAIN, 13));
 
         JLabel jldlibrarianID = new JLabel("Librarian ID");
-        jldlibrarianID.setIcon(new ImageIcon("D:\\Academic\\lap-trinh\\Project\\IdeaProject\\library_management_Project\\Image\\11_104884.png"));
+        jldlibrarianID.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\11_104884.png"));
         jldlibrarianID.setBounds(4, 69, 118, 36);
         panel.add(jldlibrarianID);
         jldlibrarianID.setFont(new Font("Tahoma", Font.PLAIN, 13));
 
         JLabel jldusername = new JLabel("Username");
-        jldusername.setIcon(new ImageIcon("D:\\Academic\\lap-trinh\\Project\\IdeaProject\\library_management_Project\\Image\\22_104877.png"));
+        jldusername.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\22_104877.png"));
         jldusername.setBounds(4, 11, 104, 37);
         panel.add(jldusername);
         jldusername.setFont(new Font("Tahoma", Font.PLAIN, 13));
-
+        
+        JButton btnback = new JButton("Back");
+        btnback.setFont(new Font("Tahoma", Font.PLAIN, 13));
+        btnback.setBounds(164, 269, 89, 23);
+        contentPane.add(btnback);
+        btnback.addActionListener(ac);
 
     }
 
@@ -159,5 +165,10 @@ public class LoginLibrarianView extends JFrame {
     public void ThuchienDangKy(){
         this.dispose();
         new RegisterLibrarianView();
+    }
+    
+    public void QuayLaiLogin() {
+    	this.dispose();
+    	new FuntionLogin();
     }
 }

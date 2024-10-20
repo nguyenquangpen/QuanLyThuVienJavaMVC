@@ -11,9 +11,9 @@ public class UserDAO {
 
     public void openConnection() {
         try {
-            String url = "jdbc:mysql://localhost:3306/library_management";
+        	String url = "jdbc:mySQL://localhost:3306/library_management";
             String user = "root";
-            String password = "11111111";
+            String password = "";
             c = DriverManager.getConnection(url, user, password);
             System.out.println("Connection successful!");
         } catch (SQLException e) {
@@ -38,7 +38,7 @@ public class UserDAO {
         PreparedStatement st = null;
         try {
             openConnection();
-            String sql = "INSERT INTO User (username, password) VALUES (?, ?)";
+            String sql = "INSERT INTO user (username, password) VALUES (?, ?)";
             st = c.prepareStatement(sql);
             st.setString(1, t.getUsername());
             st.setString(2, t.getPassword());
@@ -62,7 +62,7 @@ public class UserDAO {
         PreparedStatement st = null;
         try {
             openConnection();
-            String sql = "UPDATE User SET password=? WHERE username=?";
+            String sql = "UPDATE user SET password=? WHERE username=?";
             st = c.prepareStatement(sql);
             st.setString(1, t.getPassword());
             st.setString(2, t.getUsername());
@@ -86,7 +86,7 @@ public class UserDAO {
         PreparedStatement st = null;
         try {
             openConnection();
-            String sql = "DELETE FROM User WHERE username=?";
+            String sql = "DELETE FROM user WHERE username=?";
             st = c.prepareStatement(sql);
             st.setString(1, t.getUsername());
             return st.executeUpdate();
@@ -112,7 +112,7 @@ public class UserDAO {
         try {
             openConnection();
             st = c.createStatement();
-            String sql = "SELECT * FROM User";
+            String sql = "SELECT * FROM user";
             rs = st.executeQuery(sql);
             while (rs.next()) {
                 String username = rs.getString("username");
@@ -148,7 +148,7 @@ public class UserDAO {
         ResultSet rs = null;
         try {
             openConnection();
-            String sql = "SELECT * FROM User WHERE username=?";
+            String sql = "SELECT * FROM user WHERE username=?";
             st = c.prepareStatement(sql);
             st.setString(1, username);
             rs = st.executeQuery();
@@ -186,7 +186,7 @@ public class UserDAO {
         ResultSet rs = null;
         try {
             openConnection();
-            String sql = "SELECT * FROM User WHERE " + column + "=?";
+            String sql = "SELECT * FROM user WHERE " + column + "=?";
             st = c.prepareStatement(sql);
             st.setString(1, condition);
             rs = st.executeQuery();
@@ -224,7 +224,7 @@ public class UserDAO {
         ResultSet rs = null;
         try {
             openConnection();
-            String sql = "SELECT * FROM User WHERE username=?";
+            String sql = "SELECT * FROM user WHERE username=?";
             st = c.prepareStatement(sql);
             st.setString(1, name);
             rs = st.executeQuery();

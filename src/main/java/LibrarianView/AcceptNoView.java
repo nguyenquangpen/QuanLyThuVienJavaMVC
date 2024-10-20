@@ -7,7 +7,6 @@ import model.AcceptNo;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -25,7 +24,7 @@ public class AcceptNoView extends JFrame {
     public void init(){
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setBounds(100, 100, 524, 476);
-        this.setLocationRelativeTo(null);
+        this.setLocation(930, 194);
         this.setResizable(false);
         this.setTitle("Duyệt Phiếu Mượn");
 
@@ -101,7 +100,6 @@ public class AcceptNoView extends JFrame {
         panel.setBackground(new Color(255, 255, 255));
         contentPane.add(panel);
         panel.setLayout(null);
-        panel.setBorder(new LineBorder(Color.GRAY, 1));
 
         table = new JTable();
         table.setBounds(10, 11, 470, 240);
@@ -136,12 +134,29 @@ public class AcceptNoView extends JFrame {
         btnXoa.setFont(new Font("Tahoma", Font.PLAIN, 13));
         btnXoa.setBounds(34, 367, 89, 23);
         btnXoa.addActionListener(ac);
+        
+        jMenuFile.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\google-docs.png"));
+        jMenuItemExit.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\logout.png"));
+        jMenuItemSach.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\bookshelf.png"));
+        sachItem.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\book.png"));
+        jMenuItemDocGia.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\reading.png"));
+        docGiaItem.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\magazine.png"));
+        jMenuItemMuonTra.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\transaction.png"));
+        muonTraItem.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\delivery-note.png"));
+        duytIteam.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\scan.png"));
+
         contentPane.add(btnXoa);
     }
 
     public void XoaBang() {
         DefaultTableModel model_table = (DefaultTableModel) table.getModel();
         model_table.setRowCount(0);
+    }
+    public void refreshTable() {
+        DefaultTableModel model_table = (DefaultTableModel) table.getModel();
+        model_table.fireTableDataChanged();  // Notifies the UI that data has changed
+        table.repaint();  // Forces the table to repaint itself
+        table.revalidate();  // Ensures the table layout is updated
     }
 
     public void HienThiVapBangMacDinh(){
@@ -192,6 +207,7 @@ public class AcceptNoView extends JFrame {
         else {
             JOptionPane.showMessageDialog(null, "Sách đã được chấp nhận mượn"); //không cần thông báo
         }
+        refreshTable();
     }
 
     public void ChapNhanMuon() {
@@ -218,6 +234,8 @@ public class AcceptNoView extends JFrame {
         }else{
             JOptionPane.showMessageDialog(null, "Sách đã được từ chối mượn");
         }
+        
+        refreshTable();
     }
 
     public int checkStudentIDAndSachID(){
@@ -253,6 +271,48 @@ public class AcceptNoView extends JFrame {
         }
         HienThiVapBangMacDinh();
     }
+    public void ThucHienXoaByIDandBookId(String studentID, String bookID) {
+        AcceptNoDao acceptNoDao = new AcceptNoDao();
+        DefaultTableModel model_table = (DefaultTableModel) table.getModel();
+        
+        if (studentID != null && !studentID.trim().isEmpty() && bookID != null && !bookID.trim().isEmpty()) {
+            int result = acceptNoDao.delete(studentID, bookID);
+            if (result > 0) {
+                for (int i = 0; i < model_table.getRowCount(); i++) {
+                    String tableStudentID = (String) model_table.getValueAt(i, 0); 
+                    String tableBookID = (String) model_table.getValueAt(i, 1);    
+
+                    if (tableStudentID.equals(studentID) && tableBookID.equals(bookID)) {
+                        model_table.removeRow(i); 
+                    }
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Không tìm thấy sinh viên hoặc sách.");
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Vui lòng nhập StudentID và BookID hợp lệ.");
+        }
+
+        // Refresh the table
+        HienThiVapBangMacDinh();
+    }
+    public void ThucHienXoa(String studentID, String bookID) {
+        DefaultTableModel model_table = (DefaultTableModel) table.getModel();
+        AcceptNoDao acceptNoDao = new AcceptNoDao();
+        int i_row = table.getSelectedRow(); // Dòng được chọn trong bảng
+        
+        if (i_row != -1) {
+            // Sử dụng studentID và bookID truyền từ TransactionView để xóa
+            int result = acceptNoDao.delete(studentID, bookID);
+            if (result > 0) {
+                model_table.removeRow(i_row); // Xóa dòng trong bảng nếu xóa thành công trong DB
+            }
+        }
+        
+        // Hiển thị lại bảng dữ liệu mặc định sau khi xóa
+        HienThiVapBangMacDinh();
+    }
+
 
     public void HienThiDocGia() {
         this.dispose();
