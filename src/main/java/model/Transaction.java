@@ -21,8 +21,14 @@ public class Transaction {
         this.returnDate = returnDate;
         this.status = status;
     }
+    
+    public Transaction(String studentID, String bookID, Date date) {
+		this.studentID = studentID;
+		this.bookID = bookID;
+		this.date = date;
+	}
 
-    public String getStudentID() {
+	public String getStudentID() {
         return studentID;
     }
 

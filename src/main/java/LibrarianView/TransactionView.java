@@ -1,6 +1,8 @@
 package LibrarianView;
 
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -294,9 +296,19 @@ public class TransactionView extends JFrame {
         lblNewLabel_12.setFont(new Font("Tahoma", Font.BOLD, 15));
         lblNewLabel_12.setBounds(76, 11, 44, 25);
         panel_3.add(lblNewLabel_12);
+        addMouseListenerToTable();
     }
 
-    public void ThemTransactionVaoBang(Transaction transaction){
+    private void addMouseListenerToTable() {
+    	table.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                HienThiSachDaChon(); // Call to display selected transaction details
+            }
+        });
+	}
+
+	public void ThemTransactionVaoBang(Transaction transaction){
         DefaultTableModel model_table = (DefaultTableModel) table.getModel();
         model_table.addRow(new Object[]{
             transaction.getStudentID(),
@@ -326,7 +338,7 @@ public class TransactionView extends JFrame {
         }
     }
 
-    public void ThucHienTinhPhi() {
+    public void ThucHienTinhPhi() throws Exception {
         TransactionDao transactionDao = new TransactionDao();
         String returnDate = jtfNgayTra.getText();
         String studentID = jtfDocGiaTraSach.getText();
@@ -344,9 +356,11 @@ public class TransactionView extends JFrame {
                     	Date returnDate1 = inputDateFormat.parse(returnDate);
                     	String formattedDate = outputDateFormat.format(returnDate1);
 
-                        long diff = returnDate1.getTime() - transaction.getDate().getTime();
+                    	long diff = returnDate1.getTime() - transaction.getDate().getTime();
                         long diffDays = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
-
+                        if (diffDays<0) {
+                        	throw new Exception("Nhập sai ngày trả!");
+                        }
                         String condition = (String) comboBox.getSelectedItem();
 
                         String fine = "0";
@@ -369,7 +383,9 @@ public class TransactionView extends JFrame {
                         }
                         transactionDao.update(studentID, bookID, formattedDate, fine);
                     } catch (ParseException e) {
-                        e.printStackTrace();
+                        JOptionPane.showMessageDialog(this, e.getMessage());
+                    } catch (Exception e) {
+                    	JOptionPane.showMessageDialog(null, e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
                     }
                 }
             }
@@ -385,7 +401,11 @@ public class TransactionView extends JFrame {
         AcceptNoDao acceptNoDao = new AcceptNoDao();
         if (studentID != null && !studentID.trim().isEmpty() && bookID != null && !bookID.trim().isEmpty()) {
 
-            ThucHienTinhPhi();
+            try {
+				ThucHienTinhPhi();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
             HienThiVaoBang();
 
             String status = "null";
@@ -503,11 +523,42 @@ public class TransactionView extends JFrame {
         this.dispose();
         new QLSachView();
     }
- // Phương thức để làm mới AcceptNoView khi có thay đổi
     public void refreshAcceptNoView() {
         if (acceptNoView != null) {
-            acceptNoView.HienThiVapBangMacDinh();  // Cập nhật lại bảng
-            acceptNoView.refreshTable();  // Refresh giao diện bảng
+            acceptNoView.HienThiVapBangMacDinh();  
+            acceptNoView.refreshTable();  
+        }
+    }
+    public Transaction getThongtin() {
+        DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
+        int i_row = table.getSelectedRow();
+        if (i_row == -1) {
+            return null; // No row selected
+        }
+        try {
+            String MaSinnVien = tableModel.getValueAt(i_row, 0).toString();
+            String MaSach = tableModel.getValueAt(i_row, 1).toString();
+            int soLuong = (int) tableModel.getValueAt(i_row, 2);
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Date NgayMuon = dateFormat.parse(tableModel.getValueAt(i_row, 3).toString());
+            Date NgayTra = dateFormat.parse(tableModel.getValueAt(i_row, 4).toString());
+            String status = tableModel.getValueAt(i_row, 5)+"";
+            Transaction transaction = new Transaction(MaSinnVien, MaSach, soLuong, NgayMuon, NgayTra, status);
+            return transaction;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null; 
+    }
+
+    public void HienThiSachDaChon() {
+        Transaction transaction = getThongtin();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        if (transaction != null) {
+            this.jtfDocGiaTraSach.setText(transaction.getStudentID());
+            this.jtfMaSachTra.setText(transaction.getBookID());
+            String formattedDate = dateFormat.format(transaction.getReturnDate()); 
+            this.jtfNgayTra.setText(formattedDate);
         }
     }
 

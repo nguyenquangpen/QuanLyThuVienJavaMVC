@@ -47,7 +47,7 @@ public class TransactionDao {
             acceptNo();
 
             // Câu lệnh SQL chèn vào bảng Transaction
-            String sql = "INSERT INTO Transaction (StudentID, BookID, Amount, NgayMuon, NgayTra, Status) VALUES (?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO transaction (StudentID, BookID, Amount, NgayMuon, NgayTra, Status) VALUES (?, ?, ?, ?, ?, ?)";
             st = c.prepareStatement(sql);
             st.setString(1, studentID);
             st.setString(2, bookID);
@@ -82,7 +82,7 @@ public class TransactionDao {
         PreparedStatement st = null;
         try {
             acceptNo();
-            String sql = "UPDATE Transaction SET Status = ?, NgayTra = ? WHERE StudentID = ? AND BookID = ?";
+            String sql = "UPDATE transaction SET Status = ?, NgayTra = ? WHERE StudentID = ? AND BookID = ?";
             st = c.prepareStatement(sql);
             st.setString(1, status);
 
@@ -113,7 +113,7 @@ public class TransactionDao {
         ArrayList<Transaction> transactions = new ArrayList<>();
         try {
             acceptNo();
-            String sql = "SELECT * FROM Transaction";
+            String sql = "SELECT * FROM transaction";
             st = c.prepareStatement(sql);
             rs = st.executeQuery();
             while (rs.next()) {
@@ -146,7 +146,7 @@ public class TransactionDao {
         PreparedStatement st = null;
         try {
             acceptNo();
-            String sql = "DELETE FROM Transaction WHERE StudentID = ? AND BookID = ? AND Status = ?";
+            String sql = "DELETE FROM transaction WHERE StudentID = ? AND BookID = ? AND Status = ?";
             st = c.prepareStatement(sql);
             st.setString(1, studentID);
             st.setString(2, BookID);
@@ -173,12 +173,10 @@ public class TransactionDao {
 
         try {
             acceptNo();
-            // Xây dựng câu lệnh SQL với tên cột đã được xác thực
-            String sql = "SELECT * FROM Transaction WHERE StudentID = ? AND " + column + " = ?";
+            String sql = "SELECT * FROM transaction WHERE StudentID = ? AND " + column + " = ?";
             st = c.prepareStatement(sql);
             st.setString(1, studentID);
-            st.setString(2, value); // Giá trị để so sánh với cột
-
+            st.setString(2, value); 
             rs = st.executeQuery();
             while (rs.next()) {
                 String BookID = rs.getString("BookID");
@@ -211,7 +209,7 @@ public class TransactionDao {
 
         try {
             acceptNo();
-            String sql = "SELECT * FROM Transaction WHERE StudentID = ? AND " + column + " IS NOT NULL";
+            String sql = "SELECT * FROM transaction WHERE StudentID = ? AND " + column + " IS NOT NULL";
             st = c.prepareStatement(sql);
             st.setString(1, studentID);
 
@@ -244,7 +242,7 @@ public class TransactionDao {
         PreparedStatement st = null;
         try {
             acceptNo();
-            String sql = "DELETE FROM Transaction WHERE StudentID = ?";
+            String sql = "DELETE FROM transaction WHERE StudentID = ?";
             st = c.prepareStatement(sql);
             st.setString(1, studentID);
             return st.executeUpdate() > 0;
@@ -270,7 +268,7 @@ public class TransactionDao {
         try {
             acceptNo();
             // Xây dựng câu lệnh SQL với tên cột đã được xác thực
-            String sql = "SELECT * FROM Transaction WHERE StudentID = ?";
+            String sql = "SELECT * FROM transaction WHERE StudentID = ?";
             st = c.prepareStatement(sql);
             st.setString(1, studentID);
             rs = st.executeQuery();
