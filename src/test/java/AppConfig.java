@@ -9,6 +9,6 @@ import ReadersView.StatusView;
 
 public class AppConfig {
     public static void main(String[] args) {
-        new StatusView();
+        new FuntionLogin();
     }
 }

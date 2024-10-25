@@ -1,8 +1,6 @@
 package LoginRegisterView;
 
 import Controller.QLLoginController;
-import LibrarianView.QLSachView;
-import LibrarianView.StudentView;
 import ReadersView.ReaderBookView;
 import dao.UserDAO;
 import model.User;
@@ -41,7 +39,7 @@ public class LoginView extends JFrame {
 
         JLabel jLabelUsername = new JLabel("Username");
         jLabelUsername.setBounds(10, 19, 246, 32);
-        jLabelUsername.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\22_104877.png"));
+        jLabelUsername.setIcon(new ImageIcon("D:\\Academic\\lap-trinh\\Project\\IdeaProject\\library_management_Project\\Image\\22_104877.png"));
         jLabelUsername.setFont(font);
         jtfUsername = new JTextField(15);
         jtfUsername.setFont(new Font("Tahoma", Font.PLAIN, 13));
@@ -49,7 +47,7 @@ public class LoginView extends JFrame {
 
         JLabel jLabelPassword = new JLabel("Password");
         jLabelPassword.setBounds(10, 105, 246, 32);
-        jLabelPassword.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\40_104848.png"));
+        jLabelPassword.setIcon(new ImageIcon("D:\\Academic\\lap-trinh\\Project\\IdeaProject\\library_management_Project\\Image\\40_104848.png"));
         jLabelPassword.setFont(font);
         jtfPassword = new JPasswordField(15);
         jtfPassword.setFont(new Font("Tahoma", Font.PLAIN, 13));

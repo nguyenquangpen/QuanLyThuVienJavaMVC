@@ -11,9 +11,9 @@ public class StudentDAO {
 
     public void openConnection() {
         try {
-        	String url = "jdbc:mySQL://localhost:3306/library_management";
+            String url = "jdbc:mysql://localhost:3306/library_management";
             String user = "root";
-            String password = "";
+            String password = "11111111";
             c = DriverManager.getConnection(url, user, password);
             System.out.println("Connection successful!");
         } catch (SQLException e) {

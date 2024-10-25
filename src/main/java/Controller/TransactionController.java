@@ -35,7 +35,7 @@ public class TransactionController implements ActionListener {
 		} else if (src.equals("Quản Lý Độc Giả")) {
 			this.transactionView.HienThiDocGia();
 		} else if (src.equals("Duyệt Phiếu Mượn")) {
-			new AcceptNoView();
+			this.transactionView.HienThiPhieuMuon();
 		} else if (src.equals("Quản Lý Sách")){
 			this.transactionView.HienThiSach();
 		}

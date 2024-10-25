@@ -81,19 +81,19 @@ public class RegisterLibrarianView extends JFrame {
         lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 13));
 
         JLabel lblNewLabel_4 = new JLabel("CardID");
-        lblNewLabel_4.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\finance_chart_business_id_management_icon_263075.png"));
+        lblNewLabel_4.setIcon(new ImageIcon("D:\\Academic\\lap-trinh\\Project\\IdeaProject\\library_management_Project\\Image\\finance_chart_business_id_management_icon_263075.png"));
         lblNewLabel_4.setBounds(10, 161, 112, 32);
         panel.add(lblNewLabel_4);
         lblNewLabel_4.setFont(new Font("Tahoma", Font.PLAIN, 13));
 
         JLabel lblNewLabel_3 = new JLabel("LibraianID");
-        lblNewLabel_3.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\11_104884.png"));
+        lblNewLabel_3.setIcon(new ImageIcon("D:\\Academic\\lap-trinh\\Project\\IdeaProject\\library_management_Project\\Image\\11_104884.png"));
         lblNewLabel_3.setBounds(10, 115, 112, 35);
         panel.add(lblNewLabel_3);
         lblNewLabel_3.setFont(new Font("Tahoma", Font.PLAIN, 13));
 
         JLabel lblNewLabel_2 = new JLabel("Password");
-        lblNewLabel_2.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\40_104848.png"));
+        lblNewLabel_2.setIcon(new ImageIcon("D:\\Academic\\lap-trinh\\Project\\IdeaProject\\library_management_Project\\Image\\40_104848.png"));
         lblNewLabel_2.setBounds(10, 59, 112, 35);
         panel.add(lblNewLabel_2);
         lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 13));

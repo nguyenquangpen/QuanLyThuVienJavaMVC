@@ -32,9 +32,7 @@ public class TransactionView extends JFrame {
     public JPanel panel, panel_1;
     public JTextField jtfDocGiaTraSach;
     public JTextField jtfDocGia;
-    public JTextField jtfNgayMuon;
     public JTextField jtfMaSach;
-    public JTextField jtfSoLuong;
     public JTextField jtfNgayTra;
     public JTextField jtfMaSachTra;
     private JComboBox<String> comboBox;
@@ -511,5 +509,10 @@ public class TransactionView extends JFrame {
             acceptNoView.HienThiVapBangMacDinh();  // Cập nhật lại bảng
             acceptNoView.refreshTable();  // Refresh giao diện bảng
         }
+    }
+
+    public void HienThiPhieuMuon() {
+        this.dispose();
+        new AcceptNoView();
     }
 }

@@ -16,7 +16,6 @@ public class StudentView extends JFrame {
     public JTextField textField_TenSinhVien_timKiem;
     public JTable table;
     public JTextField textField_ID, textField_HoVaTen, textField_Gmail, textField_DiaChi, textField_SDT;
-    public JComboBox comboBox_queQuan;
     public JButton btnHuyTim, btnTim;
 
     public StudentView() {

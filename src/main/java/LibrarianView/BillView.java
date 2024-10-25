@@ -85,7 +85,7 @@ public class BillView extends JFrame {
         scrollPane.setBounds(10, 101, 361, 130);
         panel.add(scrollPane);
 
-        String imagePath = "D:\\Eclipse_java\\Final_prj\\Image\\MaQr.jpg";
+        String imagePath = "D:\\Academic\\lap-trinh\\Project\\IdeaProject\\library_management_Project\\Image\\MaQr.jpg";
 
         // Tạo ImageIcon từ ảnh gốc
         ImageIcon originalIcon = new ImageIcon(imagePath);

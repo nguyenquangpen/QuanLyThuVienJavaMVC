@@ -12,9 +12,9 @@ public class SachDAO {
 
     public void openConnection() {
         try {
-        	String url = "jdbc:mySQL://localhost:3306/library_management";
+            String url = "jdbc:mysql://localhost:3306/library_management";
             String user = "root";
-            String password = "";
+            String password = "11111111";
             c = DriverManager.getConnection(url, user, password);
             System.out.println("Connection successful!");
         } catch (SQLException e) {
@@ -38,7 +38,7 @@ public class SachDAO {
         PreparedStatement st = null;
         try {
             openConnection();
-            String sql = "INSERT INTO qlsach (MaSachId, TenSach, NamXB, TheLoai, TacGia, SoLuong, DaMuon, TonKho) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO QLSach (MaSachId, TenSach, NamXB, TheLoai, TacGia, SoLuong, DaMuon, TonKho) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             st = c.prepareStatement(sql);
             st.setString(1, t.getId());
             st.setString(2, t.getTenSach());
@@ -68,7 +68,7 @@ public class SachDAO {
         PreparedStatement st = null;
         try {
             openConnection();
-            String sql = "UPDATE qlsach SET TenSach=?, NamXB=?, TheLoai=?, TacGia=?, SoLuong=?, DaMuon=?, TonKho=? WHERE MaSachId=?";
+            String sql = "UPDATE QLSach SET TenSach=?, NamXB=?, TheLoai=?, TacGia=?, SoLuong=?, DaMuon=?, TonKho=? WHERE MaSachId=?";
             st = c.prepareStatement(sql);
             st.setString(1, t.getTenSach());
             st.setInt(2, t.getNamXuatBan());
@@ -98,7 +98,7 @@ public class SachDAO {
         PreparedStatement st = null;
         try {
             openConnection();
-            String sql = "DELETE FROM qlsach WHERE MaSachId = ?";
+            String sql = "DELETE FROM QLSach WHERE MaSachId = ?";
             st = c.prepareStatement(sql);
             st.setString(1, t.getId());
             return st.executeUpdate();
@@ -124,7 +124,7 @@ public class SachDAO {
         try {
             openConnection();
             st = c.createStatement();
-            String sql = "SELECT * FROM qlsach";
+            String sql = "SELECT * FROM QLSach";
             rs = st.executeQuery(sql);
             while (rs.next()) {
                 String MaSachId = rs.getString("MaSachId");
@@ -165,7 +165,7 @@ public class SachDAO {
         ResultSet rs = null;
         try {
             openConnection();
-            String sql = "SELECT * FROM qlsach WHERE MaSachId = ?";
+            String sql = "SELECT * FROM QLSach WHERE MaSachId = ?";
             st = c.prepareStatement(sql);
             st.setString(1, BookID);
             rs = st.executeQuery();
@@ -209,7 +209,7 @@ public class SachDAO {
         ResultSet rs = null;
         try {
             openConnection();
-            String sql = "SELECT * FROM qlsach WHERE " + column + " = ?";
+            String sql = "SELECT * FROM QLSach WHERE " + column + " = ?";
             st = c.prepareStatement(sql);
             st.setString(1, condition);
             rs = st.executeQuery();
@@ -247,7 +247,7 @@ public class SachDAO {
         return arrKetqua;
     }
 	public int updateStockAndBorrowed(String bookID, int newTonKho, int newDaMuon) {
-		String sql = "UPDATE qlsach SET TonKho = ?, DaMuon = ? WHERE MaSachId = ?";
+		String sql = "UPDATE QLSach SET TonKho = ?, DaMuon = ? WHERE MaSachId = ?";
 		PreparedStatement st = null;
 	        try {
 	            openConnection();
@@ -271,7 +271,7 @@ public class SachDAO {
 	        }
 	}
 	public int updateSoLuong(String bookID, int newSoLuong, int DaMuon) {
-		String sql = "UPDATE qlsach SET SoLuong =?, DaMuon =? WHERE MaSachId = ?";
+		String sql = "UPDATE QLSach SET SoLuong =?, DaMuon =? WHERE MaSachId = ?";
 		PreparedStatement st = null;
 		try {
             openConnection();
@@ -299,7 +299,7 @@ public class SachDAO {
 		ResultSet rs = null;
 		try {
 			openConnection();
-			String sql = "SELECT DaMuon FROM qlsach WHERE MaSachId = ?";
+			String sql = "SELECT DaMuon FROM QLSach WHERE MaSachId = ?";
 			st = c.prepareStatement(sql);
 			st.setString(1, bookID);
 			rs = st.executeQuery();

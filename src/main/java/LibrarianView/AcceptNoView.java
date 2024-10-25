@@ -202,10 +202,10 @@ public class AcceptNoView extends JFrame {
             JOptionPane.showMessageDialog(null, "Sách đã được từ chối mượn");
         } else if (result == 0) {
             HienThiVapBangMacDinh();
-            JOptionPane.showMessageDialog(null, "Từ chối mượn thành công"); // không cần thông báo
+            JOptionPane.showMessageDialog(null, "Từ chối mượn thành công");
         }
         else {
-            JOptionPane.showMessageDialog(null, "Sách đã được chấp nhận mượn"); //không cần thông báo
+            JOptionPane.showMessageDialog(null, "Sách đã được chấp nhận mượn");
         }
         refreshTable();
     }
@@ -293,23 +293,19 @@ public class AcceptNoView extends JFrame {
             JOptionPane.showMessageDialog(null, "Vui lòng nhập StudentID và BookID hợp lệ.");
         }
 
-        // Refresh the table
         HienThiVapBangMacDinh();
     }
     public void ThucHienXoa(String studentID, String bookID) {
         DefaultTableModel model_table = (DefaultTableModel) table.getModel();
         AcceptNoDao acceptNoDao = new AcceptNoDao();
-        int i_row = table.getSelectedRow(); // Dòng được chọn trong bảng
+        int i_row = table.getSelectedRow();
         
         if (i_row != -1) {
-            // Sử dụng studentID và bookID truyền từ TransactionView để xóa
             int result = acceptNoDao.delete(studentID, bookID);
             if (result > 0) {
-                model_table.removeRow(i_row); // Xóa dòng trong bảng nếu xóa thành công trong DB
+                model_table.removeRow(i_row);
             }
         }
-        
-        // Hiển thị lại bảng dữ liệu mặc định sau khi xóa
         HienThiVapBangMacDinh();
     }
 
