@@ -173,12 +173,10 @@ public class TransactionDao {
 
         try {
             acceptNo();
-            // Xây dựng câu lệnh SQL với tên cột đã được xác thực
             String sql = "SELECT * FROM transaction WHERE StudentID = ? AND " + column + " = ?";
             st = c.prepareStatement(sql);
             st.setString(1, studentID);
-            st.setString(2, value); // Giá trị để so sánh với cột
-
+            st.setString(2, value); 
             rs = st.executeQuery();
             while (rs.next()) {
                 String BookID = rs.getString("BookID");
