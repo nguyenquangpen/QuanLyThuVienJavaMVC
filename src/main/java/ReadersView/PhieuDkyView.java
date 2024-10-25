@@ -145,7 +145,14 @@ public class PhieuDkyView extends JFrame {
 			studentID = jtfStudentID.getText();
 			studentName = jtfStudentName.getText();
 			studentLocation = jtfStudentLocation.getText();
-			studentSDT = Integer.parseInt(jtfStudentSDT.getText());
+			//studentSDT = Integer.parseInt(jtfStudentSDT.getText());
+			String stringSdt = jtfStudentSDT.getText();
+			if(stringSdt.length()!=10 || !stringSdt.startsWith("0")) {
+				throw new Exception("Nhập vào không đúng số điện thoại!");
+			}
+			else {
+				studentSDT = Integer.parseInt(stringSdt);
+			}
 			studentGmail = jtfStudentGmail.getText();
 			if(!studentGmail.endsWith("@gmail.com")) {
 				throw new Exception("Gmail không hợp lệ! Vui lòng nhập địa chỉ kết thúc bằng @gmail.com.");
