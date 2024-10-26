@@ -239,13 +239,13 @@ public class ReaderBookView extends JFrame {
         panel_2.add(btnHuyTim);
         
       //set them icon cho cac menu 
-        jMenuFile.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\google-docs.png"));
-        jMenuItemExit.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\logout.png"));
-        jMenuItemBook.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\bookshelf.png"));
-        BookView.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\book.png"));
-        jMenuItemPhieu.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\check-list.png"));
-        sachItem.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\register.png"));
-        StatusView.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\verified.png"));
+        jMenuFile.setIcon(new ImageIcon("D:\\Academic\\lap-trinh\\Project\\IdeaProject\\library_management_Project\\Image\\google-docs.png"));
+        jMenuItemExit.setIcon(new ImageIcon("D:\\Academic\\lap-trinh\\Project\\IdeaProject\\library_management_Project\\Image\\logout.png"));
+        jMenuItemBook.setIcon(new ImageIcon("D:\\Academic\\lap-trinh\\Project\\IdeaProject\\library_management_Project\\Image\\bookshelf.png"));
+        BookView.setIcon(new ImageIcon("D:\\Academic\\lap-trinh\\Project\\IdeaProject\\library_management_Project\\Image\\book.png"));
+        jMenuItemPhieu.setIcon(new ImageIcon("D:\\Academic\\lap-trinh\\Project\\IdeaProject\\library_management_Project\\Image\\check-list.png"));
+        sachItem.setIcon(new ImageIcon("D:\\Academic\\lap-trinh\\Project\\IdeaProject\\library_management_Project\\Image\\register.png"));
+        StatusView.setIcon(new ImageIcon("D:\\Academic\\lap-trinh\\Project\\IdeaProject\\library_management_Project\\Image\\verified.png"));
     }
 
     public void ThemSachVaoBang(Sach sach){

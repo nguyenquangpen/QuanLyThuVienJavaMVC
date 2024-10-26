@@ -109,46 +109,50 @@ public class RegisterLibrarianView extends JFrame {
     public void ThucHienDangKyLibrarian() {
         String username = jtfusername.getText();
         String password = new String(jtfPassword.getPassword());
-        int librarianID = Integer.parseInt(jtfLibraianID.getText());
-        String cardID = jtfCardID.getText();
+        int librarianID;
 
-        LibrarianDao librarianDao = new LibrarianDao();
-        Librarian librarian1 = new Librarian(username, password, librarianID);
         try {
-			if(ThucHienKiemTraLibrarian()){
-			    librarianDao.insert(librarian1);
-			    JOptionPane.showMessageDialog(null, "Hoàn tất đăng ký");
-			    this.dispose();
-			    new LoginLibrarianView();
-			}else {
-			    JOptionPane.showMessageDialog(null, "Đăng ký thất bại");
-			}
-		} catch (HeadlessException e) {
-			JOptionPane.showMessageDialog(null, e, "Lỗi", JOptionPane.ERROR_MESSAGE);
-		}
-    }
-
-    public boolean ThucHienKiemTraLibrarian() {
-        int libraianID = Integer.parseInt(jtfLibraianID.getText());
-        String cardID = jtfCardID.getText();
-        String username = jtfusername.getText();
-        String password = new String(jtfPassword.getPassword());
-        Librarian librarian1 = new Librarian(username, password, libraianID);
-        LibrarianDao librarianDao = new LibrarianDao();
-        Librarian condition = librarianDao.selectById(libraianID);
-
-        if(librarian1.getLibrarianID() != libraianID){
-            JOptionPane.showMessageDialog(null, "libraianID không khớp !");
-            return false;
-        }else if (!librarian1.getEmployeeCard().equals(cardID)) {
-            JOptionPane.showMessageDialog(null, "mã thẻ không khớp !");
-            return false;
-        } else if (username.isEmpty() || password.isEmpty() || cardID.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "không được để trống !");
-            return false;
+            librarianID = Integer.parseInt(jtfLibraianID.getText());
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Libraian ID phải là số!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return;
         }
-        return condition != null && condition.getEmployeeCard().equals(cardID) && condition.getLibrarianID() == libraianID;
+
+        // Kiểm tra các trường không được để trống
+        if (username.isEmpty() || password.isEmpty() || jtfLibraianID.getText().isEmpty() || jtfCardID.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Các trường thông tin không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Kiểm tra Librarian ID trước khi tiếp tục
+        LibrarianDao librarianDao = new LibrarianDao();
+
+        if (librarianDao.selectById(librarianID) != null) {
+            JOptionPane.showMessageDialog(null, "librarianID đã tồn tại", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        Librarian condition = librarianDao.selectByIdMana(librarianID);
+
+        if (condition == null || condition.getEmployeeCard().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "không tìm thấy librarianID hoặc employeeCard", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if(!condition.getEmployeeCard().equals(jtfCardID.getText())) {
+            JOptionPane.showMessageDialog(null, "Mã thẻ không khớp!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Tạo đối tượng Librarian mới và thêm vào cơ sở dữ liệu
+        Librarian librarian1 = new Librarian(username, password, librarianID);
+        if (librarianDao.insert(librarian1)) {
+            JOptionPane.showMessageDialog(null, "Đăng ký thành công!");
+        } else {
+            JOptionPane.showMessageDialog(null, "Có lỗi xảy ra khi đăng ký!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+        }
     }
+
 
     public void ThucHienQuayLai() {
         this.dispose();

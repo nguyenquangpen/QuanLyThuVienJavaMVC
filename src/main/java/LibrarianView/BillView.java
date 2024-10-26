@@ -1,9 +1,7 @@
 package LibrarianView;
 
 import Controller.BillController;
-import com.google.protobuf.Value;
 import dao.TransactionDao;
-import model.Student;
 import model.Transaction;
 
 import javax.swing.*;

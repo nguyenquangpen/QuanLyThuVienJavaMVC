@@ -38,53 +38,52 @@ public class QLSachView extends JFrame {
         JMenuBar menuBar = new JMenuBar();
         JMenu jMenuFile = new JMenu("File");
         jMenuFile.setFont(font);
-        jMenuFile.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\google-docs.png"));
+        jMenuFile.setIcon(new ImageIcon("D:\\Academic\\lap-trinh\\Project\\IdeaProject\\library_management_Project\\Image\\google-docs.png"));
         
         JMenuItem jMenuItemExit = new JMenuItem("Exit");
         jMenuItemExit.setFont(font);
         jMenuFile.addSeparator();
         jMenuFile.add(jMenuItemExit);
 		jMenuItemExit.setToolTipText("Nhan vao la thoat");
-		jMenuItemExit.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\logout.png"));
+		jMenuItemExit.setIcon(new ImageIcon("D:\\Academic\\lap-trinh\\Project\\IdeaProject\\library_management_Project\\Image\\logout.png"));
         jMenuItemExit.addActionListener(ac);
 
         JMenuItem jMenuItemSach = new JMenu("Sách");
         jMenuItemSach.setFont(font);
-        jMenuItemSach.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\bookshelf.png"));
+        jMenuItemSach.setIcon(new ImageIcon("D:\\Academic\\lap-trinh\\Project\\IdeaProject\\library_management_Project\\Image\\bookshelf.png"));
         
         JMenuItem sachItem = new JMenuItem("Quản Lý Sách");
         sachItem.setFont(font);
         jMenuItemSach.add(sachItem);
         sachItem.addActionListener(ac);
-        sachItem.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\book.png"));
+        sachItem.setIcon(new ImageIcon("D:\\Academic\\lap-trinh\\Project\\IdeaProject\\library_management_Project\\Image\\book.png"));
         
         JMenuItem jMenuItemDocGia = new JMenu("Độc Giả");
         jMenuItemDocGia.setFont(font);
-        jMenuItemDocGia.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\reading.png"));
+        jMenuItemDocGia.setIcon(new ImageIcon("D:\\Academic\\lap-trinh\\Project\\IdeaProject\\library_management_Project\\Image\\reading.png"));
         
         JMenuItem docGiaItem = new JMenuItem("Quản Lý Độc Giả");
         docGiaItem.setFont(font);
         jMenuItemDocGia.add(docGiaItem);
         docGiaItem.addActionListener(ac);
-        docGiaItem.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\magazine.png"));
+        docGiaItem.setIcon(new ImageIcon("D:\\Academic\\lap-trinh\\Project\\IdeaProject\\library_management_Project\\Image\\magazine.png"));
         JMenuItem jMenuItemMuonTra = new JMenu("Mượn Trả");
         jMenuItemMuonTra.setFont(font);
-        jMenuItemMuonTra.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\transaction.png"));
+        jMenuItemMuonTra.setIcon(new ImageIcon("D:\\Academic\\lap-trinh\\Project\\IdeaProject\\library_management_Project\\ImageD:\\Eclipse_java\\Final_prj\\Image\\transaction.png"));
 
 
         JMenuItem muonTraItem = new JMenuItem("Quản Lý Mượn Trả");
         muonTraItem.setFont(font);
         jMenuItemMuonTra.add(muonTraItem);
         muonTraItem.addActionListener(ac);
-        muonTraItem.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\delivery-note.png"));
+        muonTraItem.setIcon(new ImageIcon("D:\\Academic\\lap-trinh\\Project\\IdeaProject\\library_management_Project\\Image\\delivery-note.png"));
 
         
         JMenuItem duytIteam = new JMenuItem("Duyệt Phiếu Mượn");
         duytIteam.setFont(font);
         jMenuItemMuonTra.add(duytIteam);
         duytIteam.addActionListener(ac);
-        duytIteam.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\scan.png"));
-
+        duytIteam.setIcon(new ImageIcon("D:\\Academic\\lap-trinh\\Project\\IdeaProject\\library_management_Project\\Image\\scan.png"));
 
         // Điều chỉnh khoảng cách giữa các menu item
         jMenuItemSach.setMargin(new Insets(0, 5, 0, 5));

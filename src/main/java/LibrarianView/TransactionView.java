@@ -30,7 +30,7 @@ public class TransactionView extends JFrame {
     private static final long serialVersionUID = 1L;
     public JPanel contentPane;
     public static JTable table;
-    public JLabel lblNewLabel, lblNewLabel_1, lblNewLabel_2, lblNewLabel_3, lblNewLabel_4, lblNewLabel_5, lblNewLabel_6;
+    public JLabel lblNewLabel, lblNewLabel_1, lblNewLabel_2, lblNewLabel_5, lblNewLabel_6;
     public JPanel panel, panel_1;
     public JTextField jtfDocGiaTraSach;
     public JTextField jtfDocGia;
@@ -282,15 +282,15 @@ public class TransactionView extends JFrame {
         panel_3.add(jtfMaDocGiaBill);
         jtfMaDocGiaBill.setColumns(10);
         
-        jMenuFile.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\google-docs.png"));
-        jMenuItemExit.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\logout.png"));
-        jMenuItemSach.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\bookshelf.png"));
-        sachItem.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\book.png"));
-        jMenuItemDocGia.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\reading.png"));
-        docGiaItem.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\magazine.png"));
-        jMenuItemMuonTra.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\transaction.png"));
-        muonTraItem.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\delivery-note.png"));
-        duytIteam.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\scan.png"));
+        jMenuFile.setIcon(new ImageIcon("D:\\Academic\\lap-trinh\\Project\\IdeaProject\\library_management_Project\\Image\\google-docs.png"));
+        jMenuItemExit.setIcon(new ImageIcon("D:\\Academic\\lap-trinh\\Project\\IdeaProject\\library_management_Project\\Image\\logout.png"));
+        jMenuItemSach.setIcon(new ImageIcon("D:\\Academic\\lap-trinh\\Project\\IdeaProject\\library_management_Project\\Image\\bookshelf.png"));
+        sachItem.setIcon(new ImageIcon("D:\\Academic\\lap-trinh\\Project\\IdeaProject\\library_management_Project\\Image\\book.png"));
+        jMenuItemDocGia.setIcon(new ImageIcon("D:\\Academic\\lap-trinh\\Project\\IdeaProject\\library_management_Project\\Image\\reading.png"));
+        docGiaItem.setIcon(new ImageIcon("D:\\Academic\\lap-trinh\\Project\\IdeaProject\\library_management_Project\\Image\\magazine.png"));
+        jMenuItemMuonTra.setIcon(new ImageIcon("D:\\Academic\\lap-trinh\\Project\\IdeaProject\\library_management_Project\\Image\\transaction.png"));
+        muonTraItem.setIcon(new ImageIcon("D:\\Academic\\lap-trinh\\Project\\IdeaProject\\library_management_Project\\Image\\delivery-note.png"));
+        duytIteam.setIcon(new ImageIcon("D:\\Academic\\lap-trinh\\Project\\IdeaProject\\library_management_Project\\Image\\scan.png"));
 
         JLabel lblNewLabel_12 = new JLabel("Bill");
         lblNewLabel_12.setFont(new Font("Tahoma", Font.BOLD, 15));
@@ -482,8 +482,12 @@ public class TransactionView extends JFrame {
     }
 
     public void HienThiBill() {
+        TransactionDao transactionDao = new TransactionDao();
         if(jtfMaDocGiaBill.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Nhập Mã Độc Giả Để Xuất Bill");
+        }else if(transactionDao.selectByName(jtfMaDocGiaBill.getText()).isEmpty()){ {
+            JOptionPane.showMessageDialog(null, "Không có thông tin mượn sách của độc giả này");
+        }
         }else{
             new BillView();
         }

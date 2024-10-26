@@ -76,8 +76,6 @@ public class AcceptNoView extends JFrame {
         jMenuItemMuonTra.add(duytIteam);
         duytIteam.addActionListener(ac);
 
-
-
         // Điều chỉnh khoảng cách giữa các menu item
         jMenuItemSach.setMargin(new Insets(0, 5, 0, 5));
         jMenuItemDocGia.setMargin(new Insets(0, 5, 0, 5));
@@ -135,15 +133,15 @@ public class AcceptNoView extends JFrame {
         btnXoa.setBounds(34, 367, 89, 23);
         btnXoa.addActionListener(ac);
         
-        jMenuFile.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\google-docs.png"));
-        jMenuItemExit.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\logout.png"));
-        jMenuItemSach.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\bookshelf.png"));
-        sachItem.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\book.png"));
-        jMenuItemDocGia.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\reading.png"));
-        docGiaItem.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\magazine.png"));
-        jMenuItemMuonTra.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\transaction.png"));
-        muonTraItem.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\delivery-note.png"));
-        duytIteam.setIcon(new ImageIcon("D:\\Eclipse_java\\Final_prj\\Image\\scan.png"));
+        jMenuFile.setIcon(new ImageIcon("D:\\Academic\\lap-trinh\\Project\\IdeaProject\\library_management_Project\\Image\\google-docs.png"));
+        jMenuItemExit.setIcon(new ImageIcon("D:\\Academic\\lap-trinh\\Project\\IdeaProject\\library_management_Project\\Image\\logout.png"));
+        jMenuItemSach.setIcon(new ImageIcon("D:\\Academic\\lap-trinh\\Project\\IdeaProject\\library_management_Project\\Image\\bookshelf.png"));
+        sachItem.setIcon(new ImageIcon("D:\\Academic\\lap-trinh\\Project\\IdeaProject\\library_management_Project\\Image\\book.png"));
+        jMenuItemDocGia.setIcon(new ImageIcon("D:\\Academic\\lap-trinh\\Project\\IdeaProject\\library_management_Project\\Image\\reading.png"));
+        docGiaItem.setIcon(new ImageIcon("D:\\Academic\\lap-trinh\\Project\\IdeaProject\\library_management_Project\\Image\\magazine.png"));
+        jMenuItemMuonTra.setIcon(new ImageIcon("D:\\Academic\\lap-trinh\\Project\\IdeaProject\\library_management_Project\\Image\\transaction.png"));
+        muonTraItem.setIcon(new ImageIcon("D:\\Academic\\lap-trinh\\Project\\IdeaProject\\library_management_Project\\Image\\delivery-note.png"));
+        duytIteam.setIcon(new ImageIcon("D:\\Academic\\lap-trinh\\Project\\IdeaProject\\library_management_Project\\Image\\scan.png"));
 
         contentPane.add(btnXoa);
     }
@@ -154,9 +152,9 @@ public class AcceptNoView extends JFrame {
     }
     public void refreshTable() {
         DefaultTableModel model_table = (DefaultTableModel) table.getModel();
-        model_table.fireTableDataChanged();  // Notifies the UI that data has changed
-        table.repaint();  // Forces the table to repaint itself
-        table.revalidate();  // Ensures the table layout is updated
+        model_table.fireTableDataChanged();
+        table.repaint();
+        table.revalidate();
     }
 
     public void HienThiVapBangMacDinh(){

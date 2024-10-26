@@ -16,6 +16,13 @@ public class Librarian {
         this.LibrarianID = librarianID;
     }
 
+    public Librarian(String username, String password, int librarianID, String employeeCard) {
+        this.username = username;
+        this.password = password;
+        this.LibrarianID = librarianID;
+        this.employeeCard = employeeCard;
+    }
+
     public String getUsername() {
         return username;
     }

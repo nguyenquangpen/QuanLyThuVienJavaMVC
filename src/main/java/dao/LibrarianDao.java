@@ -33,7 +33,7 @@ public class LibrarianDao {
         }
     }
 
-    public int insert(Librarian l) {
+    public boolean insert(Librarian l) {
         PreparedStatement st = null;
         try {
             openConnection();
@@ -42,7 +42,7 @@ public class LibrarianDao {
             st.setString(1, l.getUsername());
             st.setString(2, l.getPassword());
             st.setInt(3, l.getLibrarianID());
-            return st.executeUpdate();
+            return st.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new RuntimeException("Insert failed: " + e.getMessage(), e);
         } finally {
@@ -58,7 +58,7 @@ public class LibrarianDao {
         }
     }
 
-    public Librarian selectById(int librarianID) {
+    public Librarian selectByIdMana(int librarianID) {
         PreparedStatement st = null;
         ResultSet rs = null;
         try {
@@ -94,6 +94,45 @@ public class LibrarianDao {
         }
         return null;
     }
+
+    public Librarian selectById (int librarianID){
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try {
+            openConnection();
+            String sql = "SELECT * FROM LibrarianLogin WHERE LibrarianID = ?";
+            st = c.prepareStatement(sql);
+            st.setInt(1, librarianID);
+            rs = st.executeQuery();
+            if (rs.next()) {
+                String username = rs.getString("username");
+                String password = rs.getString("password");
+                return new Librarian(username, password, librarianID);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Select by ID failed: " + e.getMessage(), e);
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    System.err.println("Failed to close result set: " + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+            if (st != null) {
+                try {
+                    st.close();
+                } catch (SQLException e) {
+                    System.err.println("Failed to close statement: " + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+            closeConnection();
+        }
+        return null;
+    }
+
 
     public Librarian selectByName(String name) {
         PreparedStatement st = null;
