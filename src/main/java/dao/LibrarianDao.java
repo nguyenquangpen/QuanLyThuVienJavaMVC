@@ -10,9 +10,9 @@ public class LibrarianDao {
 
     public void openConnection() {
         try {
-            String url = "jdbc:mysql://localhost:3306/library_management";
-            String user = "root";
-            String password = "11111111";
+            String url = "nhập của bạn vào đây";
+            String user = "tên người dùng của bạn";
+            String password = "mật khẩu của bạn";
             c = DriverManager.getConnection(url, user, password);
             System.out.println("Connection successful!");
         } catch (SQLException e) {

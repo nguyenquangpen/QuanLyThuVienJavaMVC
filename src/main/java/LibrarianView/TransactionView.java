@@ -482,12 +482,8 @@ public class TransactionView extends JFrame {
     }
 
     public void HienThiBill() {
-        TransactionDao transactionDao = new TransactionDao();
         if(jtfMaDocGiaBill.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Nhập Mã Độc Giả Để Xuất Bill");
-        }else if(transactionDao.selectByName(jtfMaDocGiaBill.getText()).isEmpty()){ {
-            JOptionPane.showMessageDialog(null, "Không có thông tin mượn sách của độc giả này");
-        }
         }else{
             new BillView();
         }

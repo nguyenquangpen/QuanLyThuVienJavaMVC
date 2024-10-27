@@ -11,7 +11,6 @@ CREATE TABLE QLSach (
     SoLuong int
 );
 
-
 create table User (
 	username varchar(50) primary key,
     password varchar(50)
@@ -31,20 +30,38 @@ create table LibrarianManager(
     employeeCard varchar(50)
 );
 
+
 CREATE TABLE LibrarianLogin (
-    username VARCHAR(50) PRIMARY KEY,
+    username VARCHAR(50),
     password VARCHAR(50),
-    LibrarianID INT,
+    LibrarianID INT primary key,
     CONSTRAINT fk_librarian FOREIGN KEY (LibrarianID) 
     REFERENCES LibrarianManager(LibrarianID)
     ON DELETE CASCADE 
     ON UPDATE CASCADE
 );
 
+create table LibrarianAcept(
+	StudentID varchar(50),
+    MaSachID varchar(50),
+    SoLuong int,
+    ChoMuon varchar(150)
+);
 
+create table Transaction(
+	StudentID varchar(100),
+    BookID varchar(100),
+    Amount int,
+	NgayMuon DATE,
+    NgayTra DATE,
+    Status varchar(100)
+);
+
+select * from Transaction;
+select * from LibrarianAcept;
 select * from LibrarianLogin;
 select* from QLSach;
 select * from student;
 select * from LibrarianManager;
+select * from User;
 select * from LibrarianLogin;
-select * from QLSach where TenSach = "DSA";
